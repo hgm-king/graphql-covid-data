@@ -7,10 +7,21 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
       - ./db:/db
+    ports:
+      - 5432:5432
   backend:
     image: "elixir"
     command: ["tail", "-f", '/dev/null']
     volumes:
       - ./backend:/app
+    links:
+      - "database:db"
+  etl:
+    build: ./etl
+    command: ["tail", "-f", '/dev/null']
+    volumes:
+      - ./etl:/app
+    links:
+      - "database:db"
 volumes:
   database-data: # named volumes can be managed easier using docker-compose

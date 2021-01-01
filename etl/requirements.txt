@@ -1,0 +1,7 @@
+pyzmq==17.0.0
+kedro
+pandas
+aiohttp
+SQLAlchemy
+psycopg2
+numpy
