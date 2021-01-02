@@ -1,34 +1,55 @@
-fn main() {
-    println!("Hello, world!");
+use std::sync::Arc;
 
-    let connection = db_introspector::establish_connection();
-    let results = db_introspector::models::antibody_by_age::read(&connection);
+use hyper::{
+    service::{make_service_fn, service_fn},
+    Body, Method, Response, Server, StatusCode,
+};
+use juniper::{
+    RootNode,EmptySubscription,EmptyMutation
+};
 
-    println!("Displaying {} AntibodyByAge", results.len());
-    for row in results {
-        println!("{:?}", row);
-        println!("----------\n");
+#[tokio::main]
+async fn main() {
+    pretty_env_logger::init();
+
+    let addr = ([127, 0, 0, 1], 3000).into();
+
+    let db = Arc::new(db_introspector::Context {});
+    let root_node = Arc::new(RootNode::new(
+        db_introspector::Query,
+        EmptyMutation::<db_introspector::Context>::new(),
+        EmptySubscription::<db_introspector::Context>::new(),
+    ));
+
+    let new_service = make_service_fn(move |_| {
+        let root_node = root_node.clone();
+        let ctx = db.clone();
+
+        async {
+            Ok::<_, hyper::Error>(service_fn(move |req| {
+                let root_node = root_node.clone();
+                let ctx = ctx.clone();
+                async {
+                    match (req.method(), req.uri().path()) {
+                        (&Method::GET, "/") => juniper_hyper::graphiql("/graphql", None).await,
+                        (&Method::GET, "/graphql") | (&Method::POST, "/graphql") => {
+                            juniper_hyper::graphql(root_node, ctx, req).await
+                        }
+                        _ => {
+                            let mut response = Response::new(Body::empty());
+                            *response.status_mut() = StatusCode::NOT_FOUND;
+                            Ok(response)
+                        }
+                    }
+                }
+            }))
+        }
+    });
+
+    let server = Server::bind(&addr).serve(new_service);
+    println!("Listening on http://{}", addr);
+
+    if let Err(e) = server.await {
+        eprintln!("server error: {}", e)
     }
-
-    let index_t = 131;
-    let demo_variable_t = Some(String::from("Old, Babey"));
-    let NUM_PEOP_TEST_t = Some(11);
-    let NUM_PEOP_POS_t = Some(12);
-    let PERCENT_POSITIVE_t = Some(1.0);
-    let TEST_RATE_t = Some(27.0);
-    let date_t = Some(String::from("2020-12-10T17:59:40Z"));
-
-    let new_antibodies = db_introspector::models::antibody_by_age::AntibodyByAge_t {
-        index: index_t,
-        demo_variable: demo_variable_t,
-        NUM_PEOP_TEST: NUM_PEOP_TEST_t,
-        NUM_PEOP_POS: NUM_PEOP_POS_t,
-        PERCENT_POSITIVE: PERCENT_POSITIVE_t,
-        TEST_RATE: TEST_RATE_t,
-        date: date_t,
-    };
-
-    // let results = db_introspector::models::antibody_by_age::create(&connection, &new_antibodies);
-    // let results = db_introspector::models::antibody_by_age::delete(&connection, index_t);
-
 }
