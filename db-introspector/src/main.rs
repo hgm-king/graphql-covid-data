@@ -1,3 +1,5 @@
+// main file runs the server
+
 use std::sync::Arc;
 
 use hyper::{

@@ -1,3 +1,5 @@
+// archived code, used to run diesel queries
+
 fn main() {
     println!("Hello, world!");
 

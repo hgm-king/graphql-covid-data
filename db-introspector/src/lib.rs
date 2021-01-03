@@ -1,3 +1,5 @@
+// lib exports the main graphql query made with juniper
+
 #[macro_use] extern crate diesel;
 extern crate dotenv;
 #[macro_use] extern crate juniper;
@@ -55,6 +57,7 @@ impl Mutation {
     //     Ok(antibody)
     // }
 }
+
 // pub fn print_query<T>(query: &T) -> () {
 //     println!("{}", diesel::debug_query::<diesel::pg::Pg, T>(query));
 // }

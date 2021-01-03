@@ -1,10 +1,46 @@
-// use crate::print_query;
+// the model for antibody by age
+// I would love for this to be generated
+// with full crud capabilities; everything a basic sql user could do
+
+// useful recs
+// https://diesel.rs/guides/composing-applications/
+// https://diesel.rs/guides/schema-in-depth/
+
+/*
+I want to be able to compose a query like so
+let where_clause = {
+    index: { EQ: 3 },
+    PERCENT_POSITIVE: { LT: 10 },
+}
+
+for attr, value in where_clause {
+    query = compose(query, attr, value)
+}
+
+query.execute()
+
+but this is really hard to compose because we need to return intermediate queries
+which have a very specific type
+*/
+
 use crate::schema::AntibodyByAge;
 use diesel::prelude::*;
 use diesel::dsl::Eq;
 use diesel::types::Int4;
 
+/*
+it is really hard to return a column using a regular function
+what is the function signature for something that does that??
+these do not have a proper generic type that works for each one
 
+fn return_column() -> crate::schema::AntibodyByAge::index {}
+
+// this is the closest I have gotten
+// but we get an error with associated constants
+fn return_column() -> diesel::query_source::Column<table=AntibodyByAge::table, somethin_else=?> {}
+*/
+
+// returning with a macro isnt much help
 macro_rules! match_column {
     ("index") => { AntibodyByAge::index };
     ("demo_variable") => { AntibodyByAge::demo_variable };
@@ -15,6 +51,7 @@ macro_rules! match_column {
     ("date") => { AntibodyByAge::date };
 }
 
+// this is the best I can do but it will be hard and ugly
 macro_rules! match_clause {
     ($col:expr, "eq", $val:expr) => { $col.eq($val) };
     ($col:expr, "lt", $val:expr) => { $col.lt($val) };
@@ -33,6 +70,8 @@ pub struct AntibodyByAgeT {
     pub date: Option<String>,
 }
 
+// imagine being able to call many of these, with_equals("index", 64), with_lt, with_contains
+// https://diesel.rs/guides/composing-applications/
 // fn with_equals<T, U>(id: U) -> Eq<T, U>
 // where
 //     T: match_column!("index"),
