@@ -12,6 +12,7 @@ dotenv = "0.15.0"
 hyper = "0.13"
 juniper = "0.15"
 juniper_hyper = "0.6.0"
+nom = "6.0.1"
 pretty_env_logger = "0.4"
 tokio = "0.2"
 

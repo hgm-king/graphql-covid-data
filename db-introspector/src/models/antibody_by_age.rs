@@ -26,7 +26,7 @@ which have a very specific type
 use crate::schema::AntibodyByAge;
 use diesel::prelude::*;
 use diesel::dsl::Eq;
-use diesel::types::Int4;
+use diesel::types::{Int4, Text};
 
 /*
 it is really hard to return a column using a regular function
@@ -37,8 +37,11 @@ fn return_column() -> crate::schema::AntibodyByAge::index {}
 
 // this is the closest I have gotten
 // but we get an error with associated constants
-fn return_column() -> diesel::query_source::Column<table=AntibodyByAge::table, somethin_else=?> {}
+fn return_column() -> diesel::query_source::Column<SqlType = Text, Table = AntibodyByAge::table> {
+    AntibodyByAge::index
+}
 */
+
 
 // returning with a macro isnt much help
 macro_rules! match_column {
@@ -70,15 +73,15 @@ pub struct AntibodyByAgeT {
     pub date: Option<String>,
 }
 
+/*
+type WithEquals<'a> = Eq<diesel::query_source::Column<SqlType = Text, Table = AntibodyByAge::table>, &'a str>;
+
 // imagine being able to call many of these, with_equals("index", 64), with_lt, with_contains
 // https://diesel.rs/guides/composing-applications/
-// fn with_equals<T, U>(id: U) -> Eq<T, U>
-// where
-//     T: match_column!("index"),
-//     U: diesel::expression::AsExpression<Int4>,
-// {
-//     match_column!("index").eq(id)
-// }
+fn with_equals(id: &str) -> WithEquals {
+    AntibodyByAge::index.eq(id)
+}
+*/
 
 pub fn create(conn: &PgConnection, new_antibodies: &AntibodyByAgeT) -> AntibodyByAgeT {
     diesel::insert_into(AntibodyByAge::table)
@@ -88,12 +91,8 @@ pub fn create(conn: &PgConnection, new_antibodies: &AntibodyByAgeT) -> AntibodyB
 }
 
 pub fn read(conn: &PgConnection) -> Vec<AntibodyByAgeT> {
-    let hold = AntibodyByAge::table
-        .filter(match_clause!(match_column!("PERCENT_POSITIVE"), "lt", 0.2))
-        .filter(match_clause!(match_column!("PERCENT_POSITIVE"), "gt", 0.1))
-        .limit(50);
-
-    hold.load::<AntibodyByAgeT>(conn)
+    AntibodyByAge::table
+        .load::<AntibodyByAgeT>(conn)
         .expect("Error loading AntibodyByAge")
 }
 
