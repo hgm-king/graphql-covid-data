@@ -16,9 +16,11 @@ from sqlalchemy import create_engine
 
 os.environ['LOCAL_ROOT'] = '/app/data'
 engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@db:5432/rainbow_database")
-path = 'totals/antibody_by_age'
+path = 'totals/antibody-by-age'
 table_name = 'AntibodyByAge'
 filetype = 'csv'
+
+print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
 
 def format_date_for_url(date):
     return date.replace('/', '_')
@@ -94,6 +96,7 @@ def load_and_save_csv_data_from_github_file(path, filetype):
 
     while has_commits:
         history_url = create_history_url(url, commit_page)
+        print("Fetching the history at {}".format(url))
         history_data = get_history_data_from_git(history_url, url)
 
         num_commits = len(history_data)

@@ -7,13 +7,15 @@
 
 ### To Run
 - start by running `docker-compose up`
+- create the following file structure `etl/data/totals/antibody-by-age` in the etl dir to hold your etl data
 - Make sure you run the ETL to pull down some data, one that you need to do is the **AntibodyByAge** file
 - to do that, exec into the etl container and run `python3 src/covid-data.py`
 - this will pull down every version of the AntibodyByAge file the nyc dept of health released on github
 - Afterwards you should have a hundred+ rows in your db
 - Then run `cargo install diesel_cli` in the db-introspector to get the diesel cli
-- afterward run `diesel setup` to generate your schema.rs file in the src dir
+- afterward run `diesel setup && diesel migration run` to generate your schema.rs file in the src dir
 - then run `cargo run` in order to run your graphql server, after everything builds
+- if you get any errors about data types, make sure that the schema.rs file matches the struct in the models/antibody_by_age.rs file
 - visit http://127.0.0.1:3000 in your browser and pass the following query to the gui
 
 ```

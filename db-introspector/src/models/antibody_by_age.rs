@@ -61,10 +61,10 @@ macro_rules! match_clause {
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
 #[table_name="AntibodyByAge"]
 pub struct AntibodyByAgeT {
-    pub index: i32,
+    pub index: String,
     pub demo_variable: Option<String>,
-    pub NUM_PEOP_TEST: Option<i32>,
-    pub NUM_PEOP_POS: Option<i32>,
+    pub NUM_PEOP_TEST: Option<f64>,
+    pub NUM_PEOP_POS: Option<f64>,
     pub PERCENT_POSITIVE: Option<f64>,
     pub TEST_RATE: Option<f64>,
     pub date: Option<String>,
@@ -100,7 +100,7 @@ pub fn read(conn: &PgConnection) -> Vec<AntibodyByAgeT> {
 
 // An update statement is constructed by calling diesel::update(target).set(changes).
 // The resulting statement is then run by calling either execute, get_result, or get_results.
-pub fn update(conn: &PgConnection, id: i32) -> AntibodyByAgeT {
+pub fn update(conn: &PgConnection, id: &str) -> AntibodyByAgeT {
     // update a full table
     // let target = AntibodyByAge::table;
 
@@ -117,7 +117,7 @@ pub fn update(conn: &PgConnection, id: i32) -> AntibodyByAgeT {
         .expect(&format!("Unable to find Antibody {}", id))
 }
 
-pub fn delete(conn: &PgConnection, id: i32) -> usize {
+pub fn delete(conn: &PgConnection, id: &str) -> usize {
     diesel::delete(AntibodyByAge::table.filter(match_clause!(match_column!("index"), "eq", id)))
         .execute(conn)
         .expect("Error deleting Antibody")

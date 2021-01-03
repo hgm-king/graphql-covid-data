@@ -12,7 +12,7 @@ fn main() {
         println!("----------\n");
     }
 
-    let index_t = 131;
+    let index_t = "131";
     let demo_variable_t = Some(String::from("Old, Babey"));
     let NUM_PEOP_TEST_t = Some(11);
     let NUM_PEOP_POS_t = Some(12);
