@@ -9,13 +9,6 @@ services:
       - ./db:/db
     ports:
       - 5432:5432
-  backend:
-    image: "elixir"
-    command: ["tail", "-f", '/dev/null']
-    volumes:
-      - ./backend:/app
-    links:
-      - "database:db"
   etl:
     build: ./etl
     command: ["tail", "-f", '/dev/null']

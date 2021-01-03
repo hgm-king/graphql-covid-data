@@ -33,6 +33,7 @@ async fn main() {
                     match (req.method(), req.uri().path()) {
                         (&Method::GET, "/") => juniper_hyper::graphiql("/graphql", None).await,
                         (&Method::GET, "/graphql") | (&Method::POST, "/graphql") => {
+                            println!("{:?}", req);
                             juniper_hyper::graphql(root_node, ctx, req).await
                         }
                         _ => {

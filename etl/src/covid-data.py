@@ -1,3 +1,9 @@
+# This file will run some code that will pull down every version of a given file in github
+#  - each version will get saved into the data directory
+#  - it will then combine every version into one big data frame and save it as one big table
+#  - afterwards you need to run some sql to clean it, found in the same directory as this file
+# (this only works for csv at present)
+
 from kedro.extras.datasets.pandas import CSVDataSet
 
 import numpy as np
@@ -9,6 +15,10 @@ import requests
 from sqlalchemy import create_engine
 
 os.environ['LOCAL_ROOT'] = '/app/data'
+engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@db:5432/rainbow_database")
+path = 'totals/antibody_by_age'
+table_name = 'AntibodyByAge'
+filetype = 'csv'
 
 def format_date_for_url(date):
     return date.replace('/', '_')
@@ -110,11 +120,6 @@ def load_github_file_to_database(engine, path, filetype, table_name):
     with engine.connect() as conn:
         all_data_from_history_df.to_sql(table_name, conn)
 
-
-engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@db:5432/rainbow_database")
-path = 'data-by-modzcta'
-table_name = 'DataByModzcta'
-filetype = 'csv'
 
 # saved_files = load_and_save_csv_data_from_github_file(path, filetype)
 data = load_github_file_to_database(engine, path, filetype, table_name)
