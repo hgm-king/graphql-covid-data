@@ -14,6 +14,7 @@ juniper = "0.15"
 juniper_hyper = "0.6.0"
 nom = "6.0.1"
 pretty_env_logger = "0.4"
+regex = "1"
 tokio = "0.2"
 
 [dev-dependencies]

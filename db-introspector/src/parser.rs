@@ -13,9 +13,9 @@ impl fmt::Display for ParseError {
 }
 
 pub struct Table {
-    name: String,
-    primary_key: String,
-    columns: Vec<Column>,
+    pub name: String,
+    pub primary_key: String,
+    pub columns: Vec<Column>,
 }
 
 // name, type, nullable

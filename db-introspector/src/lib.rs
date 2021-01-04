@@ -7,6 +7,7 @@ extern crate dotenv;
 pub mod schema;
 pub mod models;
 pub mod parser;
+pub mod generator;
 
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
