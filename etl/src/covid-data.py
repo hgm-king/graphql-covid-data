@@ -16,8 +16,8 @@ from sqlalchemy import create_engine
 
 os.environ['LOCAL_ROOT'] = '/app/data'
 engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@db:5432/rainbow_database")
-path = 'totals/antibody-by-age'
-table_name = 'AntibodyByAge'
+path = 'totals/summary'
+table_name = 'Summary'
 filetype = 'csv'
 
 print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))

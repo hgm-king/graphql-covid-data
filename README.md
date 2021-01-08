@@ -7,6 +7,7 @@
  - https://blog.discord.com/using-rust-to-scale-elixir-for-11-million-concurrent-users-c6f19fc029d3
  - https://schneider.dev/blog/elixir-phoenix-absinthe-graphql-react-apollo-absurdly-deep-dive/
  - https://diesel.rs/guides/composing-applications/
+ - https://dev.to/open-graphql/building-powerful-graphql-servers-with-rust-3gla
 
 ### To Run
 - start by running `docker-compose up`

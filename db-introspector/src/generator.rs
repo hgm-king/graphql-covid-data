@@ -58,7 +58,7 @@ pub fn generate_models(template: &str, tables: &Vec<Table>, folder_path: &str) -
         let columns = table.columns.to_owned();
         let key = table.primary_key.to_owned();
 
-        let save_path = format!("{}/{}.rs", folder_path, name);
+        let save_path = format!("{}/{}Model.rs", folder_path, name);
 
         let mut column_string = String::new();
 

@@ -20,7 +20,7 @@ fn main() {
     let models_folder_path = "./src/models";
 
     let schema = parse_schema(&schema_string).expect("Error parsing your schema!");
-
+    println!("Generating {} models", schema.len());
     let count = generate_models(&template_string, &schema, models_folder_path).expect("Error generating models!");
 
     println!("Generated {} models", count);

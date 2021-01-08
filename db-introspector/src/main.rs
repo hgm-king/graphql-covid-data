@@ -18,7 +18,7 @@ async fn main() {
 
     let db = Arc::new(db_introspector::Context {});
     let root_node = Arc::new(RootNode::new(
-        db_introspector::Query,
+        db_introspector::QueryRoot,
         EmptyMutation::<db_introspector::Context>::new(),
         EmptySubscription::<db_introspector::Context>::new(),
     ));
@@ -31,12 +31,17 @@ async fn main() {
             Ok::<_, hyper::Error>(service_fn(move |req| {
                 let root_node = root_node.clone();
                 let ctx = ctx.clone();
+                println!("{:?}", req);
                 async {
                     match (req.method(), req.uri().path()) {
                         (&Method::GET, "/") => juniper_hyper::graphiql("/graphql", None).await,
                         (&Method::GET, "/graphql") | (&Method::POST, "/graphql") => {
-                            println!("{:?}", req);
                             juniper_hyper::graphql(root_node, ctx, req).await
+                        }
+                        (&Method::OPTIONS, "/graphql") => {
+                            let mut response = Response::new(Body::empty());
+                            *response.status_mut() = StatusCode::OK;
+                            Ok(response)
                         }
                         _ => {
                             let mut response = Response::new(Body::empty());
