@@ -29,23 +29,47 @@ async fn main() {
 
         async {
             Ok::<_, hyper::Error>(service_fn(move |req| {
+
                 let root_node = root_node.clone();
                 let ctx = ctx.clone();
                 println!("{:?}", req);
                 async {
                     match (req.method(), req.uri().path()) {
-                        (&Method::GET, "/") => juniper_hyper::graphiql("/graphql", None).await,
+
+                        (&Method::GET, "/") => {
+                            let (parts, body) = juniper_hyper::graphiql("/graphql", None).await?.into_parts();
+
+                            let response = Response::builder()
+                                .header("Access-Control-Allow-Origin", "*")
+                                .status(StatusCode::OK)
+                                .body(body).unwrap();
+
+                            Ok(response)
+                        },
                         (&Method::GET, "/graphql") | (&Method::POST, "/graphql") => {
-                            juniper_hyper::graphql(root_node, ctx, req).await
+                            let mut res = juniper_hyper::graphql(root_node, ctx, req).await;
+                            res.map(|r| {
+                                let (_parts, body) = r.into_parts();
+                                let response = Response::builder()
+                                    .header("Access-Control-Allow-Origin", "*")
+                                    .status(StatusCode::OK)
+                                    .body(body).unwrap();
+                                response
+                            })
                         }
                         (&Method::OPTIONS, "/graphql") => {
-                            let mut response = Response::new(Body::empty());
-                            *response.status_mut() = StatusCode::OK;
+                            let response = Response::builder()
+                                .header("Access-Control-Allow-Origin", "*")
+                                .header("Access-Control-Allow-Headers","Content-Type")
+                                .status(StatusCode::OK)
+                                .body(Body::empty()).unwrap();
+
                             Ok(response)
                         }
                         _ => {
-                            let mut response = Response::new(Body::empty());
-                            *response.status_mut() = StatusCode::NOT_FOUND;
+                            let response = Response::builder()
+                                .status(StatusCode::NOT_FOUND)
+                                .body(Body::empty()).unwrap();
                             Ok(response)
                         }
                     }
