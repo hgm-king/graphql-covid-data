@@ -1,4 +1,5 @@
 import c from "./colors"
+import palettes from "./palettes"
 
 const colors = {
   black: c["DARK PURPLE"],
@@ -11,6 +12,7 @@ const colors = {
 
 const theme = {
   colors,
+  palettes,
 }
 
 export default theme;

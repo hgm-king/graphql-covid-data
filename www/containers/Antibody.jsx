@@ -5,6 +5,7 @@ import AntibodyQuery from "../queries/antibody"
 
 import Loader from "../components/Loader.jsx"
 import Error from "../components/Error.jsx"
+import AntibodyLineChart from "./AntibodyLineChart.jsx"
 
 export default function Antibody( props )  {
 
@@ -17,12 +18,12 @@ export default function Antibody( props )  {
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
 
-  console.log(data);
-
   return (
     <>
       <h3>Antibody</h3>
-
+      <AntibodyLineChart
+        data={data.AntibodyByAge}
+      />
     </>
   )
 }
