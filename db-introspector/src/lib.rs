@@ -15,7 +15,7 @@ use dotenv::dotenv;
 use juniper::{FieldResult,Variables,EmptySubscription};
 use std::env;
 
-use models::AntibodyByAgeModel;
+use models::{AntibodyByAgeModel, ByRaceModel};
 
 pub struct Context {
     // Use your real database pool here.
@@ -40,5 +40,11 @@ impl QueryRoot {
         let connection = establish_connection();
         let antibody = AntibodyByAgeModel::read(&connection);
         Ok(antibody)
+    }
+
+    fn ByRace(context: &Context) -> FieldResult<Vec<ByRaceModel::ByRaceT>> {
+        let connection = establish_connection();
+        let by_race = ByRaceModel::read(&connection);
+        Ok(by_race)
     }
 }

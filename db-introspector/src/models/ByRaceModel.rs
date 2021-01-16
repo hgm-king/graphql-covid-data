@@ -13,7 +13,7 @@ use diesel::dsl::Eq;
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
 #[table_name="ByRace"]
 pub struct ByRaceT {
-    pub index: String,
+    pub index: i32,
     pub RACE_GROUP: Option<String>,
     pub CASE_RATE_ADJ: Option<f64>,
     pub HOSPITALIZED_RATE_ADJ: Option<f64>,

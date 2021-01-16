@@ -13,7 +13,7 @@ use diesel::dsl::Eq;
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
 #[table_name="AntibodyByAge"]
 pub struct AntibodyByAgeT {
-    pub index: String,
+    pub index: i32,
     pub demo_variable: Option<String>,
     pub NUM_PEOP_TEST: Option<f64>,
     pub NUM_PEOP_POS: Option<f64>,

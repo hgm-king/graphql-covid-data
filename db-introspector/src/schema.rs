@@ -1,6 +1,6 @@
 table! {
     AntibodyByAge (index) {
-        index -> Text,
+        index -> Int4,
         demo_variable -> Nullable<Text>,
         NUM_PEOP_TEST -> Nullable<Float8>,
         NUM_PEOP_POS -> Nullable<Float8>,
@@ -54,7 +54,7 @@ table! {
 
 table! {
     ByRace (index) {
-        index -> Text,
+        index -> Int4,
         RACE_GROUP -> Nullable<Text>,
         CASE_RATE_ADJ -> Nullable<Float8>,
         HOSPITALIZED_RATE_ADJ -> Nullable<Float8>,
