@@ -8,6 +8,7 @@
  - https://schneider.dev/blog/elixir-phoenix-absinthe-graphql-react-apollo-absurdly-deep-dive/
  - https://diesel.rs/guides/composing-applications/
  - https://dev.to/open-graphql/building-powerful-graphql-servers-with-rust-3gla
+ - https://airbnb.io/visx/
 
 ### To Run
 - start by running `docker-compose up`
@@ -34,3 +35,21 @@
 ```
 
 and you should get back your data
+
+# About
+
+The goal of this project has two parts.
+
+- First is to explore a toolset to take raw data and convert it into a human readable format.
+- Second is to bring to light the data that is publicly released by the NYC Dept. of Health every day regarding COVID.
+
+The toolset is as follows:
+- PostgresQL (database)
+- Rust (language of backend implementation)
+- Diesel (ORM and Query Builder)
+- Vermillion (DB Model Generator, homemade)
+- Juniper (GraphQL server library)
+- Javascript (language of frontend implementation)
+- React (frontend framework)
+- URQL (graphql client)
+- Visx (D3 visualization primitives)
