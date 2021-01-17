@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from "@emotion/css"
+import { css } from '@emotion/css'
 import { LegendOrdinal, LegendItem, LegendLabel } from '@visx/legend';
 
 export default function LegendBox( props )  {

@@ -17,6 +17,7 @@ pub struct {table_name}T {{columns}
 
 pub fn read(conn: &PgConnection) -> Vec<{table_name}T> {
     {table_name}::table
+        .order({table_name}::date.asc())
         .load::<{table_name}T>(conn)
         .expect("Error loading object")
 }

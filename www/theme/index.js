@@ -1,5 +1,5 @@
-import c from "./colors"
-import palettes from "./palettes"
+import c from "./colors/"
+import palettes from "./palettes/"
 
 const colors = {
   black: c["DARK PURPLE"],

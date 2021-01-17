@@ -26,6 +26,7 @@ pub struct ByRaceT {
 
 pub fn read(conn: &PgConnection) -> Vec<ByRaceT> {
     ByRace::table
+        .order(ByRace::date.desc())
         .load::<ByRaceT>(conn)
         .expect("Error loading object")
 }

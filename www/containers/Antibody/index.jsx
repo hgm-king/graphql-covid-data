@@ -1,11 +1,11 @@
-import React from "react"
-import { useQuery } from "urql"
+import React from 'react'
+import { useQuery } from 'urql'
 
-import AntibodyQuery from "../queries/antibody"
+import AntibodyQuery from '../../queries/antibody'
 
-import Loader from "../components/Loader.jsx"
-import Error from "../components/Error.jsx"
-import AntibodyLineChart from "./AntibodyLineChart.jsx"
+import Loader from '../../components/Loader'
+import Error from '../../components/Error'
+import AntibodyLineChart from './AntibodyLineChart'
 
 export default function Antibody( props )  {
 

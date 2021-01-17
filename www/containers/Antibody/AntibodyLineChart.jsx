@@ -1,14 +1,14 @@
-import React, { useState } from "react"
+import React, { useState } from 'react'
 
-import theme from "../theme"
+import theme from '../../theme/'
 
-import LineChart from "../components/LineChart.jsx"
+import LineChart from '../../components/LineChart'
 
 export default function AntibodyLineChart( props )  {
   const { data } = props
 
   const [field, setField] = useState('index');
-  console.log(field);
+
   const uniqueAges = [...new Set(data.map(d => d.demoVariable).sort())]
   const fieldOptions = Object.keys(data[0])
 

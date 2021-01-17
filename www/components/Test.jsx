@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import D3Component from '../charts/test.js';
 
 let vis;
 

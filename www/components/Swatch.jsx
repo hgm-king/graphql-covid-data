@@ -1,8 +1,8 @@
-import React from "react"
-import { css } from "@emotion/css"
-import theme from "../theme"
+import React from 'react'
+import { css } from '@emotion/css'
+import theme from '../theme'
 
-import { darkOrLight } from "../utils/color-tools.js"
+import { darkOrLight } from '../utils/color-tools'
 
 export default function Swatch( props )  {
 

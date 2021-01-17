@@ -24,6 +24,7 @@ pub struct AntibodyByAgeT {
 
 pub fn read(conn: &PgConnection) -> Vec<AntibodyByAgeT> {
     AntibodyByAge::table
+        .order(AntibodyByAge::date.desc())
         .load::<AntibodyByAgeT>(conn)
         .expect("Error loading object")
 }

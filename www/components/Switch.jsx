@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
-import { css } from "@emotion/css"
-import theme from "../theme"
+import React, { useState, useEffect } from 'react'
+import { css } from '@emotion/css'
+import theme from '../theme/'
 
-import { darkOrLight } from "../utils/color-tools.js"
+import { darkOrLight } from '../utils/color-tools'
 
 export default function Switch( props )  {
 

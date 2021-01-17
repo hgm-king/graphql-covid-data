@@ -5,11 +5,11 @@ import { Group } from '@visx/group';
 import { LinePath } from '@visx/shape';
 import { Grid } from '@visx/grid';
 import { AxisBottom, AxisLeft } from '@visx/axis';
-import { LinearScale, TimeScale, OrdinalScale, calculateXRange, calculateYRange } from "../utils/scale-tools.js"
 
-import LegendBox from "./LegendBox.jsx"
+import theme from '../theme/'
+import { LinearScale, TimeScale, OrdinalScale, calculateXRange, calculateYRange } from "../utils/scale-tools"
 
-const purple3 = '#a44afe';
+import LegendBox from "./LegendBox"
 
 export default function LineChart( props )  {
 
@@ -36,7 +36,7 @@ export default function LineChart( props )  {
   const ordinalColorScale = OrdinalScale(keys, colors)
 
   return (
-    <div className="visx-curves-demo">
+    <div>
       <LegendBox
         scale={ordinalColorScale}
         formatter={legendFormatter}
@@ -79,13 +79,13 @@ export default function LineChart( props )  {
           );
         })}
         <AxisBottom
-          top={height - margin.top}
+          top={height - margin.bottom}
           scale={xScale}
           tickFormat={d=>d.toDateString()}
-          stroke={purple3}
-          tickStroke={purple3}
+          stroke={theme.colors.black}
+          tickStroke={theme.colors.black}
           tickLabelProps={() => ({
-            fill: purple3,
+            fill: theme.colors.black,
             fontSize: 11,
             textAnchor: 'middle',
           })}
@@ -94,10 +94,10 @@ export default function LineChart( props )  {
           left={margin.left}
           scale={yScale}
           tickFormat={d=>d}
-          stroke={purple3}
-          tickStroke={purple3}
+          stroke={theme.colors.black}
+          tickStroke={theme.colors.black}
           tickLabelProps={() => ({
-            fill: purple3,
+            fill: theme.colors.black,
             fontSize: 11,
             textAnchor: 'middle',
           })}
