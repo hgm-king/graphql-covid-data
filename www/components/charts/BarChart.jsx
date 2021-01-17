@@ -2,6 +2,14 @@ import React from 'react'
 import { BarStackHorizontal } from '@visx/shape'
 import { Group } from '@visx/group'
 import { AxisBottom, AxisLeft } from '@visx/axis'
+import Gradient from '../chartHelpers/Gradient';
+import Pattern from '../chartHelpers/Pattern';
+import {
+  Pattern as CustomPattern,
+  PatternLines,
+  PatternCircles,
+  PatternWaves,
+} from '@visx/pattern';
 
 import { LinearScale, TimeScale, OrdinalScale, BandScale, calculateXRange, calculateYRange } from '../../utils/scale-tools'
 
@@ -40,7 +48,7 @@ export default function BarChart( props ) {
   const xScale = LinearScale([0, Math.max(...allTotals)], xRange)
   const yScale = BandScale(data.map(indexExtractor), yRange, 0.4)
 
-  const colorScale = OrdinalScale(keys, colors)
+  const colorScale = OrdinalScale(keys, colors.slice().reverse())
 
   return (
     <div>
@@ -49,16 +57,22 @@ export default function BarChart( props ) {
         formatter={legendFormatter}
         width={width} />
       <svg width={width} height={height}>
-        <rect width={width} height={height} fill={backgroundColor} rx={backgroundRadius} ry={backgroundRadius} />
+        <Gradient
+          width={width}
+          height={height}
+          id={'demo'}
+          from={'#8fab88'}
+          to={'#a3c093'}
+          backgroundRadius={backgroundRadius} />
         <Group>
           <BarStackHorizontal
-              data={data}
-              keys={keys}
-              height={yMax}
-              y={indexExtractor}
-              xScale={xScale}
-              yScale={yScale}
-              color={colorScale}
+            data={data}
+            keys={keys}
+            height={yMax}
+            y={indexExtractor}
+            xScale={xScale}
+            yScale={yScale}
+            color={colorScale}
             >
               { barStacks =>
                 barStacks.map(barStack =>
@@ -69,9 +83,8 @@ export default function BarChart( props ) {
                       y={bar.y}
                       width={bar.width}
                       height={bar.height}
-                      fill={bar.color}
-                      onClick={() => {}}
-                    />
+                      fill={`${bar.color}c0`}
+                      onClick={() => {}} />
                   )),
                 )
               }
@@ -82,10 +95,10 @@ export default function BarChart( props ) {
                 hideTicks
                 scale={yScale}
                 tickFormat={d=>d}
-                stroke={'#000'}
-                tickStroke={'#000'}
+                stroke={'#fff'}
+                tickStroke={'#fff'}
                 tickLabelProps={() => ({
-                  fill: '#000',
+                  fill: '#fff',
                   fontSize: 11,
                   textAnchor: 'end',
                   dy: '0.33em',
@@ -94,10 +107,10 @@ export default function BarChart( props ) {
               <AxisBottom
                 top={height - margin.bottom}
                 scale={xScale}
-                stroke={'#000'}
-                tickStroke={'#000'}
+                stroke={'#fff'}
+                tickStroke={'#fff'}
                 tickLabelProps={() => ({
-                  fill: '#000',
+                  fill: '#fff',
                   fontSize: 11,
                   textAnchor: 'middle',
                 })}

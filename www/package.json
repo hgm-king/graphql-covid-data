@@ -25,10 +25,12 @@
   "dependencies": {
     "@emotion/css": "^11.0.0",
     "@visx/axis": "^1.4.0",
+    "@visx/gradient": "^1.0.0",
     "@visx/grid": "^1.4.0",
     "@visx/group": "^1.0.0",
     "@visx/legend": "^1.4.0",
     "@visx/mock-data": "^1.0.0",
+    "@visx/pattern": "^1.1.0",
     "@visx/scale": "^1.4.0",
     "@visx/shape": "^1.4.0",
     "d3": "^6.2.0",
