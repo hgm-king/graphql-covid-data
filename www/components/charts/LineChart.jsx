@@ -6,10 +6,10 @@ import { LinePath } from '@visx/shape';
 import { Grid } from '@visx/grid';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 
-import theme from '../theme/'
-import { LinearScale, TimeScale, OrdinalScale, calculateXRange, calculateYRange } from "../utils/scale-tools"
+import theme from '../../theme/'
+import { LinearScale, TimeScale, OrdinalScale, calculateXRange, calculateYRange } from "../../utils/scale-tools"
 
-import LegendBox from "./LegendBox"
+import LegendBox from "../LegendBox"
 
 export default function LineChart( props )  {
 
@@ -20,8 +20,11 @@ export default function LineChart( props )  {
     width,
     xExtractor,
     yExtractor,
+    indexEctractor,
     margin,
-    legendFormatter
+    legendFormatter,
+    backgroundRadius,
+    backgroundColor,
   } = props
 
   const colors = props.colors ?? ['#000']
@@ -43,9 +46,9 @@ export default function LineChart( props )  {
         width={width}
       />
       <svg width={width} height={height}>
-        <rect width={width} height={height} fill="#efefef" rx={14} ry={14} />
+        <rect width={width} height={height} fill={backgroundColor} rx={backgroundRadius} ry={backgroundRadius} />
         {keys.map((index, i) => {
-          const values = data.filter(d => d.demoVariable === index)
+          const values = data.filter(d => indexEctractor(d) === index)
           return (
             <Group
               key={`lines-${i}`}

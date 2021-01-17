@@ -3,18 +3,27 @@ import { BarStackHorizontal } from '@visx/shape'
 import { Group } from '@visx/group'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 
-import { LinearScale, TimeScale, OrdinalScale, BandScale, calculateXRange, calculateYRange } from '../utils/scale-tools'
+import { LinearScale, TimeScale, OrdinalScale, BandScale, calculateXRange, calculateYRange } from '../../utils/scale-tools'
 
-import LegendBox from './LegendBox'
+import LegendBox from '../LegendBox'
 
 export default function BarChart( props ) {
-  const { data, keys, width, height, colors, margin } = props
+  const {
+    data,
+    keys,
+    width,
+    height,
+    indexExtractor,
+    colors,
+    margin,
+    legendFormatter,
+    backgroundColor,
+    backgroundRadius
+  } = props
 
   // bounds
   const xMax = width;
   const yMax = height;
-
-  const getIndex = d => d.RACEGROUP
 
   const allTotals = data.reduce((allTotals, row) => {
     const total = keys.reduce((total, key) => {
@@ -29,7 +38,7 @@ export default function BarChart( props ) {
   const yRange = calculateYRange(height, margin)
 
   const xScale = LinearScale([0, Math.max(...allTotals)], xRange)
-  const yScale = BandScale(data.map(getIndex), yRange, 0.4)
+  const yScale = BandScale(data.map(indexExtractor), yRange, 0.4)
 
   const colorScale = OrdinalScale(keys, colors)
 
@@ -37,16 +46,16 @@ export default function BarChart( props ) {
     <div>
       <LegendBox
         scale={colorScale}
-        formatter={d=>d}
+        formatter={legendFormatter}
         width={width} />
       <svg width={width} height={height}>
-        <rect width={width} height={height} fill="url(#teal)" rx={14} />
+        <rect width={width} height={height} fill={backgroundColor} rx={backgroundRadius} ry={backgroundRadius} />
         <Group>
           <BarStackHorizontal
               data={data}
               keys={keys}
               height={yMax}
-              y={getIndex}
+              y={indexExtractor}
               xScale={xScale}
               yScale={yScale}
               color={colorScale}
