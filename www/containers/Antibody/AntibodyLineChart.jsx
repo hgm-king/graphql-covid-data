@@ -33,10 +33,10 @@ export default function AntibodyLineChart( props )  {
         width={1000}
         xExtractor={d => new Date(d.date)}
         yExtractor={d => d[field]}
-        indexEctractor={d => d.demoVariable}
+        indexExtractor={d => d.demoVariable}
         margin={{ top: 64, right: 64, bottom: 64, left: 64 }}
         colors={theme.palettes.DataVizPalette}
-        legendFormatter={d => d.replace(/Age._/, '').replace(/_years/, '').replace(/GE/, '>')}
+        legendFormatter={d => d}
         backgroundColor={'transparent'}
         backgroundRadius={14} />
     </div>

@@ -20,7 +20,7 @@ export default function LineChart( props )  {
     width,
     xExtractor,
     yExtractor,
-    indexEctractor,
+    indexExtractor,
     margin,
     legendFormatter,
     backgroundRadius,
@@ -43,12 +43,11 @@ export default function LineChart( props )  {
       <LegendBox
         scale={ordinalColorScale}
         formatter={legendFormatter}
-        width={width}
-      />
+        width={width} />
       <svg width={width} height={height}>
         <rect width={width} height={height} fill={backgroundColor} rx={backgroundRadius} ry={backgroundRadius} />
         {keys.map((index, i) => {
-          const values = data.filter(d => indexEctractor(d) === index)
+          const values = data.filter(d => indexExtractor(d) === index)
           return (
             <Group
               key={`lines-${i}`}

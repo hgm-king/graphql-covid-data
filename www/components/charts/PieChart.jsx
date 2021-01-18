@@ -15,6 +15,7 @@ export default function PieChart( props )  {
     backgroundRadius,
   } = props
 
+
   const innerRadius = props.innerRadius ?? 0
   const outerRadius = props.outerRadius ?? 200
 
@@ -49,13 +50,13 @@ export default function PieChart( props )  {
                     d={pies.path(arc)}
                     fill={colors[i % colorCount]} />
                   <text
-                    fill="white"
+                    fill='white'
                     x={centroidX}
                     y={centroidY}
-                    dy=".33em"
+                    dy='.33em'
                     fontSize={9}
-                    textAnchor="middle">
-                    {indexEliminator(arc.data)}
+                    textAnchor='middle'>
+                    {indexEliminator(arc.data, arc)}
                   </text>
                 </g>)
             }
