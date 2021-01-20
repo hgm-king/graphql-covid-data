@@ -1,11 +1,11 @@
 import React from "react";
 import { useQuery } from "urql";
 
-import AntibodyQuery from "../../queries/antibody";
-
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import AntibodyLineChart from "./AntibodyLineChart";
+
+import AntibodyQuery from "../../queries/antibody";
 
 export default function Antibody(props) {
   const [result, reexecuteQuery] = useQuery({

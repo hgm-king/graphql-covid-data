@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import theme from "../../theme/";
-
 import LineChart from "../../components/charts/LineChart";
+
+import theme from "../../theme/";
 
 export default function AntibodyLineChart(props) {
   const { data } = props;

@@ -6,6 +6,9 @@ import { LinePath } from "@visx/shape";
 import { Grid } from "@visx/grid";
 import { AxisBottom, AxisLeft } from "@visx/axis";
 
+import Gradient from "../chartHelpers/Gradient";
+import LegendBox from "../LegendBox";
+
 import theme from "../../theme/";
 import {
   LinearScale,
@@ -14,9 +17,6 @@ import {
   calculateXRange,
   calculateYRange,
 } from "../../utils/scale-tools";
-
-import Gradient from "../chartHelpers/Gradient";
-import LegendBox from "../LegendBox";
 
 export default function LineChart(props) {
   const {

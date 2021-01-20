@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { css } from "@emotion/css";
+import React from "react";
+
+import Animator from "./Animator.jsx";
+import LegendBox from "./LegendBox";
 
 import population from "../vectors/population";
 import theme from "../theme";
 import { OrdinalScale } from "../utils/scale-tools";
-
-import Animator from "./Animator.jsx";
-import LegendBox from "./LegendBox";
 
 let vis;
 const setVis = (v) => {
@@ -15,8 +14,6 @@ const setVis = (v) => {
 
 export default function Population(props) {
   const { data, height, width } = props;
-
-  console.log(data);
 
   const indexEliminator = (d) => d.RACEGROUP;
   const raceIndexes = [...new Set(data.map(indexEliminator).sort())];

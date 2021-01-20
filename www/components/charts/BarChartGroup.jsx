@@ -12,6 +12,8 @@ import { css } from "@emotion/css";
 
 import Gradient from "../chartHelpers/Gradient";
 import Pattern from "../chartHelpers/Pattern";
+import LegendBox from "../LegendBox";
+
 import {
   LinearScale,
   TimeScale,
@@ -20,8 +22,6 @@ import {
   calculateXRange,
   calculateYRange,
 } from "../../utils/scale-tools";
-
-import LegendBox from "../LegendBox";
 import theme from "../../theme/";
 
 export default function BarChartGroup(props) {

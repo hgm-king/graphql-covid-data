@@ -1,8 +1,8 @@
 import React from "react";
 import { css } from "@emotion/css";
-import theme from "../theme";
 
 import { darkOrLight } from "../utils/color-tools";
+import theme from "../theme/";
 
 export default function Swatch(props) {
   const { color, name } = props;

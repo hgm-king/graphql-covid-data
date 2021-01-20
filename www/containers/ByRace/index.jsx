@@ -1,17 +1,16 @@
 import React from "react";
 import { useQuery } from "urql";
 
-import ByRaceQuery from "../../queries/by-race";
-
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
-
 import ByRaceBarChart from "./ByRaceBarChart";
 import ByRacePieChart from "./ByRacePieChart";
 import ByRaceRatioComparison from "./ByRaceRatioComparison";
 import ByRaceTrendLineChart from "./ByRaceTrendLineChart";
 import Population from "../../components/Population";
 
+
+import ByRaceQuery from "../../queries/by-race";
 import theme from "../../theme/";
 
 export default function ByRace(props) {
@@ -29,12 +28,12 @@ export default function ByRace(props) {
   const getIndex = (d) => d.RACEGROUP;
   const getField = (d) => d[field];
 
-  const dataForDay = data.ByRace.filter(
-    (d) => d.date === "2021-01-05T17:57:20Z"
-  );
+  const dataForDay = data.ByRace.filter(d => d.date === "2021-01-17T19:53:43Z");
+
   const pieKeys = Object.keys(dataForDay[0])
     .filter((key) => key.match(/COUNT/))
     .filter((key) => !key.match(/CASE/));
+
   const raceIndexes = [...new Set(data.ByRace.map(getIndex).sort())].filter(
     (d) => d
   );
@@ -43,7 +42,7 @@ export default function ByRace(props) {
     <>
       <h3>By Race</h3>
       <Population data={dataForDay} height={500} width={1200} />
-      <ByRaceBarChart data={data.ByRace} />
+      <ByRaceBarChart data={dataForDay} />
       <ByRaceTrendLineChart data={data.ByRace} keys={raceIndexes} />
       <ByRacePieChart data={data.ByRace} keys={pieKeys} />
       <ByRaceRatioComparison data={dataForDay} keys={pieKeys} />

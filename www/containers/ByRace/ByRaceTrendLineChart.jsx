@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
+import LineChart from "../../components/charts/LineChart";
+
 import theme from "../../theme/";
 import { getTrend } from "./calculations";
-
-import LineChart from "../../components/charts/LineChart";
 
 export default function ByRaceLineTrendLineChart(props) {
   const { data, keys } = props;

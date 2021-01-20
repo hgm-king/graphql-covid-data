@@ -9,17 +9,18 @@ export default function ByRaceBarChart(props) {
   const { data } = props;
 
   const keys = Object.keys(data[0]).filter((key) => key.match(/(COUNT)/));
-  const barData = data.filter((d) => d.date === "2021-01-17T19:53:43Z");
+
   const valueLabel = (d, group) => {
-    return `${data[group.index][d.key]} (${(
-      (data[group.index][d.key] / data[group.index].CASECOUNT) *
+    console.log({d,group,data: data[group.index]});
+    return `${d.value.toLocaleString('en')} (${(
+      (d.value / data[group.index].CASECOUNT) *
       100
     ).toFixed(2)}%)`;
   };
 
   return (
     <BarChartGroup
-      data={barData}
+      data={data}
       keys={keys}
       indexExtractor={(d) => d.RACEGROUP}
       width={1000}

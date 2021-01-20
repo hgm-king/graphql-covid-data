@@ -3,7 +3,7 @@ import { css } from "@emotion/css";
 import { LegendOrdinal, LegendItem, LegendLabel } from "@visx/legend";
 
 export default function LegendBox(props) {
-  const { title, scale, formatter, height, width, onClick } = props;
+  const { scale, formatter, height, width, onClick } = props;
 
   const containerStyle = css`
     border-bottom: 1px solid black;
@@ -19,8 +19,6 @@ export default function LegendBox(props) {
     justify-content: space-between;
     padding: 24px 24px 0px 24px;
   `;
-
-  const elementStyle = css``;
 
   const legendGlyphSize = 15;
 

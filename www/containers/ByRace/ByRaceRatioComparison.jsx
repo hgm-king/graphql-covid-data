@@ -1,9 +1,9 @@
 import React from "react";
 
-import theme from "../../theme/";
-
 import PieChart from "../../components/charts/PieChart";
 import FlexRow from "../../components/FlexRow";
+
+import theme from "../../theme/";
 
 export default function ByRaceRatioComparison(props) {
   const { data, keys } = props;

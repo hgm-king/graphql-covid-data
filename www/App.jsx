@@ -1,20 +1,24 @@
-import React, { useState, useEffect, useContext } from "react";
+// packages
+import React, { useState } from "react";
 import { css } from "@emotion/css";
 import { createClient, Provider } from "urql";
 
+// containers
 import Antibody from "./containers/Antibody/";
 import ByRace from "./containers/ByRace/";
 
+// components
 import FlexRow from "./components/FlexRow";
 import Button from "./components/Button";
 
+// utils
 import theme from "./theme/";
 
 const client = createClient({
   url: "http://127.0.0.1:3000/graphql",
 });
 
-export default function App(props) {
+export default function App(_props) {
   const navs = ["Antibodies", "ByRace"];
 
   const [selected, setSelected] = useState(navs[1]);
@@ -25,7 +29,7 @@ export default function App(props) {
     margin-right: 48px;
   `;
 
-  const selectHeader = (header) => (e) => setSelected(header);
+  const selectHeader = (header) => (_e) => setSelected(header);
   const selectedPredicate = (header) =>
     header === selected ? "black" : "white";
   const makeNav = (header, i) => (

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { css } from "@emotion/css";
-import theme from "../theme/";
 
 import { darkOrLight } from "../utils/color-tools";
+import theme from "../theme/";
 
 export default function Switch(props) {
   const { state, type, onClick, ...other } = props;
