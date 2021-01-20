@@ -4,7 +4,6 @@
  * holds the code to receive a parsed schema file,
  * then generate model files based on a template
 **/
-
 use crate::parser::*;
 
 use std::fmt;
@@ -33,15 +32,23 @@ fn convert_datatype_to_rust(data_type: &str) -> &str {
         "Float8" => "f64",
         "Float4" => "f32",
         "Boolean" => "bool",
-        _ => panic!("We have not covered this data type")
+        _ => panic!("We have not covered this data type"),
     }
 }
 
 // convert a database column from schema into a rust data structure element
 fn generate_column(column: Column) -> String {
     match column {
-        (name, (data_type, false)) => format!("\n    pub {}: {},", name, convert_datatype_to_rust(&data_type)),
-        (name, (data_type, true)) => format!("\n    pub {}: Option<{}>,", name, convert_datatype_to_rust(&data_type)),
+        (name, (data_type, false)) => format!(
+            "\n    pub {}: {},",
+            name,
+            convert_datatype_to_rust(&data_type)
+        ),
+        (name, (data_type, true)) => format!(
+            "\n    pub {}: Option<{}>,",
+            name,
+            convert_datatype_to_rust(&data_type)
+        ),
     }
 }
 

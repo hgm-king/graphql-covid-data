@@ -6,9 +6,7 @@ use hyper::{
     service::{make_service_fn, service_fn},
     Body, Method, Response, Server, StatusCode,
 };
-use juniper::{
-    RootNode,EmptySubscription,EmptyMutation
-};
+use juniper::{EmptyMutation, EmptySubscription, RootNode};
 
 #[tokio::main]
 async fn main() {
@@ -29,23 +27,24 @@ async fn main() {
 
         async {
             Ok::<_, hyper::Error>(service_fn(move |req| {
-
                 let root_node = root_node.clone();
                 let ctx = ctx.clone();
                 println!("{:?}", req);
                 async {
                     match (req.method(), req.uri().path()) {
-
                         (&Method::GET, "/") => {
-                            let (parts, body) = juniper_hyper::graphiql("/graphql", None).await?.into_parts();
+                            let (parts, body) = juniper_hyper::graphiql("/graphql", None)
+                                .await?
+                                .into_parts();
 
                             let response = Response::builder()
                                 .header("Access-Control-Allow-Origin", "*")
                                 .status(StatusCode::OK)
-                                .body(body).unwrap();
+                                .body(body)
+                                .unwrap();
 
                             Ok(response)
-                        },
+                        }
                         (&Method::GET, "/graphql") | (&Method::POST, "/graphql") => {
                             let mut res = juniper_hyper::graphql(root_node, ctx, req).await;
                             res.map(|r| {
@@ -53,23 +52,26 @@ async fn main() {
                                 let response = Response::builder()
                                     .header("Access-Control-Allow-Origin", "*")
                                     .status(StatusCode::OK)
-                                    .body(body).unwrap();
+                                    .body(body)
+                                    .unwrap();
                                 response
                             })
                         }
                         (&Method::OPTIONS, "/graphql") => {
                             let response = Response::builder()
                                 .header("Access-Control-Allow-Origin", "*")
-                                .header("Access-Control-Allow-Headers","Content-Type")
+                                .header("Access-Control-Allow-Headers", "Content-Type")
                                 .status(StatusCode::OK)
-                                .body(Body::empty()).unwrap();
+                                .body(Body::empty())
+                                .unwrap();
 
                             Ok(response)
                         }
                         _ => {
                             let response = Response::builder()
                                 .status(StatusCode::NOT_FOUND)
-                                .body(Body::empty()).unwrap();
+                                .body(Body::empty())
+                                .unwrap();
                             Ok(response)
                         }
                     }

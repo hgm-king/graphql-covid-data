@@ -4,14 +4,12 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::ByRace;
-use diesel::prelude::*;
 use diesel::dsl::Eq;
+use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="ByRace"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "ByRace"]
 pub struct ByRaceT {
     pub index: i32,
     pub RACE_GROUP: Option<String>,
@@ -26,7 +24,7 @@ pub struct ByRaceT {
 
 pub fn read(conn: &PgConnection) -> Vec<ByRaceT> {
     ByRace::table
-        .order((ByRace::RACE_GROUP.asc() ,ByRace::date.asc()))
+        .order((ByRace::RACE_GROUP.asc(), ByRace::date.asc()))
         .load::<ByRaceT>(conn)
         .expect("Error loading object")
 }

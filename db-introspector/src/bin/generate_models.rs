@@ -1,3 +1,4 @@
+use db_introspector::generator::generate_models;
 /**
  * generate_models.rs
  *
@@ -5,23 +6,21 @@
  * The schema is parsed into a struct(found in parser.rs)
  * which is then used to fill in a given template file
 **/
-
 use db_introspector::parser::parse_schema;
-use db_introspector::generator::generate_models;
 
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
 fn main() {
-
     let schema_string = open_file("./src/schema.rs");
     let template_string = open_file("./templates/model.txt");
     let models_folder_path = "./src/models";
 
     let schema = parse_schema(&schema_string).expect("Error parsing your schema!");
     println!("Generating {} models", schema.len());
-    let count = generate_models(&template_string, &schema, models_folder_path).expect("Error generating models!");
+    let count = generate_models(&template_string, &schema, models_folder_path)
+        .expect("Error generating models!");
 
     println!("Generated {} models", count);
 }
