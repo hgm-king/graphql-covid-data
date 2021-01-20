@@ -41,7 +41,7 @@ export default function LegendBox( props )  {
             {keys.map((label, i) => (
               <LegendItem
                 key={`legend-quantile-${i}`}
-                onClick={onClick}
+                onClick={() => onClick && onClick(label.datum)}
               >
                 <svg width={legendGlyphSize} height={legendGlyphSize}>
                   <rect fill={label.value} width={legendGlyphSize} height={legendGlyphSize} />

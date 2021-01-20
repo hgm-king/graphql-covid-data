@@ -15,7 +15,6 @@ export default function PieChart( props )  {
     backgroundRadius,
   } = props
 
-
   const innerRadius = props.innerRadius ?? 0
   const outerRadius = props.outerRadius ?? 200
 

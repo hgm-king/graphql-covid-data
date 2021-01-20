@@ -15,7 +15,7 @@ import { LinearScale, TimeScale, OrdinalScale, BandScale, calculateXRange, calcu
 
 import LegendBox from '../LegendBox'
 
-export default function BarChart( props ) {
+export default function BarChartStack( props ) {
   const {
     data,
     keys,

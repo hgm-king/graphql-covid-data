@@ -1,15 +1,16 @@
-import React from 'react';
-import { extent, max, min } from 'd3-array';
-import * as allCurves from '@visx/curve';
-import { Group } from '@visx/group';
-import { LinePath } from '@visx/shape';
-import { Grid } from '@visx/grid';
-import { AxisBottom, AxisLeft } from '@visx/axis';
+import React, { useState } from 'react'
+import { extent, max, min } from 'd3-array'
+import * as allCurves from '@visx/curve'
+import { Group } from '@visx/group'
+import { LinePath } from '@visx/shape'
+import { Grid } from '@visx/grid'
+import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import theme from '../../theme/'
-import { LinearScale, TimeScale, OrdinalScale, calculateXRange, calculateYRange } from "../../utils/scale-tools"
+import { LinearScale, TimeScale, OrdinalScale, calculateXRange, calculateYRange } from '../../utils/scale-tools'
 
-import LegendBox from "../LegendBox"
+import Gradient from '../chartHelpers/Gradient';
+import LegendBox from '../LegendBox'
 
 export default function LineChart( props )  {
 
@@ -27,6 +28,8 @@ export default function LineChart( props )  {
     backgroundColor,
   } = props
 
+  const [selected, setSelected] = useState(props.selected)
+
   const colors = props.colors ?? ['#000']
   const colorCount = colors.length
 
@@ -36,46 +39,50 @@ export default function LineChart( props )  {
   const xScale = TimeScale(extent(data, xExtractor), xRange)
   const yScale = LinearScale(extent(data, yExtractor), yRange)
 
-  const ordinalColorScale = OrdinalScale(keys, colors)
+  const colorsMapped = colors.map((c, i) => !selected || keys[i] === selected ? c : `${c}20`)
+
+  const selectIndex = (index) => {
+    if ( index === selected )  { setSelected(undefined) }
+    else { setSelected(index) }
+  }
+
+  const ordinalColorScale = OrdinalScale(keys, colorsMapped)
 
   return (
     <div>
       <LegendBox
         scale={ordinalColorScale}
         formatter={legendFormatter}
-        width={width} />
+        width={width}
+        onClick={selectIndex} />
       <svg width={width} height={height}>
-        <rect width={width} height={height} fill={backgroundColor} rx={backgroundRadius} ry={backgroundRadius} />
+        <rect width={width} height={height} fill={backgroundColor} ry={backgroundRadius} />
         {keys.map((index, i) => {
           const values = data.filter(d => indexExtractor(d) === index)
           return (
             <Group
               key={`lines-${i}`}
-              top={margin.top}
-              left={margin.left}
-              bottom={margin.bottom}
-              right={margin.right}
               >
               {values.map((d, j) => (
                 <circle
                   key={i + j}
-                  r={3}
-                  cx={xScale(xExtractor(d)) - margin.left}
-                  cy={yScale(yExtractor(d)) - margin.top}
-                  stroke="rgba(33,33,33,0.5)"
-                  fill="transparent"
+                  r={2}
+                  cx={xScale(xExtractor(d))}
+                  cy={yScale(yExtractor(d))}
+                  fill={theme.colors.black}
                   />
               ))}
               <LinePath
-                curve={allCurves['curveCatmullRom']}
+                curve={allCurves['curveStep']}
                 data={values}
-                x={d => xScale(xExtractor(d)) - margin.left ?? 0}
-                y={d => yScale(yExtractor(d)) - margin.top ?? 0}
-                stroke={colors[i % colorCount]}
+                x={d => xScale(xExtractor(d)) ?? 0}
+                y={d => yScale(yExtractor(d)) ?? 0}
+                stroke={colorsMapped[i % colorCount]}
                 strokeWidth={2}
                 strokeOpacity={1}
-                shapeRendering="geometricPrecision"
-                markerMid="url(#marker-circle)"
+                shapeRendering='geometricPrecision'
+                markerMid='url(#marker-circle)'
+                onClick={() => selectIndex(index)}
               />
             </Group>
           );
