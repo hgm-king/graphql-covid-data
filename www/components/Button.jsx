@@ -1,12 +1,11 @@
-import React from 'react'
-import { css } from '@emotion/css'
-import theme from '../theme/'
+import React from "react";
+import { css } from "@emotion/css";
+import theme from "../theme/";
 
-import { darkOrLight } from '../utils/color-tools'
+import { darkOrLight } from "../utils/color-tools";
 
-export default function Button( props )  {
-
-  const { type, ...other} = props;
+export default function Button(props) {
+  const { type, ...other } = props;
 
   const color = theme.colors[type];
 
@@ -17,11 +16,11 @@ export default function Button( props )  {
     border: none;
     text-transform: uppercase;
     cursor: pointer;
-  `
+  `;
 
   return (
     <button className={button} {...other}>
       {props.children}
     </button>
-  )
+  );
 }

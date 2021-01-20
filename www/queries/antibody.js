@@ -10,6 +10,6 @@ const AntibodyQuery = `
     date
   }
 }
-`
+`;
 
-export default AntibodyQuery
+export default AntibodyQuery;

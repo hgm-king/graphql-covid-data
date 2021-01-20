@@ -1,8 +1,8 @@
-import React from 'react'
-import Pie from '@visx/shape/lib/shapes/Pie'
-import { Group } from '@visx/group'
+import React from "react";
+import Pie from "@visx/shape/lib/shapes/Pie";
+import { Group } from "@visx/group";
 
-export default function PieChart( props )  {
+export default function PieChart(props) {
   const {
     data,
     keys,
@@ -13,25 +13,31 @@ export default function PieChart( props )  {
     margin,
     backgroundColor,
     backgroundRadius,
-  } = props
+  } = props;
 
-  const innerRadius = props.innerRadius ?? 0
-  const outerRadius = props.outerRadius ?? 200
+  const innerRadius = props.innerRadius ?? 0;
+  const outerRadius = props.outerRadius ?? 200;
 
-  const colors = props.colors ?? ['#000']
-  const colorCount = colors.length
+  const colors = props.colors ?? ["#000"];
+  const colorCount = colors.length;
 
-  const innerWidth = width - margin.left - margin.right
-  const innerHeight = height - margin.top - margin.bottom
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
 
-  const radius = Math.min(innerWidth, innerHeight) / 2
+  const radius = Math.min(innerWidth, innerHeight) / 2;
 
-  const centerY = innerHeight / 2
-  const centerX = innerWidth / 2
+  const centerY = innerHeight / 2;
+  const centerX = innerWidth / 2;
 
   return (
     <svg width={width} height={height}>
-      <rect width={width} height={height} fill={backgroundColor} rx={backgroundRadius} ry={backgroundRadius} />
+      <rect
+        width={width}
+        height={height}
+        fill={backgroundColor}
+        rx={backgroundRadius}
+        ry={backgroundRadius}
+      />
       <Group top={centerY + margin.top} left={centerX + margin.left}>
         <Pie
           data={data}
@@ -40,26 +46,26 @@ export default function PieChart( props )  {
           outerRadius={outerRadius}
           innerRadius={innerRadius}
         >
-          {pies => pies.arcs.map(
-            (arc,i) => {
-              const [centroidX, centroidY] = pies.path.centroid(arc)
+          {(pies) =>
+            pies.arcs.map((arc, i) => {
+              const [centroidX, centroidY] = pies.path.centroid(arc);
               return (
                 <g key={i}>
-                  <path
-                    d={pies.path(arc)}
-                    fill={colors[i % colorCount]} />
+                  <path d={pies.path(arc)} fill={colors[i % colorCount]} />
                   <text
-                    fill='white'
+                    fill="white"
                     x={centroidX}
                     y={centroidY}
-                    dy='.33em'
+                    dy=".33em"
                     fontSize={9}
-                    textAnchor='middle'>
+                    textAnchor="middle"
+                  >
                     {indexEliminator(arc.data, arc)}
                   </text>
-                </g>)
-            }
-          )}
+                </g>
+              );
+            })
+          }
         </Pie>
       </Group>
     </svg>

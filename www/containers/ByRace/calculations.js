@@ -1,14 +1,13 @@
 export const getTrend = (getIndex, getField) => (row, i, data) => {
+  const yesterday = data[i - 1];
+  const index = getIndex(row);
 
-  const yesterday = data[i - 1]
-  const index = getIndex(row)
+  const hasTrend = yesterday && index === getIndex(yesterday);
 
-  const hasTrend = yesterday && index === getIndex(yesterday)
+  const value = getField(row);
 
-  const value = getField(row)
-
-  const trend = hasTrend ? value - getField(yesterday) : 0
-  const rate = hasTrend ? trend / getField(yesterday) * 100 : 0
+  const trend = hasTrend ? value - getField(yesterday) : 0;
+  const rate = hasTrend ? (trend / getField(yesterday)) * 100 : 0;
 
   return {
     index,
@@ -16,5 +15,5 @@ export const getTrend = (getIndex, getField) => (row, i, data) => {
     value,
     rate,
     date: row.date,
-  }
-}
+  };
+};

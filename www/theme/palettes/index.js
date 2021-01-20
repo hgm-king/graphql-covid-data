@@ -1,7 +1,7 @@
-import DataVizPalette from "./data-viz.js"
+import DataVizPalette from "./data-viz.js";
 
 const palettes = {
-  DataVizPalette
-}
+  DataVizPalette,
+};
 
-export default palettes
+export default palettes;

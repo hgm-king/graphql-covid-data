@@ -1,5 +1,5 @@
-import c from "./colors/"
-import palettes from "./palettes/"
+import c from "./colors/";
+import palettes from "./palettes/";
 
 const colors = {
   black: c["DARK PURPLE"],
@@ -8,11 +8,11 @@ const colors = {
   danger: c["ENGLISH VERMILLION"],
   info: c["BLUE JEANS"],
   warning: c["HONEY YELLOW"],
-}
+};
 
 const theme = {
   colors,
   palettes,
-}
+};
 
 export default theme;

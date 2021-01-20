@@ -1,14 +1,13 @@
-import React from 'react'
-import { useQuery } from 'urql'
+import React from "react";
+import { useQuery } from "urql";
 
-import AntibodyQuery from '../../queries/antibody'
+import AntibodyQuery from "../../queries/antibody";
 
-import Loader from '../../components/Loader'
-import Error from '../../components/Error'
-import AntibodyLineChart from './AntibodyLineChart'
+import Loader from "../../components/Loader";
+import Error from "../../components/Error";
+import AntibodyLineChart from "./AntibodyLineChart";
 
-export default function Antibody( props )  {
-
+export default function Antibody(props) {
   const [result, reexecuteQuery] = useQuery({
     query: AntibodyQuery,
   });
@@ -21,9 +20,7 @@ export default function Antibody( props )  {
   return (
     <>
       <h3>Antibody</h3>
-      <AntibodyLineChart
-        data={data.AntibodyByAge}
-      />
+      <AntibodyLineChart data={data.AntibodyByAge} />
     </>
-  )
+  );
 }

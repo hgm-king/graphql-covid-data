@@ -12,6 +12,6 @@ const ByRaceQuery = `
     date
   }
 }
-`
+`;
 
-export default ByRaceQuery
+export default ByRaceQuery;

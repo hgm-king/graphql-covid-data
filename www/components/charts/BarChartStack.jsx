@@ -1,21 +1,28 @@
-import React from 'react'
-import { BarStackHorizontal } from '@visx/shape'
-import { Group } from '@visx/group'
-import { AxisBottom, AxisLeft } from '@visx/axis'
-import Gradient from '../chartHelpers/Gradient';
-import Pattern from '../chartHelpers/Pattern';
+import React from "react";
+import { BarStackHorizontal } from "@visx/shape";
+import { Group } from "@visx/group";
+import { AxisBottom, AxisLeft } from "@visx/axis";
+import Gradient from "../chartHelpers/Gradient";
+import Pattern from "../chartHelpers/Pattern";
 import {
   Pattern as CustomPattern,
   PatternLines,
   PatternCircles,
   PatternWaves,
-} from '@visx/pattern';
+} from "@visx/pattern";
 
-import { LinearScale, TimeScale, OrdinalScale, BandScale, calculateXRange, calculateYRange } from '../../utils/scale-tools'
+import {
+  LinearScale,
+  TimeScale,
+  OrdinalScale,
+  BandScale,
+  calculateXRange,
+  calculateYRange,
+} from "../../utils/scale-tools";
 
-import LegendBox from '../LegendBox'
+import LegendBox from "../LegendBox";
 
-export default function BarChartStack( props ) {
+export default function BarChartStack(props) {
   const {
     data,
     keys,
@@ -26,8 +33,8 @@ export default function BarChartStack( props ) {
     margin,
     legendFormatter,
     backgroundColor,
-    backgroundRadius
-  } = props
+    backgroundRadius,
+  } = props;
 
   // bounds
   const xMax = width;
@@ -35,35 +42,33 @@ export default function BarChartStack( props ) {
 
   const allTotals = data.reduce((allTotals, row) => {
     const total = keys.reduce((total, key) => {
-      total += row[key]
-      return total
-    }, 0)
-    allTotals.push(total)
-    return allTotals
-  }, [])
+      total += row[key];
+      return total;
+    }, 0);
+    allTotals.push(total);
+    return allTotals;
+  }, []);
 
-  const xRange = calculateXRange(width, margin)
-  const yRange = calculateYRange(height, margin)
+  const xRange = calculateXRange(width, margin);
+  const yRange = calculateYRange(height, margin);
 
-  const xScale = LinearScale([0, Math.max(...allTotals)], xRange)
-  const yScale = BandScale(data.map(indexExtractor), yRange, 0.4)
+  const xScale = LinearScale([0, Math.max(...allTotals)], xRange);
+  const yScale = BandScale(data.map(indexExtractor), yRange, 0.4);
 
-  const colorScale = OrdinalScale(keys, colors.slice().reverse())
+  const colorScale = OrdinalScale(keys, colors.slice().reverse());
 
   return (
     <div>
-      <LegendBox
-        scale={colorScale}
-        formatter={legendFormatter}
-        width={width} />
+      <LegendBox scale={colorScale} formatter={legendFormatter} width={width} />
       <svg width={width} height={height}>
         <Gradient
           width={width}
           height={height}
-          id={'demo'}
-          from={'#8fab88'}
-          to={'#a3c093'}
-          backgroundRadius={backgroundRadius} />
+          id={"demo"}
+          from={"#8fab88"}
+          to={"#a3c093"}
+          backgroundRadius={backgroundRadius}
+        />
         <Group>
           <BarStackHorizontal
             data={data}
@@ -73,48 +78,49 @@ export default function BarChartStack( props ) {
             xScale={xScale}
             yScale={yScale}
             color={colorScale}
-            >
-              { barStacks =>
-                barStacks.map(barStack =>
-                  barStack.bars.map(bar => (
-                    <rect
-                      key={`barstack-horizontal-${barStack.index}-${bar.index}`}
-                      x={bar.x}
-                      y={bar.y}
-                      width={bar.width}
-                      height={bar.height}
-                      fill={`${bar.color}c0`}
-                      onClick={() => {}} />
-                  )),
-                )
-              }
-            </BarStackHorizontal>
-            <AxisLeft
-                left={margin.left}
-                hideAxisLine
-                hideTicks
-                scale={yScale}
-                tickFormat={d=>d}
-                stroke={'#fff'}
-                tickStroke={'#fff'}
-                tickLabelProps={() => ({
-                  fill: '#fff',
-                  fontSize: 11,
-                  textAnchor: 'end',
-                  dy: '0.33em',
-                })}
-              />
-              <AxisBottom
-                top={height - margin.bottom}
-                scale={xScale}
-                stroke={'#fff'}
-                tickStroke={'#fff'}
-                tickLabelProps={() => ({
-                  fill: '#fff',
-                  fontSize: 11,
-                  textAnchor: 'middle',
-                })}
-              />
+          >
+            {(barStacks) =>
+              barStacks.map((barStack) =>
+                barStack.bars.map((bar) => (
+                  <rect
+                    key={`barstack-horizontal-${barStack.index}-${bar.index}`}
+                    x={bar.x}
+                    y={bar.y}
+                    width={bar.width}
+                    height={bar.height}
+                    fill={`${bar.color}c0`}
+                    onClick={() => {}}
+                  />
+                ))
+              )
+            }
+          </BarStackHorizontal>
+          <AxisLeft
+            left={margin.left}
+            hideAxisLine
+            hideTicks
+            scale={yScale}
+            tickFormat={(d) => d}
+            stroke={"#fff"}
+            tickStroke={"#fff"}
+            tickLabelProps={() => ({
+              fill: "#fff",
+              fontSize: 11,
+              textAnchor: "end",
+              dy: "0.33em",
+            })}
+          />
+          <AxisBottom
+            top={height - margin.bottom}
+            scale={xScale}
+            stroke={"#fff"}
+            tickStroke={"#fff"}
+            tickLabelProps={() => ({
+              fill: "#fff",
+              fontSize: 11,
+              textAnchor: "middle",
+            })}
+          />
         </Group>
       </svg>
     </div>
