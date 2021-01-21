@@ -16,6 +16,7 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
+      - run: cd db-introspector
       - uses: actions-rs/cargo@v1
         with:
           command: test
@@ -51,4 +52,3 @@ jobs:
         with:
           command: clippy
           args: -- -D warnings
-c
