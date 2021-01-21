@@ -34,7 +34,10 @@ export default function BarChartStack(props) {
   const xRange = calculateXRange(width, margin);
   const yRange = calculateYRange(height, margin);
 
-  const xScale = LinearScale([0, max(data, d => max(keys, key => d[key]))], xRange);
+  const xScale = LinearScale(
+    [0, max(data, (d) => max(keys, (key) => d[key]))],
+    xRange
+  );
   const yScale = BandScale(data.map(indexExtractor), yRange, 0.4);
 
   const colorScale = OrdinalScale(keys, colors.slice().reverse());

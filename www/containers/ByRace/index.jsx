@@ -25,8 +25,14 @@ export default function ByRace(_props) {
   // const getField = (d) => d[field];
   const getIndex = (d) => d.RACEGROUP;
 
-
-  const dataForDay = data.ByRace.filter(d => d.date === "2021-01-17T19:53:43Z");
+  const dataForDay = data.ByRace.filter(
+    (d) => d.date === "2021-01-17T19:53:43Z"
+  ).map((d) => {
+    d.TOTALPOPCASE = (d.CASECOUNT * 100000) / d.CASERATEADJ;
+    d.TOTALPOPHOSP = (d.HOSPITALIZEDCOUNT * 100000) / d.HOSPITALIZEDRATEADJ;
+    d.TOTALPOPDEATH = (d.DEATHCOUNT * 100000) / d.DEATHRATEADJ;
+    return d;
+  });
 
   const pieKeys = Object.keys(dataForDay[0])
     .filter((key) => key.match(/COUNT/))

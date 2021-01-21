@@ -36,6 +36,8 @@ export default function LineChart(props) {
   const colors = props.colors ?? ["#000"];
   const colorCount = colors.length;
 
+  const curve = props.curve ?? "curveStep";
+
   const xRange = calculateXRange(width, margin);
   const yRange = calculateYRange(height, margin);
 
@@ -85,7 +87,7 @@ export default function LineChart(props) {
                 />
               ))}
               <LinePath
-                curve={allCurves["curveStep"]}
+                curve={allCurves[curve]}
                 data={values}
                 x={(d) => xScale(xExtractor(d)) ?? 0}
                 y={(d) => yScale(yExtractor(d)) ?? 0}
