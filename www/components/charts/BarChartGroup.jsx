@@ -13,6 +13,7 @@ import {
   calculateYRange,
 } from "../../utils/scale-tools";
 import theme from "../../theme/";
+import { max } from "../../utils/data-tools";
 
 export default function BarChartGroup(props) {
   const {
@@ -45,19 +46,10 @@ export default function BarChartGroup(props) {
     }
   };
 
-  const allTotals = data.reduce((allTotals, row) => {
-    const total = keys.reduce((total, key) => {
-      total += row[key];
-      return total;
-    }, 0);
-    allTotals.push(total);
-    return allTotals;
-  }, []);
-
   const xRange = calculateXRange(width, margin);
   const yRange = calculateYRange(height, margin);
 
-  const xScale = LinearScale([0, Math.max(...allTotals)], xRange);
+  const xScale = LinearScale([0, max(data, d => max(keys, key => d[key]))], xRange);
   const yScale = BandScale(data.map(indexExtractor), yRange, 0.4);
   const y1Scale = BandScale(keys, [0, yScale.bandwidth()], 0.1);
 

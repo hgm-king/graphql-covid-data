@@ -13,6 +13,7 @@ import {
   calculateXRange,
   calculateYRange,
 } from "../../utils/scale-tools";
+import { max } from "../../utils/data-tools";
 
 export default function BarChartStack(props) {
   const {
@@ -30,19 +31,10 @@ export default function BarChartStack(props) {
   // bounds
   const yMax = height;
 
-  const allTotals = data.reduce((allTotals, row) => {
-    const total = keys.reduce((total, key) => {
-      total += row[key];
-      return total;
-    }, 0);
-    allTotals.push(total);
-    return allTotals;
-  }, []);
-
   const xRange = calculateXRange(width, margin);
   const yRange = calculateYRange(height, margin);
 
-  const xScale = LinearScale([0, Math.max(...allTotals)], xRange);
+  const xScale = LinearScale([0, max(data, d => max(keys, key => d[key]))], xRange);
   const yScale = BandScale(data.map(indexExtractor), yRange, 0.4);
 
   const colorScale = OrdinalScale(keys, colors.slice().reverse());

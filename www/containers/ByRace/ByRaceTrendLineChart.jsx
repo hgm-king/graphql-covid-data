@@ -23,7 +23,6 @@ export default function ByRaceLineTrendLineChart(props) {
     .map(getTrend(getIndex, getField))
     .filter((d) => d[selectedCalculation] >= 0);
 
-  console.log({ data, trendData });
   const toOption = (v) => <option key={v}>{v}</option>;
 
   const setSelectedFieldHandler = ({ target }) => {

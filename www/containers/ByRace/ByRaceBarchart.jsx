@@ -10,7 +10,6 @@ export default function ByRaceBarChart(props) {
   const keys = Object.keys(data[0]).filter((key) => key.match(/(COUNT)/));
 
   const valueLabel = (d, group) => {
-    console.log({d,group,data: data[group.index]});
     return `${d.value.toLocaleString('en')} (${(
       (d.value / data[group.index].CASECOUNT) *
       100
@@ -24,7 +23,7 @@ export default function ByRaceBarChart(props) {
       indexExtractor={(d) => d.RACEGROUP}
       width={1000}
       height={600}
-      margin={{ top: 0, right: 64, bottom: 0, left: 128 }}
+      margin={{ top: 0, right: 256, bottom: 0, left: 128 }}
       legendFormatter={(d) => d}
       colors={theme.palettes.DataVizPalette.slice().reverse()}
       backgroundColor={"#f5f2e3"}
