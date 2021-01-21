@@ -11,7 +11,7 @@ export default function Pattern(props) {
         id={id}
         width={10}
         height={10}
-        fill={"white"}
+        fill={fill}
         complement
       />
       <Bar {...other} fill={`url(#${id})`} />

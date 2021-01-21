@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import { BarGroupHorizontal, Bar } from "@visx/shape";
 import { Group } from "@visx/group";
-import { AxisBottom, AxisLeft } from "@visx/axis";
-import {
-  Pattern as CustomPattern,
-  PatternLines,
-  PatternCircles,
-  PatternWaves,
-} from "@visx/pattern";
-import { css } from "@emotion/css";
+import { AxisLeft } from "@visx/axis";
 
-import Gradient from "../chartHelpers/Gradient";
-import Pattern from "../chartHelpers/Pattern";
 import LegendBox from "../LegendBox";
 
 import {
   LinearScale,
-  TimeScale,
   OrdinalScale,
   BandScale,
   calculateXRange,
@@ -41,7 +31,6 @@ export default function BarChartGroup(props) {
   const [selected, setSelected] = useState(props.selected);
 
   const colors = props.colors ?? ["#000"];
-  const colorCount = colors.length;
 
   const colorsMapped = colors.map((c, i) =>
     !selected || keys[i] === selected ? c : `${c}20`

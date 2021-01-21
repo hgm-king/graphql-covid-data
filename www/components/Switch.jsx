@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { css } from "@emotion/css";
 
-import { darkOrLight } from "../utils/color-tools";
 import theme from "../theme/";
 
 export default function Switch(props) {

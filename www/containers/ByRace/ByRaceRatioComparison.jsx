@@ -27,8 +27,8 @@ export default function ByRaceRatioComparison(props) {
         <PieChart
           data={data}
           keys={keys}
-          valueEliminator={(d) => d.data}
-          indexEliminator={(d, arc) =>
+          valueEliminator={d => d.data}
+          indexEliminator={d =>
             ((100 * d.data) / totals[d.title]).toFixed(1)
           }
           width={200}

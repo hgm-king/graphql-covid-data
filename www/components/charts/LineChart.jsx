@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { extent, max, min } from "d3-array";
+import { extent } from "d3-array";
 import * as allCurves from "@visx/curve";
 import { Group } from "@visx/group";
 import { LinePath } from "@visx/shape";
-import { Grid } from "@visx/grid";
 import { AxisBottom, AxisLeft } from "@visx/axis";
 
-import Gradient from "../chartHelpers/Gradient";
 import LegendBox from "../LegendBox";
 
 import theme from "../../theme/";

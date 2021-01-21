@@ -7,8 +7,8 @@ import AntibodyLineChart from "./AntibodyLineChart";
 
 import AntibodyQuery from "../../queries/antibody";
 
-export default function Antibody(props) {
-  const [result, reexecuteQuery] = useQuery({
+export default function Antibody(_props) {
+  const [result, _reexecuteQuery] = useQuery({
     query: AntibodyQuery,
   });
 

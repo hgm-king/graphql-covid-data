@@ -2,20 +2,12 @@ import React from "react";
 import { BarStackHorizontal } from "@visx/shape";
 import { Group } from "@visx/group";
 import { AxisBottom, AxisLeft } from "@visx/axis";
-import {
-  Pattern as CustomPattern,
-  PatternLines,
-  PatternCircles,
-  PatternWaves,
-} from "@visx/pattern";
 
 import LegendBox from "../LegendBox";
 import Gradient from "../chartHelpers/Gradient";
-import Pattern from "../chartHelpers/Pattern";
 
 import {
   LinearScale,
-  TimeScale,
   OrdinalScale,
   BandScale,
   calculateXRange,
@@ -32,12 +24,10 @@ export default function BarChartStack(props) {
     colors,
     margin,
     legendFormatter,
-    backgroundColor,
     backgroundRadius,
   } = props;
 
   // bounds
-  const xMax = width;
   const yMax = height;
 
   const allTotals = data.reduce((allTotals, row) => {

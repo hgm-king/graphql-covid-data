@@ -5,7 +5,6 @@ import { Group } from "@visx/group";
 export default function PieChart(props) {
   const {
     data,
-    keys,
     width,
     height,
     valueEliminator,
@@ -23,8 +22,6 @@ export default function PieChart(props) {
 
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
-
-  const radius = Math.min(innerWidth, innerHeight) / 2;
 
   const centerY = innerHeight / 2;
   const centerX = innerWidth / 2;

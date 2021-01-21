@@ -9,12 +9,10 @@ import ByRaceRatioComparison from "./ByRaceRatioComparison";
 import ByRaceTrendLineChart from "./ByRaceTrendLineChart";
 import Population from "../../components/Population";
 
-
 import ByRaceQuery from "../../queries/by-race";
-import theme from "../../theme/";
 
-export default function ByRace(props) {
-  const [result, reexecuteQuery] = useQuery({
+export default function ByRace(_props) {
+  const [result, _reexecuteQuery] = useQuery({
     query: ByRaceQuery,
   });
 
@@ -23,10 +21,10 @@ export default function ByRace(props) {
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
 
-  const field = "DEATHRATEADJ";
-
+  // const field = "DEATHRATEADJ";
+  // const getField = (d) => d[field];
   const getIndex = (d) => d.RACEGROUP;
-  const getField = (d) => d[field];
+
 
   const dataForDay = data.ByRace.filter(d => d.date === "2021-01-17T19:53:43Z");
 

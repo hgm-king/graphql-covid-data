@@ -1,7 +1,6 @@
 import React from "react";
 
 import BarChartGroup from "../../components/charts/BarChartGroup";
-import FlexRow from "../../components/FlexRow";
 
 import theme from "../../theme/";
 
