@@ -9,6 +9,13 @@ services:
       - ./db:/db
     ports:
       - 5432:5432
+  server:
+    build: ./server
+    command: ["tail", "-f", '/dev/null']
+    volumes:
+      - ./server:/app
+    links:
+      - "database:db"
   etl:
     build: ./etl
     command: ["tail", "-f", '/dev/null']
