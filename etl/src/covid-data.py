@@ -4,23 +4,28 @@
 #  - afterwards you need to run some sql to clean it, found in the same directory as this file
 # (this only works for csv at present)
 
+# exec(open('src/covid-data.py').read())
+# python3 src/covid-data.py
+
 from kedro.extras.datasets.pandas import CSVDataSet
 
+import json
 import numpy as np
 import os
 import pandas as pd
 import psycopg2
 import re
 import requests
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Integer
 
 os.environ['LOCAL_ROOT'] = '/app/data'
-engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@db:5432/rainbow_database")
-path = 'totals/by-race'
-table_name = 'ByRace'
-filetype = 'csv'
+engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@database:5432/rainbow_database")
 
-print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+
+def get_table_name_from_path(path):
+    [folder, name] = path.split('/')
+    name.title().replace('-', '')
+    return name
 
 def format_date_for_url(date):
     return date.replace('/', '_')
@@ -52,8 +57,8 @@ def break_down_history_json(row, path):
 def get_history_data_from_git(url, path):
     try:
         r = requests.get(url)
-        json = r.json()
-        return [break_down_history_json(row, path) for row in json]
+        json_data = r.json()
+        return [break_down_history_json(row, path) for row in json_data]
     except Exception as exception:
         print('Error: could not get {}'.format(url))
         return []
@@ -64,12 +69,12 @@ def save_csv_from_github(url, date):
     #spits out root/path/date.filetype
     local_path = format_local_path(os.environ['LOCAL_ROOT'], path, date, filetype)
 
-    print('Loading and saving data for {} to {}\n{}'.format(date, local_path, url))
+    # print('Loading and saving data for {} to {}'.format(date, local_path))
     try:
         data_set = CSVDataSet(filepath=url)
         data = data_set.load()
 
-        print('{} columns found'.format(len(data.columns)))
+        # print('{} columns found'.format(len(data.columns)))
 
         dates = np.repeat(date, len(data))
         data['date'] = dates
@@ -120,9 +125,29 @@ def load_github_file_to_database(engine, path, filetype, table_name):
     cleaned_files = clean_data_files(saved_files)
     all_data_from_history_df = concat_saved_files(cleaned_files)
 
-    with engine.connect() as conn:
-        all_data_from_history_df.to_sql(table_name, conn)
+    try:
+        all_data_from_history_df = all_data_from_history_df.drop('<<<<<<< HEAD', axis=1)
+    except:
+        print("table had no merge conflicts")
 
+    new_index = range(len(all_data_from_history_df))
+    all_data_from_history_df['id'] = new_index
+    all_data_from_history_df = all_data_from_history_df.set_index('id')
 
-# saved_files = load_and_save_csv_data_from_github_file(path, filetype)
-data = load_github_file_to_database(engine, path, filetype, table_name)
+    all_data_from_history_df = all_data_from_history_df.dropna()
+
+    try:
+        with engine.connect() as conn:
+            all_data_from_history_df.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
+    except:
+        print("Could not save table {}".format(table_name))
+
+config_path = './config.json'
+with open(config_path) as f:
+    data = json.load(f)
+
+for file in data['files']:
+    [path, filetype] = file.split('.')
+    table_name = get_table_name_from_path(path)
+    print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+    data = load_github_file_to_database(engine, path, filetype, table_name)
