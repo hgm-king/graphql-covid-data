@@ -5,7 +5,6 @@
  * Happy Hacking!
 **/
 use crate::schema::AntibodyByAge;
-use diesel::dsl::Eq;
 use diesel::prelude::*;
 
 #[derive(Debug, GraphQLObject, Insertable, Queryable)]

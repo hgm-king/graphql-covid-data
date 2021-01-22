@@ -7,7 +7,6 @@
 
 use crate::schema::ByAge;
 use diesel::prelude::*;
-use diesel::dsl::Eq;
 
 
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]

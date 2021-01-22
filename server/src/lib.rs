@@ -12,7 +12,7 @@ pub mod schema;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenv::dotenv;
-use juniper::{EmptySubscription, FieldResult, Variables};
+use juniper::{FieldResult};
 use std::env;
 
 use models::{AntibodyByAgeModel, ByRaceModel};
