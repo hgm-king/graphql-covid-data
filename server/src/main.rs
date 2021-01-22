@@ -14,11 +14,11 @@ async fn main() {
 
     let addr = ([127, 0, 0, 1], 3000).into();
 
-    let db = Arc::new(db_introspector::Context {});
+    let db = Arc::new(server::Context {});
     let root_node = Arc::new(RootNode::new(
-        db_introspector::QueryRoot,
-        EmptyMutation::<db_introspector::Context>::new(),
-        EmptySubscription::<db_introspector::Context>::new(),
+        server::QueryRoot,
+        EmptyMutation::<server::Context>::new(),
+        EmptySubscription::<server::Context>::new(),
     ));
 
     let new_service = make_service_fn(move |_| {
@@ -80,10 +80,10 @@ async fn main() {
         }
     });
 
-    let server = Server::bind(&addr).serve(new_service);
+    let server_instance = Server::bind(&addr).serve(new_service);
     println!("Listening on http://{}", addr);
 
-    if let Err(e) = server.await {
+    if let Err(e) = server_instance.await {
         eprintln!("server error: {}", e)
     }
 }

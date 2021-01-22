@@ -34,13 +34,13 @@ pub struct QueryRoot;
 
 #[graphql_object(context = "Context")]
 impl QueryRoot {
-    fn AntibodyByAge(context: &Context) -> FieldResult<Vec<AntibodyByAgeModel::AntibodyByAgeT>> {
+    fn AntibodyByAge(_context: &Context) -> FieldResult<Vec<AntibodyByAgeModel::AntibodyByAgeT>> {
         let connection = establish_connection();
         let antibody = AntibodyByAgeModel::read(&connection);
         Ok(antibody)
     }
 
-    fn ByRace(context: &Context) -> FieldResult<Vec<ByRaceModel::ByRaceT>> {
+    fn ByRace(_context: &Context) -> FieldResult<Vec<ByRaceModel::ByRaceT>> {
         let connection = establish_connection();
         let by_race = ByRaceModel::read(&connection);
         Ok(by_race)
