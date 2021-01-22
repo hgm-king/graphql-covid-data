@@ -17,13 +17,13 @@ jobs:
       # delete this step.
       - run:
           name: Calculate dependencies
-          command: cargo generate-lockfile
+          command: cd server && cargo generate-lockfile
       - restore_cache:
           keys:
             - v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
       - run:
           name: Build all targets
-          command: cargo build
+          command: cd server && cargo build
       - save_cache:
           paths:
             - /usr/local/cargo/registry
@@ -33,7 +33,7 @@ jobs:
           key: v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
       - run:
           name: Run all tests
-          command: cargo test
+          command: cd server && cargo test
 
   format:
     docker:
@@ -50,7 +50,7 @@ jobs:
           command: rustup component add rustfmt
       - run:
           name: Formatting
-          command: cargo fmt --all -- --check
+          command: cd server && cargo fmt --all -- --check
 
   lint:
     docker:
@@ -67,7 +67,7 @@ jobs:
           command: rustup component add clippy
       - run:
           name: Linting
-          command: cargo clippy -- -D warnings
+          command: cd server && cargo clippy -- -D warnings
 
 workflows:
   version: 2
