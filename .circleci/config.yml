@@ -9,6 +9,8 @@ jobs:
     steps:
       - checkout
       - run:
+          command: cd server
+      - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
       # If you have committed your Cargo.lock file to version control
@@ -33,37 +35,13 @@ jobs:
           name: Run all tests
           command: cargo test
 
-  security:
-    docker:
-      - image: circleci/rust
-    steps:
-      - checkout
-      - run:
-          name: Version information
-          command: rustc --version; cargo --version; rustup --version
-      - run:
-          name: Cache permission
-          command: |
-            sudo chown -R $(whoami):$(id -ng) /usr/local/cargo
-      - restore_cache:
-          keys:
-            - v1-cargo-audit-{{ arch }}
-      - run:
-          name: Install dependency auditing tool
-          command: cargo install cargo-audit
-      - save_cache:
-          paths:
-            - /usr/local/cargo
-          key: v1-cargo-audit-{{ arch }}
-      - run:
-          name: Check for known security issues in dependencies
-          command: cargo audit
-
   format:
     docker:
       - image: circleci/rust
     steps:
       - checkout
+      - run:
+          command: cd server
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -80,6 +58,8 @@ jobs:
     steps:
       - checkout
       - run:
+          command: cd server
+      - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
       - run:
@@ -89,14 +69,6 @@ jobs:
           name: Linting
           command: cargo clippy -- -D warnings
 
-  coverage:
-    machine: true
-    steps:
-      - checkout
-      - run:
-          name: Coverage with docker
-          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin cargo tarpaulin --ignore-tests
-
 workflows:
   version: 2
   build-test:
@@ -105,19 +77,11 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - security:
-          filters:
-            tags:
-              only: /.*/
       - format:
           filters:
             tags:
               only: /.*/
       - lint:
-          filters:
-            tags:
-              only: /.*/
-      - coverage:
           filters:
             tags:
               only: /.*/
