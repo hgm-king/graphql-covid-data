@@ -6,9 +6,7 @@ extern crate dotenv;
 #[macro_use]
 extern crate juniper;
 
-pub mod generator;
 pub mod models;
-pub mod parser;
 pub mod schema;
 
 use diesel::pg::PgConnection;

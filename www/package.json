@@ -1,7 +1,7 @@
 {
-  "name": "webart",
+  "name": "covid-data-dashboard-frontend",
   "version": "1.0.0",
-  "description": "a collection of digital art",
+  "description": "Client-Side",
   "main": "index.js",
   "scripts": {
     "build": "webpack",

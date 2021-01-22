@@ -6,7 +6,6 @@ import theme from "../../theme/";
 
 export default function ByRaceBarChart(props) {
   const { data } = props;
-  console.log(data);
   const keys = Object.keys(data[0]).filter((key) => key.match(/(COUNT)/));
 
   const valueLabel = (d, group) => {

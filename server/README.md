@@ -1,5 +1,8 @@
-# NYC Dept of Health Covid Dashboard
-#### Visualize the covid data the city releases daily
+# NYC Covid Data Dashboard Frontend
+
+This repository will hold everything related to the backend data server in the NYC Covid Data Dashboard Project.
+
+We focus on serving data as quickly as possible 
 
 ### Resources
  - https://github.com/nychealth/coronavirus-data
