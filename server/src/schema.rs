@@ -1,5 +1,5 @@
 table! {
-    antibody-by-age (id) {
+    AntibodyByAge (id) {
         id -> Int4,
         demo_variable -> Nullable<Text>,
         NUM_PEOP_TEST -> Nullable<Float8>,
@@ -11,7 +11,7 @@ table! {
 }
 
 table! {
-    antibody-by-boro (id) {
+    AntibodyByBoro (id) {
         id -> Int4,
         demo_variable -> Nullable<Text>,
         NUM_PEOP_TEST -> Nullable<Float8>,
@@ -23,7 +23,7 @@ table! {
 }
 
 table! {
-    antibody-by-modzcta (id) {
+    AntibodyByModzcta (id) {
         id -> Int4,
         modzcta_first -> Nullable<Float8>,
         NEIGHBORHOOD_NAME -> Nullable<Text>,
@@ -36,7 +36,7 @@ table! {
 }
 
 table! {
-    antibody-by-poverty (id) {
+    AntibodyByPoverty (id) {
         id -> Int4,
         demo_variable -> Nullable<Text>,
         NUM_PEOP_TEST -> Nullable<Float8>,
@@ -48,7 +48,7 @@ table! {
 }
 
 table! {
-    antibody-by-sex (id) {
+    AntibodyBySex (id) {
         id -> Int4,
         demo_variable -> Nullable<Text>,
         NUM_PEOP_TEST -> Nullable<Float8>,
@@ -60,7 +60,7 @@ table! {
 }
 
 table! {
-    by-age (id) {
+    ByAge (id) {
         id -> Int4,
         AGE_GROUP -> Nullable<Text>,
         CASE_RATE -> Nullable<Float8>,
@@ -74,7 +74,7 @@ table! {
 }
 
 table! {
-    by-boro (id) {
+    ByBoro (id) {
         id -> Int4,
         BOROUGH_GROUP -> Nullable<Text>,
         CASE_RATE -> Nullable<Float8>,
@@ -88,7 +88,7 @@ table! {
 }
 
 table! {
-    by-poverty (id) {
+    ByPoverty (id) {
         id -> Int4,
         POVERTY_GROUP -> Nullable<Text>,
         CASE_RATE_ADJ -> Nullable<Float8>,
@@ -102,7 +102,7 @@ table! {
 }
 
 table! {
-    by-race (id) {
+    ByRace (id) {
         id -> Int4,
         RACE_GROUP -> Nullable<Text>,
         CASE_RATE_ADJ -> Nullable<Float8>,
@@ -116,7 +116,7 @@ table! {
 }
 
 table! {
-    by-sex (id) {
+    BySex (id) {
         id -> Int4,
         SEX_GROUP -> Nullable<Text>,
         CASE_RATE -> Nullable<Float8>,
@@ -130,7 +130,7 @@ table! {
 }
 
 table! {
-    data-by-modzcta (id) {
+    DataByModzcta (id) {
         id -> Int4,
         MODIFIED_ZCTA -> Nullable<Float8>,
         NEIGHBORHOOD_NAME -> Nullable<Text>,
@@ -147,7 +147,7 @@ table! {
 }
 
 table! {
-    deaths-by-boro-age (id) {
+    DeathsByBoroAge (id) {
         id -> Int4,
         BOROUGH_GROUP -> Nullable<Text>,
         AGE_0_17_YRS -> Nullable<Float8>,
@@ -163,7 +163,54 @@ table! {
 }
 
 table! {
-    group-death-by-boro (id) {
+    DeathsByRaceAge (id) {
+        id -> Int4,
+        RACE_GROUP -> Nullable<Text>,
+        AGE_0_17_YRS -> Nullable<Float8>,
+        AGE_18_24_YRS -> Nullable<Float8>,
+        AGE_25_34_YRS -> Nullable<Float8>,
+        AGE_35_44_YRS -> Nullable<Float8>,
+        AGE_45_54_YRS -> Nullable<Float8>,
+        AGE_55_64_YRS -> Nullable<Float8>,
+        AGE_65_74_YRS -> Nullable<Float8>,
+        AGE_GE_75_YRS -> Nullable<Float8>,
+        date -> Nullable<Text>,
+    }
+}
+
+table! {
+    DeathsByUnderlyingConditions (id) {
+        id -> Int4,
+        AGE_GROUP -> Nullable<Text>,
+        DEATH_COUNT_TOTAL -> Nullable<Float8>,
+        DEATH_COUNT_ILLNESS -> Nullable<Float8>,
+        DEATH_COUNT_NO_ILLNESS -> Nullable<Float8>,
+        DEATH_COUNT_PENDING_ILLNESS -> Nullable<Float8>,
+        date -> Nullable<Text>,
+    }
+}
+
+table! {
+    GroupCasesByBoro (id) {
+        id -> Int4,
+        group -> Nullable<Text>,
+        subgroup -> Nullable<Text>,
+        BK_CASE_COUNT -> Nullable<Float8>,
+        BK_CASE_RATE -> Nullable<Float8>,
+        BX_CASE_COUNT -> Nullable<Float8>,
+        BX_CASE_RATE -> Nullable<Float8>,
+        MN_CASE_COUNT -> Nullable<Float8>,
+        MN_CASE_RATE -> Nullable<Float8>,
+        QN_CASE_COUNT -> Nullable<Float8>,
+        QN_CASE_RATE -> Nullable<Float8>,
+        SI_CASE_COUNT -> Nullable<Float8>,
+        SI_CASE_RATE -> Nullable<Float8>,
+        date -> Nullable<Text>,
+    }
+}
+
+table! {
+    GroupDeathByBoro (id) {
         id -> Int4,
         group -> Nullable<Text>,
         subgroup -> Nullable<Text>,
@@ -182,7 +229,7 @@ table! {
 }
 
 table! {
-    group-hosp-by-boro (id) {
+    GroupHospByBoro (id) {
         id -> Int4,
         group -> Nullable<Text>,
         subgroup -> Nullable<Text>,
@@ -201,7 +248,7 @@ table! {
 }
 
 table! {
-    probable-confirmed-by-age (id) {
+    ProbableConfirmedByAge (id) {
         id -> Int4,
         AGE_GROUP -> Nullable<Text>,
         CONFIRMED_DEATH -> Nullable<Float8>,
@@ -211,7 +258,7 @@ table! {
 }
 
 table! {
-    probable-confirmed-by-boro (id) {
+    ProbableConfirmedByBoro (id) {
         id -> Int4,
         BOROUGH_GROUP -> Nullable<Text>,
         CONFIRMED_DEATH -> Nullable<Float8>,
@@ -221,7 +268,7 @@ table! {
 }
 
 table! {
-    probable-confirmed-by-location (id) {
+    ProbableConfirmedByLocation (id) {
         id -> Int4,
         LOCATION_OF_DEATH -> Nullable<Text>,
         CONFIRMED_DEATH -> Nullable<Float8>,
@@ -231,7 +278,7 @@ table! {
 }
 
 table! {
-    probable-confirmed-by-race (id) {
+    ProbableConfirmedByRace (id) {
         id -> Int4,
         RACE_GROUP -> Nullable<Text>,
         CONFIRMED_DEATH -> Nullable<Float8>,
@@ -241,7 +288,7 @@ table! {
 }
 
 table! {
-    probable-confirmed-by-sex (id) {
+    ProbableConfirmedBySex (id) {
         id -> Int4,
         SEX -> Nullable<Text>,
         CONFIRMED_DEATH -> Nullable<Float8>,
@@ -251,7 +298,7 @@ table! {
 }
 
 table! {
-    summary (id) {
+    Summary (id) {
         id -> Int4,
         MEASURE -> Nullable<Text>,
         NUMBER_OF_NYC_RESIDENTS -> Nullable<Text>,
@@ -260,24 +307,27 @@ table! {
 }
 
 allow_tables_to_appear_in_same_query!(
-    antibody-by-age,
-    antibody-by-boro,
-    antibody-by-modzcta,
-    antibody-by-poverty,
-    antibody-by-sex,
-    by-age,
-    by-boro,
-    by-poverty,
-    by-race,
-    by-sex,
-    data-by-modzcta,
-    deaths-by-boro-age,
-    group-death-by-boro,
-    group-hosp-by-boro,
-    probable-confirmed-by-age,
-    probable-confirmed-by-boro,
-    probable-confirmed-by-location,
-    probable-confirmed-by-race,
-    probable-confirmed-by-sex,
-    summary,
+    AntibodyByAge,
+    AntibodyByBoro,
+    AntibodyByModzcta,
+    AntibodyByPoverty,
+    AntibodyBySex,
+    ByAge,
+    ByBoro,
+    ByPoverty,
+    ByRace,
+    BySex,
+    DataByModzcta,
+    DeathsByBoroAge,
+    DeathsByRaceAge,
+    DeathsByUnderlyingConditions,
+    GroupCasesByBoro,
+    GroupDeathByBoro,
+    GroupHospByBoro,
+    ProbableConfirmedByAge,
+    ProbableConfirmedByBoro,
+    ProbableConfirmedByLocation,
+    ProbableConfirmedByRace,
+    ProbableConfirmedBySex,
+    Summary,
 );
