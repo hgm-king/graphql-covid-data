@@ -1,7 +1,7 @@
 const AntibodyQuery = `
 {
   AntibodyByAge {
-    index
+    id
     demoVariable
     NUMPEOPPOS
     NUMPEOPTEST

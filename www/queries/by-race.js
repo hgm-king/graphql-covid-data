@@ -1,7 +1,7 @@
 const ByRaceQuery = `
 {
   ByRace {
-    index,
+    id,
     RACEGROUP
     CASERATEADJ
     HOSPITALIZEDRATEADJ
