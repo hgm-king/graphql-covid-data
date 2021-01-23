@@ -18,7 +18,7 @@ services:
       - "database:db"
   etl:
     build: ./etl
-    command: ["tail", "-f", '/dev/null']
+    command: ["python3", '/app/src/covid-data.py']
     volumes:
       - ./etl:/app
     links:
