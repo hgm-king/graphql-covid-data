@@ -24,8 +24,7 @@ engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@data
 
 def get_table_name_from_path(path):
     [folder, name] = path.split('/')
-    name.title().replace('-', '')
-    return name
+    return name.title().replace('-', '')
 
 def format_date_for_url(date):
     return date.replace('/', '_')

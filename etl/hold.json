@@ -14,3 +14,11 @@
 "totals/deaths-by-underlying-conditions.csv",
 "totals/group-cases-by-boro.csv",
 "totals/group-data-by-boro.csv",
+"totals/group-death-by-boro.csv",
+"totals/group-hosp-by-boro.csv",
+"totals/probable-confirmed-by-age.csv",
+"totals/probable-confirmed-by-boro.csv",
+"totals/probable-confirmed-by-location.csv",
+"totals/probable-confirmed-by-race.csv",
+"totals/probable-confirmed-by-sex.csv",
+"totals/summary.csv"

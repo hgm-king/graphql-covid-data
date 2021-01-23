@@ -2,7 +2,7 @@
 
 This repository will hold everything related to the backend data server in the NYC Covid Data Dashboard Project.
 
-We focus on serving data as quickly as possible 
+We focus on serving data as quickly as possible
 
 ### Resources
  - https://github.com/nychealth/coronavirus-data
@@ -12,6 +12,7 @@ We focus on serving data as quickly as possible
  - https://diesel.rs/guides/composing-applications/
  - https://dev.to/open-graphql/building-powerful-graphql-servers-with-rust-3gla
  - https://airbnb.io/visx/
+ - https://lifthrasiir.github.io/rustlog/why-is-a-rust-executable-large.html
 
 ### To Run
 - start by running `docker-compose up`
