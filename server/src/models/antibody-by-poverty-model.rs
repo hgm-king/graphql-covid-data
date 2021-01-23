@@ -4,13 +4,15 @@
  *
  * Happy Hacking!
 **/
-use crate::schema::AntibodyByAge;
+
+use crate::schema::antibody-by-poverty;
 use diesel::prelude::*;
 
-#[derive(Debug, GraphQLObject, Insertable, Queryable)]
-#[table_name = "AntibodyByAge"]
-pub struct AntibodyByAgeT {
-    pub index: i32,
+
+#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
+#[table_name="antibody-by-poverty"]
+pub struct antibody-by-povertyT {
+    pub id: i32,
     pub demo_variable: Option<String>,
     pub NUM_PEOP_TEST: Option<f64>,
     pub NUM_PEOP_POS: Option<f64>,
@@ -19,9 +21,9 @@ pub struct AntibodyByAgeT {
     pub date: Option<String>,
 }
 
-pub fn read(conn: &PgConnection) -> Vec<AntibodyByAgeT> {
-    AntibodyByAge::table
-        .order(AntibodyByAge::date.desc())
-        .load::<AntibodyByAgeT>(conn)
+pub fn read(conn: &PgConnection) -> Vec<antibody-by-povertyT> {
+    antibody-by-poverty::table
+        .order(antibody-by-poverty::date.asc())
+        .load::<antibody-by-povertyT>(conn)
         .expect("Error loading object")
 }

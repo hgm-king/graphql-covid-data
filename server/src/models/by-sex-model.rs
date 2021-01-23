@@ -5,15 +5,14 @@
  * Happy Hacking!
 **/
 
-use crate::schema::BySex;
+use crate::schema::by-sex;
 use diesel::prelude::*;
-use diesel::dsl::Eq;
 
 
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="BySex"]
-pub struct BySexT {
-    pub index: String,
+#[table_name="by-sex"]
+pub struct by-sexT {
+    pub id: i32,
     pub SEX_GROUP: Option<String>,
     pub CASE_RATE: Option<f64>,
     pub HOSPITALIZED_RATE: Option<f64>,
@@ -24,8 +23,9 @@ pub struct BySexT {
     pub date: Option<String>,
 }
 
-pub fn read(conn: &PgConnection) -> Vec<BySexT> {
-    BySex::table
-        .load::<BySexT>(conn)
+pub fn read(conn: &PgConnection) -> Vec<by-sexT> {
+    by-sex::table
+        .order(by-sex::date.asc())
+        .load::<by-sexT>(conn)
         .expect("Error loading object")
 }

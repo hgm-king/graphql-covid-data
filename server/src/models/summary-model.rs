@@ -5,22 +5,22 @@
  * Happy Hacking!
 **/
 
-use crate::schema::Summary;
+use crate::schema::summary;
 use diesel::prelude::*;
-use diesel::dsl::Eq;
 
 
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="Summary"]
-pub struct SummaryT {
-    pub index: String,
+#[table_name="summary"]
+pub struct summaryT {
+    pub id: i32,
     pub MEASURE: Option<String>,
     pub NUMBER_OF_NYC_RESIDENTS: Option<String>,
     pub date: Option<String>,
 }
 
-pub fn read(conn: &PgConnection) -> Vec<SummaryT> {
-    Summary::table
-        .load::<SummaryT>(conn)
+pub fn read(conn: &PgConnection) -> Vec<summaryT> {
+    summary::table
+        .order(summary::date.asc())
+        .load::<summaryT>(conn)
         .expect("Error loading object")
 }

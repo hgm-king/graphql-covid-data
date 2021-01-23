@@ -5,15 +5,14 @@
  * Happy Hacking!
 **/
 
-use crate::schema::DataByModzcta;
+use crate::schema::data-by-modzcta;
 use diesel::prelude::*;
-use diesel::dsl::Eq;
 
 
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="DataByModzcta"]
-pub struct DataByModzctaT {
-    pub index: String,
+#[table_name="data-by-modzcta"]
+pub struct data-by-modzctaT {
+    pub id: i32,
     pub MODIFIED_ZCTA: Option<f64>,
     pub NEIGHBORHOOD_NAME: Option<String>,
     pub BOROUGH_GROUP: Option<String>,
@@ -27,8 +26,9 @@ pub struct DataByModzctaT {
     pub date: Option<String>,
 }
 
-pub fn read(conn: &PgConnection) -> Vec<DataByModzctaT> {
-    DataByModzcta::table
-        .load::<DataByModzctaT>(conn)
+pub fn read(conn: &PgConnection) -> Vec<data-by-modzctaT> {
+    data-by-modzcta::table
+        .order(data-by-modzcta::date.asc())
+        .load::<data-by-modzctaT>(conn)
         .expect("Error loading object")
 }

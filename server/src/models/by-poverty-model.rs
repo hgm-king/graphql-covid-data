@@ -5,15 +5,14 @@
  * Happy Hacking!
 **/
 
-use crate::schema::ByPoverty;
+use crate::schema::by-poverty;
 use diesel::prelude::*;
-use diesel::dsl::Eq;
 
 
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="ByPoverty"]
-pub struct ByPovertyT {
-    pub index: String,
+#[table_name="by-poverty"]
+pub struct by-povertyT {
+    pub id: i32,
     pub POVERTY_GROUP: Option<String>,
     pub CASE_RATE_ADJ: Option<f64>,
     pub HOSPITALIZED_RATE_ADJ: Option<f64>,
@@ -24,8 +23,9 @@ pub struct ByPovertyT {
     pub date: Option<String>,
 }
 
-pub fn read(conn: &PgConnection) -> Vec<ByPovertyT> {
-    ByPoverty::table
-        .load::<ByPovertyT>(conn)
+pub fn read(conn: &PgConnection) -> Vec<by-povertyT> {
+    by-poverty::table
+        .order(by-poverty::date.asc())
+        .load::<by-povertyT>(conn)
         .expect("Error loading object")
 }

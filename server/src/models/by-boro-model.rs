@@ -5,15 +5,15 @@
  * Happy Hacking!
 **/
 
-use crate::schema::ByAge;
+use crate::schema::by-boro;
 use diesel::prelude::*;
 
 
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="ByAge"]
-pub struct ByAgeT {
-    pub index: String,
-    pub AGE_GROUP: Option<String>,
+#[table_name="by-boro"]
+pub struct by-boroT {
+    pub id: i32,
+    pub BOROUGH_GROUP: Option<String>,
     pub CASE_RATE: Option<f64>,
     pub HOSPITALIZED_RATE: Option<f64>,
     pub DEATH_RATE: Option<f64>,
@@ -23,8 +23,9 @@ pub struct ByAgeT {
     pub date: Option<String>,
 }
 
-pub fn read(conn: &PgConnection) -> Vec<ByAgeT> {
-    ByAge::table
-        .load::<ByAgeT>(conn)
+pub fn read(conn: &PgConnection) -> Vec<by-boroT> {
+    by-boro::table
+        .order(by-boro::date.asc())
+        .load::<by-boroT>(conn)
         .expect("Error loading object")
 }
