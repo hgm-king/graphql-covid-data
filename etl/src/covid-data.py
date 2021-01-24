@@ -19,7 +19,8 @@ import requests
 from sqlalchemy import create_engine, Integer
 
 os.environ['LOCAL_ROOT'] = '/app/data'
-engine = create_engine("postgresql+psycopg2://unicorn_user:magical_password@database:5432/rainbow_database")
+
+engine = create_engine("postgresql+psycopg2://".format(os.environ['DATABASE_URL']))
 
 
 def get_table_name_from_path(path):
@@ -79,11 +80,13 @@ def save_csv_from_github(url, date):
         data['date'] = dates
 
         local_data_set = CSVDataSet(filepath=local_path)
-        local_data_set.save(data)
+
+        # local_data_set.save(data)
 
         return data
     except Exception as exception:
         print('Error: could not get {}'.format(url))
+        print(exception)
         return []
 
 def map_over_commits_for_file(history_data):

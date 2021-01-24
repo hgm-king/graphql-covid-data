@@ -110,12 +110,24 @@ jobs:
       - run:
           name: Running deploy.sh
           command: sh ./deploy.sh
+  deploy-etl:
+    working_directory: ~/project/etl
+    docker:
+      - image: circleci/python
+    steps:
+      - checkout:
+          path: ~/project
+      - setup_remote_docker
+      - run:
+          name: Running deploy.sh
+          command: sh ./deploy.sh
 
 
 workflows:
   version: 2
   build-test:
     jobs:
+      - deploy-etl
       - build-and-test-server:
           filters:
             tags:
