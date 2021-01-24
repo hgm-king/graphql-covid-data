@@ -33,6 +33,40 @@ jobs:
           name: Run all tests
           command: cargo test
 
+  deploy-server:
+    working_directory: ~/project/server
+    docker:
+      - image: circleci/rust
+    environment:
+    steps:
+      - checkout:
+          path: ~/project
+      - setup_remote_docker
+      - run:
+          name: Version information
+          command: rustc --version; cargo --version; rustup --version
+      # If you have committed your Cargo.lock file to version control
+      # delete this step.
+      - run:
+          name: Calculate dependencies
+          command: cargo generate-lockfile
+      - restore_cache:
+          keys:
+            - v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Build all targets
+          command: cargo build --release
+      - save_cache:
+          paths:
+            - /usr/local/cargo/registry
+            - target/release/.fingerprint
+            - target/release/build
+            - target/release/deps
+          key: v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Running deploy.sh
+          command: sh ./deploy.sh
+
   format-server:
     working_directory: ~/project/server
     docker:
@@ -140,6 +174,11 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - deploy-server:
+          requires:
+            - build-and-test-server
+            - format-server
+            - lint-server
       - format-client:
           filters:
             tags:

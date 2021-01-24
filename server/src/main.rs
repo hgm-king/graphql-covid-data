@@ -12,7 +12,7 @@ use juniper::{EmptyMutation, EmptySubscription, RootNode};
 async fn main() {
     pretty_env_logger::init();
 
-    let addr = ([127, 0, 0, 1], 3000).into();
+    let addr = ([0, 0, 0, 0], 3000).into();
 
     let db = Arc::new(server::Context {});
     let root_node = Arc::new(RootNode::new(
