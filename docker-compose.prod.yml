@@ -1,6 +1,22 @@
 version: '3'
 services:
+  database:
+    image: "postgres" # use latest official postgres version
+    env_file:
+      - env # my droplet hating the hidden file
+    volumes:
+      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    ports:
+      - 5432:5432
   www:
     image: hgmaxwellking/covid-data-dashboard-frontend:latest
     ports:
-      - 8080:80
+      - 80:80
+  server:
+    image: hgmaxwellking/covid-data-dashboard-server:latest
+    env_file:
+      - env # my droplet hating the hidden file
+    ports:
+      - 3000:3000
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose

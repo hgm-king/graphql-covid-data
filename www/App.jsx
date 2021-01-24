@@ -14,7 +14,7 @@ import Button from "./components/Button";
 // utils
 import theme from "./theme/";
 
-const serverHost = process.env.SERVER_HOST ?? "localhost";
+const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
 const serverPort = process.env.SERVER_PORT ?? "3000";
 
 const client = createClient({
