@@ -102,14 +102,14 @@ jobs:
       - checkout:
           path: ~/project
       - run:
-        name: Installing
-        command: npm install
+          name: Installing
+          command: npm install
       — run:
-        name: Building
-        command: npm run build
+          name: Building
+          command: npm run build
       — run:
-        name: Running deploy.sh
-        command: ./deploy.sh
+          name: Running deploy.sh
+          command: ./deploy.sh
 
 
 workflows:
