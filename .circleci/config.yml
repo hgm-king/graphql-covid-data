@@ -108,7 +108,7 @@ jobs:
           command: npm run build
       - run:
           name: Running deploy.sh
-          command: ./deploy.sh
+          command: sh ./deploy.sh
 
 
 workflows:
