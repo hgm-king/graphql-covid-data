@@ -8,7 +8,8 @@ jobs:
       # Fail the build if there are warnings
       RUSTFLAGS: '-D warnings'
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - run:
           name: Code Has Arrived
           command: |
