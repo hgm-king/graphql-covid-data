@@ -5,16 +5,9 @@ jobs:
     docker:
       - image: circleci/rust
     environment:
-      # Fail the build if there are warnings
-      RUSTFLAGS: '-D warnings'
     steps:
       - checkout:
           path: ~/project
-      - run:
-          name: Code Has Arrived
-          command: |
-            ls -al
-            echo '^^^That should look familiar^^^'
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
