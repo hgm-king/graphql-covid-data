@@ -94,13 +94,13 @@ jobs:
           name: Formatting
           command: npm run format
   deploy-client:
-    setup_remote_docker
     working_directory: ~/project/www
     docker:
       - image: circleci/node
     steps:
       - checkout:
           path: ~/project
+      - setup_remote_docker
       - run:
           name: Installing
           command: npm install
