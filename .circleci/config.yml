@@ -75,11 +75,11 @@ jobs:
       - checkout:
           path: ~/project
       - run:
-        name: Installing
-        command: npm install
+          name: Installing
+          command: npm install
       — run:
-        name: Linting
-        command: npm run lint
+          name: Linting
+          command: npm run lint
 
   format-client:
     docker:
@@ -89,11 +89,11 @@ jobs:
       - checkout:
           path: ~/project
       - run:
-        name: Installing
-        command: npm install
+          name: Installing
+          command: npm install
       — run:
-        name: Formatting
-        command: npm run format
+          name: Formatting
+          command: npm run format
   deploy-client:
     docker:
       — image: circleci/node:7.10
