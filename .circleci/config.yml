@@ -13,6 +13,7 @@ jobs:
           name: Code Has Arrived
           command: |
             ls -al
+            ls -al server
             echo '^^^That should look familiar^^^'
       - run:
           name: Version information
