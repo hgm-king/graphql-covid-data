@@ -1,14 +1,14 @@
 version: 2
 jobs:
   build-and-test:
+    working_directory: ~/server
     docker:
       - image: circleci/rust
     environment:
       # Fail the build if there are warnings
       RUSTFLAGS: '-D warnings'
     steps:
-      - checkout:
-          path: ~/server
+      - checkout
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -35,11 +35,11 @@ jobs:
           command: cargo test
 
   format:
+    working_directory: ~/server
     docker:
       - image: circleci/rust
     steps:
-      - checkout:
-          path: ~/server
+      - checkout
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -51,11 +51,11 @@ jobs:
           command: cargo fmt --all -- --check
 
   lint:
+    working_directory: ~/server
     docker:
       - image: circleci/rust
     steps:
-      - checkout:
-          path: ~/server
+      - checkout
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
