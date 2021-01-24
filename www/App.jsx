@@ -14,8 +14,13 @@ import Button from "./components/Button";
 // utils
 import theme from "./theme/";
 
+require("dotenv").config();
+
+const serverHost = process.env.SERVER_HOST;
+const serverPort = process.env.SERVER_PORT;
+
 const client = createClient({
-  url: "http://127.0.0.1:3000/graphql",
+  url: `http://${serverHost}:${serverPort}/graphql`,
 });
 
 export default function App(_props) {

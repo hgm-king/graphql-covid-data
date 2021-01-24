@@ -9,13 +9,6 @@ services:
       - ./db:/db
     ports:
       - 5432:5432
-  www:
-    build: ./www
-    command: ["npm", "run", "serve"]
-    volumes:
-      - ./www:/app
-    ports:
-      - 8080:8080
   etl:
     build: ./etl
     command: ["python3", '/app/src/covid-data.py']
