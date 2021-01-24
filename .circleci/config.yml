@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-and-test:
+  build-and-test-server:
     working_directory: ~/project/server
     docker:
       - image: circleci/rust
@@ -34,11 +34,12 @@ jobs:
           command: cargo test
 
   format:
-    working_directory: ~/server
+    working_directory: ~/project/server
     docker:
       - image: circleci/rust
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -50,11 +51,12 @@ jobs:
           command: cargo fmt --all -- --check
 
   lint:
-    working_directory: ~/server
+    working_directory: ~/project/server
     docker:
       - image: circleci/rust
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -69,15 +71,15 @@ workflows:
   version: 2
   build-test:
     jobs:
-      - build-and-test:
+      - build-and-test-server:
           filters:
             tags:
               only: /.*/
-      # - format:
-      #     filters:
-      #       tags:
-      #         only: /.*/
-      # - lint:
-      #     filters:
-      #       tags:
-      #         only: /.*/
+      - format-server:
+          filters:
+            tags:
+              only: /.*/
+      - lint-server:
+          filters:
+            tags:
+              only: /.*/
