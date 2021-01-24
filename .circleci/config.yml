@@ -10,7 +10,7 @@ jobs:
           path: ~/project
       - run:
           name: Switch to nightly
-          command: rustup toolchain install nightly
+          command: rustup default nightly
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -35,8 +35,20 @@ jobs:
       - run:
           name: Run all tests
           command: cargo test
+      - run:
+          name: Install formatter
+          command: rustup component add rustfmt
+      - run:
+          name: Formatting
+          command: cargo fmt --all -- --check
+      - run:
+          name: Install Clippy
+          command: rustup component add clippy
+      - run:
+          name: Linting
+          command: cargo clippy
 
-  deploy-server:
+  build-server-image:
     working_directory: ~/project/server
     docker:
       - image: circleci/rust
@@ -47,7 +59,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Switch to nightly
-          command: rustup toolchain install nightly
+          command: rustup default nightly
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -73,32 +85,6 @@ jobs:
           name: Running deploy.sh
           command: sh ./deploy.sh
 
-  check-server:
-    working_directory: ~/project/server
-    docker:
-      - image: circleci/rust
-    steps:
-      - checkout:
-          path: ~/project
-      - run:
-          name: Switch to nightly
-          command: rustup toolchain install nightly
-      - run:
-          name: Version information
-          command: rustc --version; cargo --version; rustup --version
-      - run:
-          name: Install formatter
-          command: rustup component add rustfmt
-      - run:
-          name: Formatting
-          command: cargo fmt --all -- --check
-      - run:
-          name: Install Clippy
-          command: rustup component add clippy
-      - run:
-          name: Linting
-          command: cargo clippy
-
   build-client-image:
     working_directory: ~/project/www
     docker:
@@ -123,8 +109,7 @@ jobs:
           name: Running deploy.sh
           command: sh ./deploy.sh
 
-
-  deploy-etl:
+  build-etl-image:
     working_directory: ~/project/etl
     docker:
       - image: circleci/python
@@ -136,22 +121,32 @@ jobs:
           name: Running deploy.sh
           command: sh ./deploy.sh
 
+  deploy-compose:
+    docker:
+      - image: circleci/python
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Running deploy.sh
+          command: sh ./deploy.sh
+
 
 workflows:
   version: 2
   build-test:
     jobs:
-      - deploy-etl
+      - build-etl-image
       - build-and-test-server:
           filters:
             tags:
               only: /.*/
-      - check-server:
-          filters:
-            tags:
-              only: /.*/
-      - deploy-server:
+      - build-server-image:
           requires:
             - build-and-test-server
-            - check-server
       - build-client-image
+      - deploy-compose:
+          requires:
+            - deploy-server
+            - build-client-image
+            - build-etl-image
