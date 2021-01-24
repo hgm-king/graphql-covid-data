@@ -1,7 +1,6 @@
 import * as d3 from "d3";
 import { LinearScale } from "../utils/scale-tools";
 
-import theme from "../theme";
 class Population {
   constructor(containerEl, props) {
     this.containerEl = containerEl;
@@ -39,7 +38,7 @@ class Population {
       .append("circle")
       .attr("cy", (d, i) => radius + scaleY(y(i)))
       .attr("cx", (d, i) => radius + scaleX(x(i)))
-      .attr("r", (d) => radius)
+      .attr("r", () => radius)
       .attr("fill", valueHandler)
       .attr("stroke-width", "0.5");
   }
