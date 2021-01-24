@@ -9,6 +9,9 @@ jobs:
       - checkout:
           path: ~/project
       - run:
+          name: Switch to nightly
+          command: rustup toolchain install nightly
+      - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
       # If you have committed your Cargo.lock file to version control
@@ -43,6 +46,9 @@ jobs:
           path: ~/project
       - setup_remote_docker
       - run:
+          name: Switch to nightly
+          command: rustup toolchain install nightly
+      - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
       # If you have committed your Cargo.lock file to version control
@@ -74,6 +80,9 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - run:
+          name: Switch to nightly
+          command: rustup toolchain install nightly
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
