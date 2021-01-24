@@ -1,7 +1,6 @@
 version: 2
 jobs:
   build-and-test:
-    working_directory: ~/server
     docker:
       - image: circleci/rust
     environment:
@@ -9,6 +8,11 @@ jobs:
       RUSTFLAGS: '-D warnings'
     steps:
       - checkout
+      - run:
+          name: Code Has Arrived
+          command: |
+            ls -al
+            echo '^^^That should look familiar^^^'
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -74,11 +78,11 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - format:
-          filters:
-            tags:
-              only: /.*/
-      - lint:
-          filters:
-            tags:
-              only: /.*/
+      # - format:
+      #     filters:
+      #       tags:
+      #         only: /.*/
+      # - lint:
+      #     filters:
+      #       tags:
+      #         only: /.*/
