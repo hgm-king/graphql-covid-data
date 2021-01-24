@@ -66,48 +66,47 @@ jobs:
       - run:
           name: Linting
           command: cargo clippy
-
   lint-client:
-    docker:
-      — image: circleci/node:7.10
     working_directory: ~/project/www
+    docker:
+      - image: circleci/node
     steps:
       - checkout:
           path: ~/project
       - run:
           name: Installing
           command: npm install
-      — run:
+      - run:
           name: Linting
           command: npm run lint
 
   format-client:
-    docker:
-      — image: circleci/node:7.10
     working_directory: ~/project/www
+    docker:
+      - image: circleci/node
     steps:
       - checkout:
           path: ~/project
       - run:
           name: Installing
           command: npm install
-      — run:
+      - run:
           name: Formatting
           command: npm run format
   deploy-client:
-    docker:
-      — image: circleci/node:7.10
     working_directory: ~/project/www
+    docker:
+      - image: circleci/node
     steps:
       - checkout:
           path: ~/project
       - run:
           name: Installing
           command: npm install
-      — run:
+      - run:
           name: Building
           command: npm run build
-      — run:
+      - run:
           name: Running deploy.sh
           command: ./deploy.sh
 
