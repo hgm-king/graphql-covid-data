@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build-and-test:
+    working_directory: ~/project/server
     docker:
       - image: circleci/rust
     environment:
