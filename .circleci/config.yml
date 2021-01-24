@@ -67,7 +67,7 @@ jobs:
           name: Running deploy.sh
           command: sh ./deploy.sh
 
-  format-server:
+  check-server:
     working_directory: ~/project/server
     docker:
       - image: circleci/rust
@@ -83,51 +83,14 @@ jobs:
       - run:
           name: Formatting
           command: cargo fmt --all -- --check
-
-  lint-server:
-    working_directory: ~/project/server
-    docker:
-      - image: circleci/rust
-    steps:
-      - checkout:
-          path: ~/project
-      - run:
-          name: Version information
-          command: rustc --version; cargo --version; rustup --version
       - run:
           name: Install Clippy
           command: rustup component add clippy
       - run:
           name: Linting
           command: cargo clippy
-  lint-client:
-    working_directory: ~/project/www
-    docker:
-      - image: circleci/node
-    steps:
-      - checkout:
-          path: ~/project
-      - run:
-          name: Installing
-          command: npm install
-      - run:
-          name: Linting
-          command: npm run lint
 
-  format-client:
-    working_directory: ~/project/www
-    docker:
-      - image: circleci/node
-    steps:
-      - checkout:
-          path: ~/project
-      - run:
-          name: Installing
-          command: npm install
-      - run:
-          name: Formatting
-          command: npm run format
-  deploy-client:
+  build-client-image:
     working_directory: ~/project/www
     docker:
       - image: circleci/node
@@ -139,11 +102,19 @@ jobs:
           name: Installing
           command: npm install
       - run:
+          name: Linting
+          command: npm run lint
+      - run:
+          name: Formatting
+          command: npm run format
+      - run:
           name: Building
           command: npm run build
       - run:
           name: Running deploy.sh
           command: sh ./deploy.sh
+
+
   deploy-etl:
     working_directory: ~/project/etl
     docker:
@@ -166,28 +137,12 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - format-server:
-          filters:
-            tags:
-              only: /.*/
-      - lint-server:
+      - check-server:
           filters:
             tags:
               only: /.*/
       - deploy-server:
           requires:
             - build-and-test-server
-            - format-server
-            - lint-server
-      - format-client:
-          filters:
-            tags:
-              only: /.*/
-      - lint-client:
-          filters:
-            tags:
-              only: /.*/
-      - deploy-client:
-          requires:
-            - format-client
-            - lint-client
+            - check-server
+      - build-client-image
