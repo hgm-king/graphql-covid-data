@@ -144,7 +144,7 @@ def load_github_file_to_database(engine, path, filetype, table_name):
     except:
         print("Could not save table {}".format(table_name))
 
-config_path = '/app/config.json'
+config_path = '/src/config.json'
 with open(config_path) as f:
     data = json.load(f)
 
