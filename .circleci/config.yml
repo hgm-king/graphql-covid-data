@@ -147,6 +147,6 @@ workflows:
       - build-client-image
       - deploy-compose:
           requires:
-            - deploy-server
+            - build-server-image
             - build-client-image
             - build-etl-image
