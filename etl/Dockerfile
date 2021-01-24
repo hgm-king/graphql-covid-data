@@ -7,6 +7,6 @@ RUN pip3 install -r requirements.txt
 
 WORKDIR "/app"
 
-COPY . .
+COPY . ./app
 
 CMD ["python3", "/app/src/covid-data.py"]
