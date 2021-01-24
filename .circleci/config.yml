@@ -8,8 +8,7 @@ jobs:
       RUSTFLAGS: '-D warnings'
     steps:
       - checkout
-      - run:
-          command: cd server
+          path: ~/server
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -17,13 +16,13 @@ jobs:
       # delete this step.
       - run:
           name: Calculate dependencies
-          command: cd server && cargo generate-lockfile
+          command: cargo generate-lockfile
       - restore_cache:
           keys:
             - v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
       - run:
           name: Build all targets
-          command: cd server && cargo build
+          command: cargo build
       - save_cache:
           paths:
             - /usr/local/cargo/registry
@@ -33,15 +32,14 @@ jobs:
           key: v1-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
       - run:
           name: Run all tests
-          command: cd server && cargo test
+          command: cargo test
 
   format:
     docker:
       - image: circleci/rust
     steps:
       - checkout
-      - run:
-          command: cd server
+          path: ~/server
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -50,15 +48,14 @@ jobs:
           command: rustup component add rustfmt
       - run:
           name: Formatting
-          command: cd server && cargo fmt --all -- --check
+          command: cargo fmt --all -- --check
 
   lint:
     docker:
       - image: circleci/rust
     steps:
       - checkout
-      - run:
-          command: cd server
+          path: ~/server
       - run:
           name: Version information
           command: rustc --version; cargo --version; rustup --version
@@ -67,7 +64,7 @@ jobs:
           command: rustup component add clippy
       - run:
           name: Linting
-          command: cd server && cargo clippy
+          command: cargo clippy
 
 workflows:
   version: 2

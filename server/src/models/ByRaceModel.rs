@@ -4,13 +4,11 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::ByRace;
 use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="ByRace"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "ByRace"]
 pub struct ByRaceT {
     pub id: i32,
     pub RACE_GROUP: Option<String>,

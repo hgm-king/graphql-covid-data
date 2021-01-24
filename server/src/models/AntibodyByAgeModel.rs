@@ -4,13 +4,11 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::AntibodyByAge;
 use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="AntibodyByAge"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "AntibodyByAge"]
 pub struct AntibodyByAgeT {
     pub id: i32,
     pub demo_variable: Option<String>,

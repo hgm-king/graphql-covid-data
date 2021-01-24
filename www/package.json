@@ -6,7 +6,9 @@
   "scripts": {
     "build": "webpack",
     "serve": "webpack-dev-server --host 0.0.0.0",
-    "format": "npx prettier --write ."
+    "format::write": "npx prettier --write .",
+    "format": "npx prettier --check .",
+    "lint": "npm eslint ."
   },
   "author": "HG King",
   "license": "ISC",
