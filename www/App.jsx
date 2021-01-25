@@ -6,10 +6,12 @@ import { createClient, Provider } from "urql";
 // containers
 import Antibody from "./containers/Antibody/";
 import ByRace from "./containers/ByRace/";
+import ByZipcode from "./containers/ByZipcode/";
 
 // components
 import FlexRow from "./components/FlexRow";
 import Button from "./components/Button";
+import Footer from "./components/Footer";
 
 // utils
 import theme from "./theme/";
@@ -22,9 +24,9 @@ const client = createClient({
 });
 
 export default function App(_props) {
-  const navs = ["Antibodies", "ByRace"];
+  const navs = ["Antibodies", "ByRace", "ByZipcode"];
 
-  const [selected, setSelected] = useState(navs[1]);
+  const [selected, setSelected] = useState(navs[2]);
 
   const main = css`
     color: ${theme.colors.black};
@@ -53,9 +55,12 @@ export default function App(_props) {
           <Antibody />
         ) : selected === "ByRace" ? (
           <ByRace />
+        ) : selected === "ByZipcode" ? (
+          <ByZipcode />
         ) : (
           <h1>None</h1>
         )}
+        <Footer />
       </div>
     </Provider>
   );

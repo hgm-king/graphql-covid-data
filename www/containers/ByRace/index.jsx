@@ -3,13 +3,16 @@ import { useQuery } from "urql";
 
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
+import FlexRow from "../../components/FlexRow";
 import ByRaceBarChart from "./ByRaceBarChart";
 import ByRacePieChart from "./ByRacePieChart";
 import ByRaceRatioComparison from "./ByRaceRatioComparison";
 import ByRaceTrendLineChart from "./ByRaceTrendLineChart";
 import Population from "../../components/Population";
+import PopulationValues from "./PopulationValues";
 
 import ByRaceQuery from "../../queries/by-race";
+import { getPopulationFromRate } from "./calculations";
 
 export default function ByRace(_props) {
   const [result, _reexecuteQuery] = useQuery({
@@ -27,12 +30,7 @@ export default function ByRace(_props) {
 
   const dataForDay = data.ByRace.filter(
     (d) => d.date === "2021-01-17T19:53:43Z"
-  ).map((d) => {
-    d.TOTALPOPCASE = (d.CASECOUNT * 100000) / d.CASERATEADJ;
-    d.TOTALPOPHOSP = (d.HOSPITALIZEDCOUNT * 100000) / d.HOSPITALIZEDRATEADJ;
-    d.TOTALPOPDEATH = (d.DEATHCOUNT * 100000) / d.DEATHRATEADJ;
-    return d;
-  });
+  ).map(getPopulationFromRate);
 
   const pieKeys = Object.keys(dataForDay[0])
     .filter((key) => key.match(/COUNT/))
@@ -45,11 +43,19 @@ export default function ByRace(_props) {
   return (
     <>
       <h3>By Race</h3>
-      <Population data={dataForDay} height={500} width={1200} />
-      <ByRaceBarChart data={dataForDay} />
+      <p>What is the racial make-up of the city?</p>
+      <PopulationValues
+        data={dataForDay}
+        index={"RACEGROUP"}
+        field={"TOTALPOPCASE"}
+      />
+      {/*<Population data={dataForDay} height={500} width={1200} />*/}
+      <FlexRow flex="flex-start">
+        <ByRaceBarChart data={dataForDay} />
+        <ByRaceRatioComparison data={dataForDay} keys={pieKeys} />
+      </FlexRow>
       <ByRaceTrendLineChart data={data.ByRace} keys={raceIndexes} />
       <ByRacePieChart data={data.ByRace} keys={pieKeys} />
-      <ByRaceRatioComparison data={dataForDay} keys={pieKeys} />
       <p>
         Differences in health outcomes among racial and ethnic groups are due to
         long-term institutional and personal biases against people of color.
@@ -63,3 +69,5 @@ export default function ByRace(_props) {
     </>
   );
 }
+
+// Here is the ticket ID MYM-408-83276 for the reference.

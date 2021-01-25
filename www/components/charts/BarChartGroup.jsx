@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BarGroupHorizontal, Bar } from "@visx/shape";
 import { Group } from "@visx/group";
-import { AxisLeft } from "@visx/axis";
+import { AxisLeft, AxisBottom } from "@visx/axis";
 
 import LegendBox from "../LegendBox";
 
@@ -53,6 +53,11 @@ export default function BarChartGroup(props) {
     [0, max(data, (d) => max(keys, (key) => d[key]))],
     xRange
   );
+
+  console.log({
+    xRange,
+    xDomain: [0, max(data, (d) => max(keys, (key) => d[key]))],
+  });
   const yScale = BandScale(data.map(indexExtractor), yRange, 0.4);
   const y1Scale = BandScale(keys, [0, yScale.bandwidth()], 0.1);
 
@@ -132,6 +137,17 @@ export default function BarChartGroup(props) {
               fontSize: 11,
               textAnchor: "end",
               dy: "0.33em",
+            })}
+          />
+          <AxisBottom
+            top={height - margin.bottom}
+            scale={xScale}
+            stroke={theme.colors.black}
+            tickStroke={theme.colors.black}
+            tickLabelProps={() => ({
+              fill: theme.colors.black,
+              fontSize: 11,
+              textAnchor: "middle",
             })}
           />
         </Group>

@@ -1,9 +1,15 @@
 import React from "react";
+import { css } from "@emotion/css";
 
 import PieChart from "../../components/charts/PieChart";
 import FlexRow from "../../components/FlexRow";
 
 import theme from "../../theme/";
+
+const containerStyle = css`
+  margin-top: 48px;
+  margin-left: 64px;
+`;
 
 export default function ByRaceRatioComparison(props) {
   const { data, keys } = props;
@@ -22,24 +28,30 @@ export default function ByRaceRatioComparison(props) {
     }, []);
 
     return (
-      <div key={i}>
+      <React.Fragment key={i}>
         <p>{title}</p>
         <PieChart
           data={data}
           keys={keys}
           valueEliminator={(d) => d.data}
-          indexEliminator={(d) => ((100 * d.data) / totals[d.title]).toFixed(1)}
-          width={200}
-          height={200}
-          outerRadius={100}
+          labelEliminator={(d) => ((100 * d.data) / totals[d.title]).toFixed(1)}
+          width={100}
+          height={100}
+          outerRadius={50}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
           colors={theme.palettes.DataVizPalette}
           backgroundColor={"transparent"}
           backgroundRadius={14}
         />
-      </div>
+      </React.Fragment>
     );
   };
 
-  return <FlexRow flex="space-between">{data.map(makePie)}</FlexRow>;
+  return (
+    <div className={containerStyle}>
+      <FlexRow flex="space-between" direction="column">
+        {data.slice().reverse().map(makePie)}
+      </FlexRow>
+    </div>
+  );
 }

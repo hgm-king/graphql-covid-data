@@ -15,7 +15,7 @@ export default function ByRacePieChart(props) {
       data={data.filter((d) => d.date === "2021-01-05T17:57:20Z")}
       keys={raceIndexes}
       valueEliminator={(d) => d.CASERATEADJ}
-      indexEliminator={indexEliminator}
+      labelEliminator={indexEliminator}
       width={1000}
       height={600}
       margin={{ top: 0, right: 64, bottom: 64, left: 128 }}

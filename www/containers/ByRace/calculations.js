@@ -17,3 +17,10 @@ export const getTrend = (getIndex, getField) => (row, i, data) => {
     date: row.date,
   };
 };
+
+export const getPopulationFromRate = (d) => {
+  d.TOTALPOPCASE = (d.CASECOUNT * 100000) / d.CASERATEADJ;
+  d.TOTALPOPHOSP = (d.HOSPITALIZEDCOUNT * 100000) / d.HOSPITALIZEDRATEADJ;
+  d.TOTALPOPDEATH = (d.DEATHCOUNT * 100000) / d.DEATHRATEADJ;
+  return d;
+};

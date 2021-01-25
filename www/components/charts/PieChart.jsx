@@ -8,7 +8,7 @@ export default function PieChart(props) {
     width,
     height,
     valueEliminator,
-    indexEliminator,
+    labelEliminator,
     margin,
     backgroundColor,
     backgroundRadius,
@@ -57,7 +57,7 @@ export default function PieChart(props) {
                     fontSize={9}
                     textAnchor="middle"
                   >
-                    {indexEliminator(arc.data, arc)}
+                    {labelEliminator(arc.data, arc)}
                   </text>
                 </g>
               );
