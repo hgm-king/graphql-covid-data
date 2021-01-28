@@ -20,7 +20,7 @@ from sqlalchemy import create_engine, Integer
 
 os.environ['LOCAL_ROOT'] = '/app/data'
 
-engine = create_engine("postgresql+psycopg2://{}".format(os.environ['DATABASE_URL']))
+engine = create_engine(os.environ['DATABASE_URL_ETL'])
 
 
 def get_table_name_from_path(path):
