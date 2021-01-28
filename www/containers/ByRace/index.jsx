@@ -27,7 +27,7 @@ export default function ByRace(_props) {
   // const field = "DEATHRATEADJ";
   // const getField = (d) => d[field];
   const getIndex = (d) => d.RACEGROUP;
-  const selectedDay = "2021-01-22T18:04:29Z";
+  const selectedDay = "2021-01-27T18:00:33Z";
 
   const dataForDay = data.ByRace.filter((d) => d.date === selectedDay).map(
     getPopulationFromRate
@@ -49,7 +49,7 @@ export default function ByRace(_props) {
   return (
     <>
       <h3>By Race</h3>
-      <p>{new Date(selectedDay).toDateString()}</p>
+      <h6>Showing data for {new Date(selectedDay).toDateString()}</h6>
       <p>What is the racial make-up of New York City?</p>
       <PopulationValues
         data={dataForDay}
@@ -58,6 +58,7 @@ export default function ByRace(_props) {
         keys={raceIndexes}
         total={totalPopulation}
       />
+      <br />
       <p>
         How does the case, hospitalization, and death percentages deviate from
         the total population?
@@ -69,6 +70,8 @@ export default function ByRace(_props) {
         populationEliminator={(d) => d["TOTALPOPCASE"]}
         totalPopulation={totalPopulation}
       />
+      <br />
+      <p>What percent of cases result in death or hospitalization?</p>
       {/*<Population data={dataForDay} height={500} width={1200} />*/}
       <FlexRow flex="flex-start">
         <ByRaceBarChart data={dataForDay} />

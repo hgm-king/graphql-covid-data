@@ -1,14 +1,5 @@
 {
   "files": [
-    "totals/antibody-by-age.csv",
-    "totals/antibody-by-boro.csv",
-    "totals/antibody-by-modzcta.csv",
-    "totals/antibody-by-poverty.csv",
-    "totals/antibody-by-sex.csv",
-    "totals/by-age.csv",
-    "totals/by-boro.csv",
-    "totals/by-poverty.csv",
-    "totals/by-race.csv",
     "totals/by-sex.csv",
     "totals/data-by-modzcta.csv",
     "totals/deaths-by-boro-age.csv",
