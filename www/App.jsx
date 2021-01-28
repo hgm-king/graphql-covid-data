@@ -26,7 +26,7 @@ const client = createClient({
 export default function App(_props) {
   const navs = ["Antibodies", "ByRace", "ByZipcode"];
 
-  const [selected, setSelected] = useState(navs[2]);
+  const [selected, setSelected] = useState(navs[1]);
 
   const main = css`
     color: ${theme.colors.black};

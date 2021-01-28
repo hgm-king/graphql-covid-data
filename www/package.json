@@ -44,8 +44,11 @@
     "emotion": "^11.0.0",
     "graphql": "^15.4.0",
     "husky": "^4.3.8",
+    "leaflet": "^1.7.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-leaflet": "^3.0.5",
+    "react-leaflet-choropleth": "^2.0.1",
     "urql": "^1.11.4"
   }
 }

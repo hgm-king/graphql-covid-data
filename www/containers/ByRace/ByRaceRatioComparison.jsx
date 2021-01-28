@@ -12,45 +12,74 @@ const containerStyle = css`
 `;
 
 export default function ByRaceRatioComparison(props) {
-  const { data, keys } = props;
+  const { data, keys, indexEliminator, populationEliminator, totalPopulation } = props;
 
-  const makePie = (row, i) => {
-    const title = row.RACEGROUP;
+  /*
+  deathCount : [
+    {index: white,
+    data: 100},
+    {index: asian,
+    data: 101}
+  ]
+  */
 
-    const totals = {};
-    const data = keys.reduce((acc, key) => {
-      if (!totals[title]) {
-        totals[title] = 0;
-      }
-      totals[title] += row[key];
-      acc.push({ data: row[key], index: key, title });
-      return acc;
-    }, []);
+  const initializedDataObj = keys.reduce((acc, key) => {
+    acc[key] = {data: [], total: 0};
+    return acc;
+  }, {})
 
+  const pieData = data.reduce((acc, d) => {
+    const index = indexEliminator(d);
+    keys.forEach((key) => {
+      acc[key].data.push({
+        index,
+        value: d[key],
+        population: populationEliminator(d) / totalPopulation
+      })
+      acc[key].total += d[key]
+    })
+    return acc;
+  }, initializedDataObj)
+
+  const makeSummary = (total) => (d, i) => {
+    const percent = (100 * (d.value / total)).toFixed(1);
+    const percentDelta = (100 * ((d.value / total) - d.population)).toFixed(1);
+    const deltaColor = percentDelta < 0 ? theme.colors.success : theme.colors.danger
+    const trendArrow = percentDelta < 0 ? "▲" : "▼"
     return (
       <React.Fragment key={i}>
-        <p>{title}</p>
+      <p>{d.index}: {d.value} ({percent}%) <span style={{color: deltaColor}}>{trendArrow}{percentDelta}</span></p>
+      </React.Fragment>
+    )
+  }
+
+  const makePie = (key, i) => {
+    return (
+      <div key={i}>
+        <h6>{key}</h6>
         <PieChart
-          data={data}
-          keys={keys}
-          valueEliminator={(d) => d.data}
-          labelEliminator={(d) => ((100 * d.data) / totals[d.title]).toFixed(1)}
-          width={100}
-          height={100}
-          outerRadius={50}
+          data={pieData[key].data}
+          valueEliminator={(d) => d.value}
+          labelEliminator={(d) => d.index}
+          width={300}
+          height={300}
+          outerRadius={150}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
           colors={theme.palettes.DataVizPalette}
           backgroundColor={"transparent"}
           backgroundRadius={14}
         />
-      </React.Fragment>
+        <div>
+          {pieData[key].data.map(makeSummary(pieData[key].total))}
+        </div>
+      </div>
     );
   };
 
   return (
     <div className={containerStyle}>
-      <FlexRow flex="space-between" direction="column">
-        {data.slice().reverse().map(makePie)}
+      <FlexRow flex="space-between">
+        {keys.map(makePie)}
       </FlexRow>
     </div>
   );

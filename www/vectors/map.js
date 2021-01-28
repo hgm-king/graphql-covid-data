@@ -13,19 +13,15 @@ class Map {
       .attr("height", height);
 
     // turn our geodata into a lovely map
-    this.props.path = d3
-      .geoPath()
-      .projection(
-        d3
-          .geoConicConformal()
-          .parallels([33, 45])
-          .rotate([96, -39])
-          .fitSize([width, height], data)
-      );
+    this.props.path = d3.geoPath()
+      .projection(d3.geoConicConformal()
+      .parallels([33, 45])
+      .rotate([96, -39])
+      // .scale(1500)
+      .fitSize([width, height], data))
 
     // build a tooltip for our map
-    this.props.tooltip = this.svg
-      .append("div")
+    this.props.tooltip = this.svg.append("div")
       .attr("class", "tooltip")
       .style("opacity", 1);
 
@@ -38,20 +34,19 @@ class Map {
       props: { height, width, data, valueHandler, tooltip, path },
     } = this;
 
-    console.log(data.features);
+    console.log(data);
 
-    svg
-      .selectAll("path")
-      .data(data.features)
-      .join((enter) =>
-        enter
-          .append("path")
-          .attr("d", path)
-          .attr("fill", "#404040")
-          .attr("stroke", "#f0f0f0")
-          .attr("d", path)
-      );
+    svg.selectAll("path")
+        .data(data.features)
+        .join(
+          enter => enter.append("path")
+            .attr("d", path)
+            .attr( "fill", "#fff")
+            .attr( "stroke", 'red')
+            // .attr("d", path)
+        );
   }
+
 }
 
 export default Map;

@@ -136,7 +136,7 @@ workflows:
   version: 2
   build-test:
     jobs:
-      # - build-etl-image
+      - build-etl-image
       # - build-and-test-server:
       #     filters:
       #       tags:

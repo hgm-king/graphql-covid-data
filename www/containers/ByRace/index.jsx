@@ -27,14 +27,16 @@ export default function ByRace(_props) {
   // const field = "DEATHRATEADJ";
   // const getField = (d) => d[field];
   const getIndex = (d) => d.RACEGROUP;
+  const selectedDay = "2021-01-22T18:04:29Z";
 
   const dataForDay = data.ByRace.filter(
-    (d) => d.date === "2021-01-17T19:53:43Z"
+    (d) => d.date === selectedDay
   ).map(getPopulationFromRate);
 
+  const totalPopulation = dataForDay.reduce((acc, d) => acc + d["TOTALPOPCASE"], 0);
+
   const pieKeys = Object.keys(dataForDay[0])
-    .filter((key) => key.match(/COUNT/))
-    .filter((key) => !key.match(/CASE/));
+    .filter((key) => key.match(/COUNT/));
 
   const raceIndexes = [...new Set(data.ByRace.map(getIndex).sort())].filter(
     (d) => d
@@ -43,16 +45,20 @@ export default function ByRace(_props) {
   return (
     <>
       <h3>By Race</h3>
-      <p>What is the racial make-up of the city?</p>
+      <p>{(new Date(selectedDay)).toDateString()}</p>
+      <p>What is the racial make-up of New York City?</p>
       <PopulationValues
         data={dataForDay}
         index={"RACEGROUP"}
         field={"TOTALPOPCASE"}
+        keys={raceIndexes}
+        total={totalPopulation}
       />
+      <p>How does the case, hospitalization, and death percentages deviate from the total population?</p>
+      <ByRaceRatioComparison data={dataForDay} keys={pieKeys} indexEliminator={getIndex} populationEliminator={d => d["TOTALPOPCASE"]} totalPopulation={totalPopulation} />
       {/*<Population data={dataForDay} height={500} width={1200} />*/}
       <FlexRow flex="flex-start">
         <ByRaceBarChart data={dataForDay} />
-        <ByRaceRatioComparison data={dataForDay} keys={pieKeys} />
       </FlexRow>
       <ByRaceTrendLineChart data={data.ByRace} keys={raceIndexes} />
       <ByRacePieChart data={data.ByRace} keys={pieKeys} />

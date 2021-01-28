@@ -13,7 +13,6 @@ export default function ByRacePieChart(props) {
   return (
     <PieChart
       data={data.filter((d) => d.date === "2021-01-05T17:57:20Z")}
-      keys={raceIndexes}
       valueEliminator={(d) => d.CASERATEADJ}
       labelEliminator={indexEliminator}
       width={1000}
