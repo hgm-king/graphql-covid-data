@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import theme from "../theme";
 
 class Map {
   constructor(containerEl, props) {
@@ -10,7 +11,8 @@ class Map {
       .select(containerEl)
       .append("svg")
       .attr("width", width)
-      .attr("height", height);
+      .attr("height", height)
+      // .attr("fill", "red");
 
     // turn our geodata into a lovely map
     this.props.path = d3.geoPath().projection(
@@ -47,9 +49,8 @@ class Map {
           enter
             .append("path")
             .attr("d", path)
-            .attr("fill", "#fff")
-            .attr("stroke", "red")
-        // .attr("d", path)
+            .attr("fill", theme.colors.white)
+            .attr("stroke", theme.colors.black)
       );
   }
 }

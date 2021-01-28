@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import * as d3 from "d3";
 
+import Loader from "../../components/Loader";
+import Error from "../../components/Error";
+import FlexRow from "../../components/FlexRow";
 import Map from "../../components/Map";
 
 export default function ByZipcodeContainer(props) {
@@ -13,9 +16,13 @@ export default function ByZipcodeContainer(props) {
     d3.json(mapUrl).then(setGeoJson);
   }, []);
 
-  return geoJson ? (
-    <Map data={geoJson} width={1000} height={600} />
-  ) : (
-    <h4>Loading Map..</h4>
-  );
+  // if (fetching) return <Loader />;
+  // if (error) return <Error error={error} />;
+  if (!geoJson) return <p>Fetching map ...</p>;
+
+  return (
+    <FlexRow flex={'space-between'}>
+      <Map data={geoJson} width={600} height={600} />
+    </FlexRow>
+  )
 }
