@@ -12,7 +12,13 @@ const containerStyle = css`
 `;
 
 export default function ByRaceRatioComparison(props) {
-  const { data, keys, indexEliminator, populationEliminator, totalPopulation } = props;
+  const {
+    data,
+    keys,
+    indexEliminator,
+    populationEliminator,
+    totalPopulation,
+  } = props;
 
   /*
   deathCount : [
@@ -24,9 +30,9 @@ export default function ByRaceRatioComparison(props) {
   */
 
   const initializedDataObj = keys.reduce((acc, key) => {
-    acc[key] = {data: [], total: 0};
+    acc[key] = { data: [], total: 0 };
     return acc;
-  }, {})
+  }, {});
 
   const pieData = data.reduce((acc, d) => {
     const index = indexEliminator(d);
@@ -34,24 +40,31 @@ export default function ByRaceRatioComparison(props) {
       acc[key].data.push({
         index,
         value: d[key],
-        population: populationEliminator(d) / totalPopulation
-      })
-      acc[key].total += d[key]
-    })
+        population: populationEliminator(d) / totalPopulation,
+      });
+      acc[key].total += d[key];
+    });
     return acc;
-  }, initializedDataObj)
+  }, initializedDataObj);
 
   const makeSummary = (total) => (d, i) => {
     const percent = (100 * (d.value / total)).toFixed(1);
-    const percentDelta = (100 * ((d.value / total) - d.population)).toFixed(1);
-    const deltaColor = percentDelta < 0 ? theme.colors.success : theme.colors.danger
-    const trendArrow = percentDelta < 0 ? "▲" : "▼"
+    const percentDelta = (100 * (d.value / total - d.population)).toFixed(1);
+    const deltaColor =
+      percentDelta < 0 ? theme.colors.success : theme.colors.danger;
+    const trendArrow = percentDelta < 0 ? "▼" : "▲";
     return (
       <React.Fragment key={i}>
-      <p>{d.index}: {d.value} ({percent}%) <span style={{color: deltaColor}}>{trendArrow}{percentDelta}</span></p>
+        <p>
+          {d.index}: {d.value} ({percent}%){" "}
+          <span style={{ color: deltaColor }}>
+            {trendArrow}
+            {percentDelta}
+          </span>
+        </p>
       </React.Fragment>
-    )
-  }
+    );
+  };
 
   const makePie = (key, i) => {
     return (
@@ -69,18 +82,14 @@ export default function ByRaceRatioComparison(props) {
           backgroundColor={"transparent"}
           backgroundRadius={14}
         />
-        <div>
-          {pieData[key].data.map(makeSummary(pieData[key].total))}
-        </div>
+        <div>{pieData[key].data.map(makeSummary(pieData[key].total))}</div>
       </div>
     );
   };
 
   return (
     <div className={containerStyle}>
-      <FlexRow flex="space-between">
-        {keys.map(makePie)}
-      </FlexRow>
+      <FlexRow flex="space-between">{keys.map(makePie)}</FlexRow>
     </div>
   );
 }

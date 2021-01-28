@@ -8,7 +8,7 @@
     "serve": "webpack-dev-server --host 0.0.0.0",
     "format::write": "npx prettier --write .",
     "format": "npx prettier --check .",
-    "lint": "npm eslint ."
+    "lint": "npx eslint ."
   },
   "author": "HG King",
   "license": "ISC",
