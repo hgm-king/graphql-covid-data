@@ -20,7 +20,7 @@ from sqlalchemy import create_engine, Integer
 
 os.environ['LOCAL_ROOT'] = '/app/data'
 
-engine = create_engine("postgresql+psycopg2://".format(os.environ['DATABASE_URL']))
+engine = create_engine("postgresql+psycopg2://{}".format(os.environ['DATABASE_URL']))
 
 
 def get_table_name_from_path(path):
@@ -143,6 +143,15 @@ def load_github_file_to_database(engine, path, filetype, table_name):
             all_data_from_history_df.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
     except:
         print("Could not save table {}".format(table_name))
+
+def save_singular_file(url, table_name):
+    data_set = CSVDataSet(filepath=url)
+    data = data_set.load()
+    new_index = range(len(data))
+    data['id'] = new_index
+    data = data.set_index('id')
+    with engine.connect() as conn:
+        data.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
 
 config_path = '/src/config.json'
 with open(config_path) as f:
