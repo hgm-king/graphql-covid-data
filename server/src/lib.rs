@@ -1,4 +1,5 @@
 // lib exports the main graphql query made with juniper
+#![recursion_limit="512"]
 
 #[macro_use]
 extern crate diesel;
