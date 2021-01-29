@@ -47,7 +47,9 @@ impl QueryRoot {
         Ok(by_race)
     }
 
-    fn DataByModzcta(_context: &Context) -> FieldResult<Vec<DataByModzctaModel::DataByModzctaWithZctaT>> {
+    fn DataByModzcta(
+        _context: &Context,
+    ) -> FieldResult<Vec<DataByModzctaModel::DataByModzctaWithZctaT>> {
         let connection = establish_connection();
         let by_modzcta = DataByModzctaModel::read(&connection)
             .into_iter()
