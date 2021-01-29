@@ -23,6 +23,7 @@ os.environ['LOCAL_ROOT'] = '/app/data'
 engine = create_engine(os.environ['DATABASE_URL_ETL'])
 
 
+# These functions are utilities
 def get_table_name_from_path(path):
     [folder, name] = path.split('/')
     return name.title().replace('-', '')
@@ -30,8 +31,8 @@ def get_table_name_from_path(path):
 def format_date_for_url(date):
     return date.replace('/', '_')
 
-def format_local_path(root, path, date, filetype):
-    return '{}/{}/{}.{}'.format(root, path, format_date_for_url(date), filetype)
+def format_local_path(root, path, filetype):
+    return '{}/{}.{}'.format(root, path, filetype)
 
 def create_history_url(path, page):
     return 'https://api.github.com/repos/nychealth/coronavirus-data/commits?path={}&page={}'.format(path, page)
@@ -39,9 +40,60 @@ def create_history_url(path, page):
 def create_raw_data_url(sha, path):
     return 'https://raw.githubusercontent.com/nychealth/coronavirus-data/{}/{}'.format(sha, path)
 
+def create_regular_data_url(path):
+    return 'https://raw.githubusercontent.com/nychealth/coronavirus-data/master/{}'.format(path)
+
 # given an array of dataframes, we concatenate them together to make one big df
 def concat_saved_files(saved_files):
     return pd.concat(saved_files)
+
+def clean_data_files(files):
+    files = filter(lambda df : 0 < len(df), files)
+    return files
+
+def cleanup_data_frame(df):
+    try:
+        df = df.drop('<<<<<<< HEAD', axis=1)
+    except:
+        print("table had no merge conflicts")
+
+    new_index = range(len(df))
+    df['id'] = new_index
+    df = df.set_index('id')
+    df = df.dropna()
+
+    return df
+
+def save_dataframe_to_database(engine, df, table_name):
+    try:
+        with engine.connect() as conn:
+            df.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
+    except:
+        print("Could not save table {}".format(table_name))
+
+# given a url to a raw file on github and a date the file was commited on
+# saves the file as a csv and returns a dataframe
+def get_csv_from_github(url, date, local_path):
+    # print('Loading and saving data for {} to {}'.format(date, local_path))
+    try:
+        data_set = CSVDataSet(filepath=url)
+        data = data_set.load()
+
+        # print('{} columns found'.format(len(data.columns)))
+        if date != "":
+            dates = np.repeat(date, len(data))
+            data['date'] = dates
+
+        if local_path != "":
+            local_data_set = CSVDataSet(filepath=local_path)
+            local_data_set.save(data)
+
+        return data
+    except Exception as exception:
+        print('Error: could not get {}'.format(url))
+        print(exception)
+        return []
+
 
 # given a json object that represents the one commit in a git repo and a file path
 # this will return a tuple of the raw url of the given path as well as the date that it was commited on
@@ -63,38 +115,14 @@ def get_history_data_from_git(url, path):
         print('Error: could not get {}'.format(url))
         return []
 
-# given a url to a raw file on github and a date the file was commited on
-# saves the file as a csv and returns a dataframe
-def save_csv_from_github(url, date):
-    #spits out root/path/date.filetype
-    local_path = format_local_path(os.environ['LOCAL_ROOT'], path, date, filetype)
-
-    # print('Loading and saving data for {} to {}'.format(date, local_path))
-    try:
-        data_set = CSVDataSet(filepath=url)
-        data = data_set.load()
-
-        # print('{} columns found'.format(len(data.columns)))
-
-        dates = np.repeat(date, len(data))
-        data['date'] = dates
-
-        local_data_set = CSVDataSet(filepath=local_path)
-
-        # local_data_set.save(data)
-
-        return data
-    except Exception as exception:
-        print('Error: could not get {}'.format(url))
-        print(exception)
-        return []
-
 def map_over_commits_for_file(history_data):
-    return [save_csv_from_github(url, date) for (url, date) in history_data]
+    return [get_csv_from_github(url, date, "") for (url, date) in history_data]
 
 # given a path, we get every version of the file from the git history
 # and return each version as an array of dataframes
-def load_and_save_csv_data_from_github_file(path, filetype):
+def get_each_commit_for_csv(path):
+    filetype = 'csv'
+
     url = '{}.{}'.format(path, filetype)
 
     has_commits = True
@@ -118,47 +146,30 @@ def load_and_save_csv_data_from_github_file(path, filetype):
 
     return files_saved
 
-def clean_data_files(files):
-    files = filter(lambda df : 0 < len(df), files)
-    return files
-
-def load_github_file_to_database(engine, path, filetype, table_name):
-    saved_files = load_and_save_csv_data_from_github_file(path, filetype)
+def save_file_commits_to_database(engine, path, filetype, table_name):
+    saved_files = get_each_commit_for_csv(path)
     cleaned_files = clean_data_files(saved_files)
     all_data_from_history_df = concat_saved_files(cleaned_files)
+    cleaned_df = cleanup_data_frame(all_data_from_history_df)
+    save_dataframe_to_database(engine, cleaned_df, table_name)
 
-    try:
-        all_data_from_history_df = all_data_from_history_df.drop('<<<<<<< HEAD', axis=1)
-    except:
-        print("table had no merge conflicts")
+def save_singular_file_to_database(engine, path, filetype, table_name):
+    url = create_regular_data_url("{}.{}".format(path, filetype))
 
-    new_index = range(len(all_data_from_history_df))
-    all_data_from_history_df['id'] = new_index
-    all_data_from_history_df = all_data_from_history_df.set_index('id')
+    #spits out root/path/date.filetype
+    local_path = format_local_path(os.environ['LOCAL_ROOT'], path, filetype)
+    data = get_csv_from_github(url, "", local_path)
+    cleaned_df = cleanup_data_frame(data)
+    save_dataframe_to_database(engine, cleaned_df, table_name)
 
-    all_data_from_history_df = all_data_from_history_df.dropna()
 
-    try:
-        with engine.connect() as conn:
-            all_data_from_history_df.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
-    except:
-        print("Could not save table {}".format(table_name))
-
-def save_singular_file(url, table_name):
-    data_set = CSVDataSet(filepath=url)
-    data = data_set.load()
-    new_index = range(len(data))
-    data['id'] = new_index
-    data = data.set_index('id')
-    with engine.connect() as conn:
-        data.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
-
-config_path = '/src/config.json'
+#
+config_path = './src/config.json'
 with open(config_path) as f:
     data = json.load(f)
-
-for file in data['files']:
+#
+for file in data['singular']:
     [path, filetype] = file.split('.')
     table_name = get_table_name_from_path(path)
     print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-    data = load_github_file_to_database(engine, path, filetype, table_name)
+    data = save_singular_file_to_database(engine, path, filetype, table_name)

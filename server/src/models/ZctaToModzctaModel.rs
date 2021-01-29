@@ -12,7 +12,7 @@ use diesel::prelude::*;
 #[derive(Debug,GraphQLObject,Insertable,Queryable,)]
 #[table_name="ZctaToModzcta"]
 pub struct ZctaToModzctaT {
-    pub index: i64,
+    pub id: i32,
     pub ZCTA: Option<i64>,
     pub MODZCTA: Option<i64>,
 }
