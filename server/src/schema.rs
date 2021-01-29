@@ -356,8 +356,8 @@ table! {
 table! {
     ZctaToModzcta (id) {
         id -> Int4,
-        ZCTA -> Nullable<Int8>,
-        MODZCTA -> Nullable<Int8>,
+        ZCTA -> Nullable<Float8>,
+        MODZCTA -> Nullable<Float8>,
     }
 }
 
