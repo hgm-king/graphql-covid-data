@@ -11,12 +11,13 @@ const setVis = (v) => {
 };
 
 export default function Map(props) {
-  const { data, height, width } = props;
+  const { data, height, width, valueHandler } = props;
 
   const options = {
     data,
     height,
     width,
+    valueHandler
   };
 
   return (

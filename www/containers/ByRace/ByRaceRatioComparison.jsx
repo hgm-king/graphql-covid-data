@@ -5,10 +5,13 @@ import PieChart from "../../components/charts/PieChart";
 import FlexRow from "../../components/FlexRow";
 
 import theme from "../../theme/";
+import { percent } from "../../utils/maths-tools";
 
-const containerStyle = css`
-  margin-top: 48px;
-  margin-left: 64px;
+const pieWrapperStyle = css`
+  margin-bottom: 64px;
+  background-color: #f5f2e3;
+  background-radius: 14px;
+  padding: 24px;
 `;
 
 export default function ByRaceRatioComparison(props) {
@@ -36,6 +39,7 @@ export default function ByRaceRatioComparison(props) {
 
   const pieData = data.reduce((acc, d) => {
     const index = indexEliminator(d);
+    // we want an object of arrays where each key corresponds to a pie chart
     keys.forEach((key) => {
       acc[key].data.push({
         index,
@@ -47,49 +51,69 @@ export default function ByRaceRatioComparison(props) {
     return acc;
   }, initializedDataObj);
 
-  const makeSummary = (total) => (d, i) => {
-    const percent = (100 * (d.value / total)).toFixed(1);
-    const percentDelta = (100 * (d.value / total - d.population)).toFixed(1);
-    const deltaColor =
-      percentDelta < 0 ? theme.colors.success : theme.colors.danger;
-    const trendArrow = percentDelta < 0 ? "▼" : "▲";
-    return (
-      <React.Fragment key={i}>
-        <p>
-          {d.index}: {d.value} ({percent}%){" "}
-          <span style={{ color: deltaColor }}>
-            {trendArrow}
-            {percentDelta}
-          </span>
-        </p>
-      </React.Fragment>
-    );
-  };
-
-  const makePie = (key, i) => {
-    return (
-      <div key={i}>
-        <h6>{key}</h6>
-        <PieChart
-          data={pieData[key].data}
-          valueEliminator={(d) => d.value}
-          labelEliminator={(d) => d.index}
-          width={300}
-          height={300}
-          outerRadius={150}
-          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-          colors={theme.palettes.DataVizPalette}
-          backgroundColor={"transparent"}
-          backgroundRadius={14}
-        />
-        <div>{pieData[key].data.map(makeSummary(pieData[key].total))}</div>
-      </div>
-    );
-  };
+  const makeRatioPie = (height, width) => (key, i) => <RatioPie
+    key={i}
+    title={key}
+    height={height}
+    width={width}
+    data={pieData[key]} />
 
   return (
-    <div className={containerStyle}>
-      <FlexRow flex="space-between">{keys.map(makePie)}</FlexRow>
+      <FlexRow flex="space-between" wrap="wrap">
+        {keys.map(makeRatioPie(300, 300))}
+      </FlexRow>
+  );
+}
+
+function RatioPie(props)  {
+  const {title, width, height, data} = props;
+
+  const makeSummary = (total) => (d, i) => <Summary
+      key={i}
+      d={d}
+      total={total} />
+
+  return (
+    <div className={pieWrapperStyle}>
+      <h6>{title}</h6>
+      <PieChart
+        data={data.data}
+        valueEliminator={(d) => d.value}
+        labelEliminator={(d) => d.index}
+        width={width}
+        height={height}
+        outerRadius={width / 2}
+        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+        colors={theme.palettes.DataVizPalette}
+        backgroundColor={"transparent"}
+        backgroundRadius={0}
+      />
+      <div>{data.data.map(makeSummary(data.total))}</div>
     </div>
+  );
+};
+
+function Summary(props)  {
+  const { d, total } = props;
+
+  const percentValue = percent(d.value / total, 1);
+  const percentDelta = percent(d.value / total - d.population, 1);
+
+  const deltaColor = percentDelta < 0
+    ? theme.colors.success
+    : theme.colors.danger;
+
+  const trendArrow = percentDelta < 0
+    ? "▼"
+    : "▲";
+
+  return (
+    <p>
+      {d.index}: {d.value} ({percentValue}%){" "}
+      <span style={{ color: deltaColor }}>
+        {trendArrow}
+        {percentDelta}
+      </span>
+    </p>
   );
 }

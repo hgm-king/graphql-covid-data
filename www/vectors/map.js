@@ -20,7 +20,6 @@ class Map {
         .geoConicConformal()
         .parallels([33, 45])
         .rotate([96, -39])
-        // .scale(1500)
         .fitSize([width, height], data)
     );
 
@@ -36,7 +35,7 @@ class Map {
   update() {
     const {
       svg,
-      props: { data, path },
+      props: { data, path, valueHandler },
     } = this;
 
     console.log(data);
@@ -49,7 +48,7 @@ class Map {
           enter
             .append("path")
             .attr("d", path)
-            .attr("fill", theme.colors.white)
+            .attr("fill", d => valueHandler(d.properties))
             .attr("stroke", theme.colors.black)
       );
   }

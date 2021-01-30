@@ -14,6 +14,8 @@ import PopulationValues from "./PopulationValues";
 import ByRaceQuery from "../../queries/by-race";
 import { getPopulationFromRate } from "./calculations";
 
+import { byRaceBarChartStyle, populationValuesStyle, byRaceRatioComparisonStyle, byRaceTrendLineChartStyle } from './styles';
+
 export default function ByRace(_props) {
   const [result, _reexecuteQuery] = useQuery({
     query: ByRaceQuery,
@@ -27,11 +29,14 @@ export default function ByRace(_props) {
   // const field = "DEATHRATEADJ";
   // const getField = (d) => d[field];
   const getIndex = (d) => d.RACEGROUP;
-  const selectedDay = "2021-01-27T18:00:33Z";
+
+  const selectedDay = data.ByRace[data.ByRace.length - 1].date;
 
   const dataForDay = data.ByRace.filter((d) => d.date === selectedDay).map(
     getPopulationFromRate
   );
+
+  if ( !dataForDay )  { return <p>No Data for {selectedDay}</p> }
 
   const totalPopulation = dataForDay.reduce(
     (acc, d) => acc + d["TOTALPOPCASE"],
@@ -51,33 +56,38 @@ export default function ByRace(_props) {
       <h3>By Race</h3>
       <h6>Showing data for {new Date(selectedDay).toDateString()}</h6>
       <p>What is the racial make-up of New York City?</p>
-      <PopulationValues
-        data={dataForDay}
-        index={"RACEGROUP"}
-        field={"TOTALPOPCASE"}
-        keys={raceIndexes}
-        total={totalPopulation}
-      />
-      <br />
+      <div className={populationValuesStyle}>
+        <PopulationValues
+          data={dataForDay}
+          index={"RACEGROUP"}
+          field={"TOTALPOPCASE"}
+          keys={raceIndexes}
+          total={totalPopulation}
+        />
+      </div>
       <p>
         How does the case, hospitalization, and death percentages deviate from
         the total population?
       </p>
-      <ByRaceRatioComparison
-        data={dataForDay}
-        keys={pieKeys}
-        indexEliminator={getIndex}
-        populationEliminator={(d) => d["TOTALPOPCASE"]}
-        totalPopulation={totalPopulation}
-      />
-      <br />
+      <div className={byRaceRatioComparisonStyle}>
+        <ByRaceRatioComparison
+          data={dataForDay}
+          keys={pieKeys}
+          indexEliminator={getIndex}
+          populationEliminator={(d) => d["TOTALPOPCASE"]}
+          totalPopulation={totalPopulation}
+        />
+      </div>
       <p>What percent of cases result in death or hospitalization?</p>
       {/*<Population data={dataForDay} height={500} width={1200} />*/}
-      <FlexRow flex="flex-start">
+      <div className={byRaceBarChartStyle}>
         <ByRaceBarChart data={dataForDay} />
-      </FlexRow>
-      <ByRaceTrendLineChart data={data.ByRace} keys={raceIndexes} />
-      <ByRacePieChart data={data.ByRace} keys={pieKeys} />
+      </div>
+      <div className={byRaceTrendLineChartStyle}>
+        <ByRaceTrendLineChart data={data.ByRace} keys={raceIndexes} />
+      </div>
+      {/*<ByRacePieChart data={data.ByRace} keys={pieKeys} />*/}
+      <h6>Statement from NYC Dept. of Health</h6>
       <p>
         Differences in health outcomes among racial and ethnic groups are due to
         long-term institutional and personal biases against people of color.

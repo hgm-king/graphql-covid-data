@@ -1,4 +1,5 @@
 import React from "react";
+import ParentSize from '@visx/responsive/lib/components/ParentSize';
 
 import PieChart from "../../components/charts/PieChart";
 import FlexRow from "../../components/FlexRow";
@@ -24,24 +25,48 @@ export default function PopulationValues(props) {
     </div>
   );
 
+  const minWidth = 400;
+  const maxWidth = 700;
+
+  const boundWidth = (width) => width > maxWidth
+    ? maxWidth
+    : width < minWidth
+    ? minWidth
+    : width
+
   return (
     <>
-      <FlexRow flex="flex-start">
-        <PieChart
-          data={data}
-          keys={keys}
-          valueEliminator={(d) => d[field]}
-          labelEliminator={(d) => d[index]}
-          width={500}
-          height={500}
-          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-          colors={theme.palettes.DataVizPalette}
-          backgroundColor={"#f5f2e3"}
-          backgroundRadius={14}
-        />
-        <FlexRow direction="column" flex="space-between">
-          {dataWithTotal.map(makePopulationSection)}
-        </FlexRow>
+      <FlexRow flex="flex-start" wrap="wrap">
+        <div style={{width: '50%', minWidth}}>
+          <ParentSize>
+            {({ width, height }) => (
+              <PieChart
+                data={data}
+                keys={keys}
+                valueEliminator={(d) => d[field]}
+                labelEliminator={(d) => d[index]}
+                width={boundWidth(width)}
+                height={boundWidth(width)}
+                outerRadius={boundWidth(width) / 2}
+                margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+                colors={theme.palettes.DataVizPalette}
+                backgroundColor={theme.charts.background}
+                backgroundRadius={theme.charts.radius}
+              />
+            )}
+          </ParentSize>
+        </div>
+        <div style={{width: '50%'}}>
+          <ParentSize>
+            {({ width, height }) => {
+              console.log(width);
+              return (
+              <FlexRow direction={width > 400 ? "column" : "row"} flex="space-between">
+                {dataWithTotal.map(makePopulationSection)}
+              </FlexRow>
+            )}}
+          </ParentSize>
+        </div>
       </FlexRow>
     </>
   );

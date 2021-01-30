@@ -13,6 +13,10 @@ const colors = {
 const theme = {
   colors,
   palettes,
+  charts: {
+    background: c["PAPER"],
+    radius: 14
+  }
 };
 
 export default theme;

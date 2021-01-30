@@ -1,0 +1,20 @@
+const DataByModzctaQuery = `
+{
+  DataByModzcta {
+    id
+    MODIFIEDZCTA
+    ZCTA
+    NEIGHBORHOODNAME
+    BOROUGHGROUP
+    COVIDCASECOUNT
+    COVIDCASERATE
+    POPDENOMINATOR
+    COVIDDEATHCOUNT
+    COVIDDEATHRATE
+    PERCENTPOSITIVE
+    TOTALCOVIDTESTS
+    date
+  }
+}
+`;
+export default DataByModzctaQuery;

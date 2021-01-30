@@ -55,8 +55,8 @@ export default function ByRaceLineTrendLineChart(props) {
         margin={{ top: 64, right: 64, bottom: 64, left: 64 }}
         colors={theme.palettes.DataVizPalette}
         legendFormatter={(d) => d}
-        backgroundColor={"#f5f2e3"}
-        backgroundRadius={14}
+        backgroundColor={theme.charts.background}
+        backgroundRadius={theme.charts.radius}
       />
     </div>
   );
