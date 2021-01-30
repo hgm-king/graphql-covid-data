@@ -29,6 +29,7 @@ pub fn read(conn: &PgConnection) -> Vec<DataByModzctaAndZctaTuple> {
     DataByModzcta::table
         .left_join(ZctaToModzcta::table.on(ZctaToModzcta::MODZCTA.eq(DataByModzcta::MODIFIED_ZCTA)))
         .filter(DataByModzcta::date.eq("2020-05-18T19:22:45Z"))
+        .order(ZctaToModzcta::ZCTA.asc())
         .load::<DataByModzctaAndZctaTuple>(conn)
         .expect("Error loading object")
 }

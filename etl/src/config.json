@@ -1,29 +1,16 @@
 {
   "files": [
+    "totals/by-age.csv",
+    "totals/by-boro.csv",
+    "totals/by-poverty.csv",
+    "totals/by-race.csv",
     "totals/by-sex.csv",
     "totals/data-by-modzcta.csv",
     "totals/deaths-by-boro-age.csv",
     "totals/deaths-by-race-age.csv",
     "totals/deaths-by-underlying-conditions.csv",
-    "totals/group-cases-by-boro.csv",
-    "totals/group-data-by-boro.csv",
-    "totals/group-death-by-boro.csv",
-    "totals/group-hosp-by-boro.csv",
-    "totals/probable-confirmed-by-age.csv",
-    "totals/probable-confirmed-by-boro.csv",
-    "totals/probable-confirmed-by-location.csv",
-    "totals/probable-confirmed-by-race.csv",
-    "totals/probable-confirmed-by-sex.csv",
     "totals/summary.csv"
   ],
   "singular": [
-    "trends/testrate-by-modzcta.csv",
-    "trends/cases-by-day.csv",
-    "trends/caserate-by-modzcta.csv",
-    "trends/percentpositive-by-modzcta.csv",
-    "trends/hosp-by-day.csv",
-    "trends/deaths-by-day.csv",
-    "trends/data-by-day.csv",
-    "Geography-resources/ZCTA-to-MODZCTA.csv"
   ]
 }
