@@ -51,27 +51,29 @@ export default function ByRaceRatioComparison(props) {
     return acc;
   }, initializedDataObj);
 
-  const makeRatioPie = (height, width) => (key, i) => <RatioPie
-    key={i}
-    title={key}
-    height={height}
-    width={width}
-    data={pieData[key]} />
+  const makeRatioPie = (height, width) => (key, i) => (
+    <RatioPie
+      key={i}
+      title={key}
+      height={height}
+      width={width}
+      data={pieData[key]}
+    />
+  );
 
   return (
-      <FlexRow flex="space-between" wrap="wrap">
-        {keys.map(makeRatioPie(300, 300))}
-      </FlexRow>
+    <FlexRow flex="space-between" wrap="wrap">
+      {keys.map(makeRatioPie(300, 300))}
+    </FlexRow>
   );
 }
 
-function RatioPie(props)  {
-  const {title, width, height, data} = props;
+function RatioPie(props) {
+  const { title, width, height, data } = props;
 
-  const makeSummary = (total) => (d, i) => <Summary
-      key={i}
-      d={d}
-      total={total} />
+  const makeSummary = (total) => (d, i) => (
+    <Summary key={i} d={d} total={total} />
+  );
 
   return (
     <div className={pieWrapperStyle}>
@@ -91,21 +93,18 @@ function RatioPie(props)  {
       <div>{data.data.map(makeSummary(data.total))}</div>
     </div>
   );
-};
+}
 
-function Summary(props)  {
+function Summary(props) {
   const { d, total } = props;
 
   const percentValue = percent(d.value / total, 1);
   const percentDelta = percent(d.value / total - d.population, 1);
 
-  const deltaColor = percentDelta < 0
-    ? theme.colors.success
-    : theme.colors.danger;
+  const deltaColor =
+    percentDelta < 0 ? theme.colors.success : theme.colors.danger;
 
-  const trendArrow = percentDelta < 0
-    ? "▼"
-    : "▲";
+  const trendArrow = percentDelta < 0 ? "▼" : "▲";
 
   return (
     <p>

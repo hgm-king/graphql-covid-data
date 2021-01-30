@@ -1,5 +1,5 @@
 import React from "react";
-import ParentSize from '@visx/responsive/lib/components/ParentSize';
+import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
 import PieChart from "../../components/charts/PieChart";
 import FlexRow from "../../components/FlexRow";
@@ -28,16 +28,13 @@ export default function PopulationValues(props) {
   const minWidth = 400;
   const maxWidth = 700;
 
-  const boundWidth = (width) => width > maxWidth
-    ? maxWidth
-    : width < minWidth
-    ? minWidth
-    : width
+  const boundWidth = (width) =>
+    width > maxWidth ? maxWidth : width < minWidth ? minWidth : width;
 
   return (
     <>
       <FlexRow flex="flex-start" wrap="wrap">
-        <div style={{width: '50%', minWidth}}>
+        <div style={{ width: "50%", minWidth }}>
           <ParentSize>
             {({ width, height }) => (
               <PieChart
@@ -56,15 +53,19 @@ export default function PopulationValues(props) {
             )}
           </ParentSize>
         </div>
-        <div style={{width: '50%'}}>
+        <div style={{ width: "50%" }}>
           <ParentSize>
             {({ width, height }) => {
               console.log(width);
               return (
-              <FlexRow direction={width > 400 ? "column" : "row"} flex="space-between">
-                {dataWithTotal.map(makePopulationSection)}
-              </FlexRow>
-            )}}
+                <FlexRow
+                  direction={width > 400 ? "column" : "row"}
+                  flex="space-between"
+                >
+                  {dataWithTotal.map(makePopulationSection)}
+                </FlexRow>
+              );
+            }}
           </ParentSize>
         </div>
       </FlexRow>

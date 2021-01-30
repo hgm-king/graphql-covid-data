@@ -14,7 +14,12 @@ import PopulationValues from "./PopulationValues";
 import ByRaceQuery from "../../queries/by-race";
 import { getPopulationFromRate } from "./calculations";
 
-import { byRaceBarChartStyle, populationValuesStyle, byRaceRatioComparisonStyle, byRaceTrendLineChartStyle } from './styles';
+import {
+  byRaceBarChartStyle,
+  populationValuesStyle,
+  byRaceRatioComparisonStyle,
+  byRaceTrendLineChartStyle,
+} from "./styles";
 
 export default function ByRace(_props) {
   const [result, _reexecuteQuery] = useQuery({
@@ -36,7 +41,9 @@ export default function ByRace(_props) {
     getPopulationFromRate
   );
 
-  if ( !dataForDay )  { return <p>No Data for {selectedDay}</p> }
+  if (!dataForDay) {
+    return <p>No Data for {selectedDay}</p>;
+  }
 
   const totalPopulation = dataForDay.reduce(
     (acc, d) => acc + d["TOTALPOPCASE"],

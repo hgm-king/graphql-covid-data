@@ -15,8 +15,8 @@ const theme = {
   palettes,
   charts: {
     background: c["PAPER"],
-    radius: 14
-  }
+    radius: 14,
+  },
 };
 
 export default theme;

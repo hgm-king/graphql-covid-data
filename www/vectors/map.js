@@ -11,17 +11,19 @@ class Map {
       .select(containerEl)
       .append("svg")
       .attr("width", width)
-      .attr("height", height)
-      // .attr("fill", "red");
+      .attr("height", height);
+    // .attr("fill", "red");
 
     // turn our geodata into a lovely map
-    this.props.path = d3.geoPath().projection(
-      d3
-        .geoConicConformal()
-        .parallels([33, 45])
-        .rotate([96, -39])
-        .fitSize([width, height], data)
-    );
+    this.props.path = d3
+      .geoPath()
+      .projection(
+        d3
+          .geoConicConformal()
+          .parallels([33, 45])
+          .rotate([96, -39])
+          .fitSize([width, height], data)
+      );
 
     // build a tooltip for our map
     this.props.tooltip = this.svg
@@ -43,13 +45,12 @@ class Map {
     svg
       .selectAll("path")
       .data(data.features)
-      .join(
-        (enter) =>
-          enter
-            .append("path")
-            .attr("d", path)
-            .attr("fill", d => valueHandler(d.properties))
-            .attr("stroke", theme.colors.black)
+      .join((enter) =>
+        enter
+          .append("path")
+          .attr("d", path)
+          .attr("fill", (d) => valueHandler(d.properties))
+          .attr("stroke", theme.colors.black)
       );
   }
 }
