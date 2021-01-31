@@ -5,6 +5,7 @@ import * as d3 from "d3";
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import ZctaMap from "./ZctaMap";
+import ZipcodeTable from "./ZipcodeTable";
 
 import DataByModzctaQuery from "../../queries/data-by-modzcta";
 
@@ -32,11 +33,13 @@ export default function ByZipcodeContainer(props) {
   if (error) return <Error error={error} />;
   if (!geoJson) return <p>Fetching map ...</p>;
 
+  const percentTested = (row) => (
+    (100 * row["TOTALCOVIDTESTS"]) /
+    row["POPDENOMINATOR"]
+  ).toFixed(2)
+
   const mappedData = data.DataByModzcta.map((row) => ({
-    TEST_PER_PERSON: (
-      (100 * row["TOTALCOVIDTESTS"]) /
-      row["POPDENOMINATOR"]
-    ).toFixed(2),
+    PERCENTTESTED: percentTested(row),
     ...row,
   }));
 
@@ -44,6 +47,7 @@ export default function ByZipcodeContainer(props) {
     <>
       <h3>By Zipcode</h3>
       <ZctaMap data={mappedData} geoJson={geoJson} />
+      <ZipcodeTable data={mappedData.slice().sort((a, b) => a.PERCENTTESTED - b.PERCENTTESTED)} />
     </>
   );
 }

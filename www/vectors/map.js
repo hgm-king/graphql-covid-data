@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import theme from "../theme";
 
 class Map {
   constructor(containerEl, props) {
@@ -37,7 +36,7 @@ class Map {
   update() {
     const {
       svg,
-      props: { data, path, valueHandler, colorHandler, onClick },
+      props: { data, path, colorHandler, onClick },
     } = this;
 
     console.log("update");
