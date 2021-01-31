@@ -37,20 +37,30 @@ class Map {
   update() {
     const {
       svg,
-      props: { data, path, valueHandler },
+      props: { data, path, valueHandler, colorHandler, onClick },
     } = this;
 
-    console.log(data);
+    console.log("update");
 
     svg
       .selectAll("path")
       .data(data.features)
-      .join((enter) =>
-        enter
-          .append("path")
-          .attr("d", path)
-          .attr("fill", (d) => valueHandler(d.properties))
-          .attr("stroke", theme.colors.black)
+      .join(
+        (enter) =>
+          enter
+            .append("path")
+            .attr("d", path)
+            .attr("fill", (d) => colorHandler(d.properties))
+            // .attr("stroke", theme.colors.black)
+            .on("click", ({ target }) => onClick(target.__data__.properties)),
+        (update) =>
+          update
+            // .transition()
+            // .duration(750)
+            .attr("d", path)
+            .attr("fill", (d) => colorHandler(d.properties))
+            // .attr("stroke", theme.colors.black)
+            .on("click", ({ target }) => onClick(target.__data__.properties))
       );
   }
 }
