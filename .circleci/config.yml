@@ -137,16 +137,16 @@ workflows:
   build-test:
     jobs:
       - build-etl-image
-      # - build-and-test-server:
-      #     filters:
-      #       tags:
-      #         only: /.*/
-      # - build-server-image:
-      #     requires:
-      #       - build-and-test-server
-      - build-client-image
-      - deploy-compose:
+      - build-and-test-server:
+          filters:
+            tags:
+              only: /.*/
+      - build-server-image:
           requires:
+            - build-and-test-server
+      - build-client-image
+      # - deploy-compose:
+      #     requires:
             # - build-server-image
-            - build-client-image
+      #       - build-client-image
             # - build-etl-image
