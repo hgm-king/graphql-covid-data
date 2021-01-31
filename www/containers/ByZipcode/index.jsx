@@ -33,10 +33,8 @@ export default function ByZipcodeContainer(props) {
   if (error) return <Error error={error} />;
   if (!geoJson) return <p>Fetching map ...</p>;
 
-  const percentTested = (row) => (
-    (100 * row["TOTALCOVIDTESTS"]) /
-    row["POPDENOMINATOR"]
-  ).toFixed(2)
+  const percentTested = (row) =>
+    ((100 * row["TOTALCOVIDTESTS"]) / row["POPDENOMINATOR"]).toFixed(2);
 
   const mappedData = data.DataByModzcta.map((row) => ({
     PERCENTTESTED: percentTested(row),
@@ -47,7 +45,11 @@ export default function ByZipcodeContainer(props) {
     <>
       <h3>By Zipcode</h3>
       <ZctaMap data={mappedData} geoJson={geoJson} />
-      <ZipcodeTable data={mappedData.slice().sort((a, b) => a.PERCENTTESTED - b.PERCENTTESTED)} />
+      <ZipcodeTable
+        data={mappedData
+          .slice()
+          .sort((a, b) => a.PERCENTTESTED - b.PERCENTTESTED)}
+      />
     </>
   );
 }
