@@ -15,7 +15,7 @@ export default function Footer(props) {
         </a>
         &nbsp;| Calculations and presentation by{" "}
         <a href="https://github.com/HGHimself/graphql-covid-data">HG King</a>
-        &nbsp;| Made in Astoria &nbsp;| Thanks for visiting
+        &nbsp;| Made in Astoria &nbsp;| v0.2.0 &nbsp;| Data updated 1-31-21
       </p>
     </div>
   );
