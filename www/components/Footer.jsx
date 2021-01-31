@@ -10,12 +10,12 @@ export default function Footer(props) {
   return (
     <div className={footerStyle}>
       <p style={{ textAlign: "center" }}>
+        v0.2.0&nbsp;|&nbsp;Data updated 1-31-21&nbsp;|&nbsp;
         <a href="https://github.com/nychealth/coronavirus-data">
-          Source Data provided by NYC Deptartment of Health
-        </a>
-        &nbsp;| Calculations and presentation by{" "}
+        Source Data</a> provided by NYC Deptartment of Health
+        &nbsp;|&nbsp;Calculations and presentation by{" "}
         <a href="https://github.com/HGHimself/graphql-covid-data">HG King</a>
-        &nbsp;| Made in Astoria &nbsp;| v0.2.0 &nbsp;| Data updated 1-31-21
+        &nbsp;|&nbsp;Made in Astoria
       </p>
     </div>
   );
