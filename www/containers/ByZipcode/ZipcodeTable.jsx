@@ -1,15 +1,49 @@
 import React from "react";
+import { css } from "@emotion/css";
+
+const excludedKeys = [
+  "__typename",
+  "id",
+  "MODIFIEDZCTA",
+  "date",
+];
+const includedKeys = (key) => !excludedKeys.includes(key);
+
+const tableStyle = css`
+
+    overflow-y: auto;
+    height: 500px;
+
+    thead th {
+      position: sticky;
+      top: 0;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th,
+    td {
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background: #eee;
+    }
+`;
 
 export default function ZipcodeTable(props) {
   const { data } = props;
 
-  const keys = Object.keys(data[0]);
+  const keys = Object.keys(data[0]).filter(includedKeys);
 
   return (
-    <table>
-      <Header keys={keys} />
-      <Body data={data} />
-    </table>
+    <div className={tableStyle}>
+      <table>
+        <Header keys={keys} />
+        <Body data={data} keys={keys} />
+      </table>
+    </div>
   );
 }
 
@@ -26,10 +60,10 @@ function Header(props) {
 }
 
 function Body(props) {
-  const { data } = props;
+  const { data, keys } = props;
 
   const makeRow = (row, i) => (
-    <tr key={i}>{Object.keys(row).map(makeCell(row))}</tr>
+    <tr key={i}>{keys.map(makeCell(row))}</tr>
   );
   const makeCell = (row) => (key, i) => <td>{row[key]}</td>;
 
