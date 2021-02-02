@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
 import LineChart from "../../components/charts/LineChart";
+import FlexRow from "../../components/FlexRow";
+import Select from "../../components/Select";
 
 import theme from "../../theme/";
 import { getTrend } from "./calculations";
@@ -23,41 +26,53 @@ export default function ByRaceLineTrendLineChart(props) {
     .map(getTrend(getIndex, getField))
     .filter((d) => d[selectedCalculation] >= 0);
 
-  const toOption = (v) => <option key={v}>{v}</option>;
-
-  const setSelectedFieldHandler = ({ target }) => {
+  const setSelectedFieldHandler = (target) => {
     setSelectedField(target.value);
   };
-  const setSelectedCalculationHandler = ({ target }) => {
+  const setSelectedCalculationHandler = (target) => {
     setSelectedCalculation(target.value);
   };
 
+  const widthBreakpoint = width => width < 600 ? "100%" : "40%";
+
   return (
-    <div>
+    <>
       <h6>{selectedField}</h6>
-      <select selected={selectedField} onChange={setSelectedFieldHandler}>
-        {fields.map(toOption)}
-      </select>
-      <select
-        selected={selectedCalculation}
-        onChange={setSelectedCalculationHandler}
-      >
-        {calculations.map(toOption)}
-      </select>
-      <LineChart
-        data={trendData}
-        keys={keys}
-        height={400}
-        width={1200}
-        xExtractor={(d) => new Date(d.date)}
-        yExtractor={(d) => d[selectedCalculation]}
-        indexExtractor={(d) => d.index}
-        margin={{ top: 64, right: 64, bottom: 64, left: 64 }}
-        colors={theme.palettes.DataVizPalette}
-        legendFormatter={(d) => d}
-        backgroundColor={theme.charts.background}
-        backgroundRadius={theme.charts.radius}
-      />
-    </div>
+      <ParentSize>
+        {({ width, height }) => (
+          <>
+            <FlexRow flex='flex-start' wrap="wrap">
+              <Select
+                label="Field"
+                options={fields}
+                selected={selectedField}
+                onChange={setSelectedFieldHandler}
+                width={widthBreakpoint(width)}
+                />
+              <Select
+                label="Calculation"
+                options={calculations}
+                selected={selectedCalculation}
+                onChange={setSelectedCalculationHandler}
+                width={widthBreakpoint(width)}
+                />
+            </FlexRow>
+            <LineChart
+              data={trendData}
+              keys={keys}
+              height={400}
+              width={width}
+              xExtractor={(d) => new Date(d.date)}
+              yExtractor={(d) => d[selectedCalculation]}
+              indexExtractor={(d) => d.index}
+              margin={{ top: 64, right: 64, bottom: 64, left: 64 }}
+              colors={theme.palettes.DataVizPalette}
+              legendFormatter={(d) => d}
+              backgroundColor={theme.charts.background}
+              backgroundRadius={theme.charts.radius} />
+          </>
+        )}
+      </ParentSize>
+    </>
   );
 }

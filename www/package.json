@@ -50,6 +50,7 @@
     "react-dom": "^16.14.0",
     "react-leaflet": "^3.0.5",
     "react-leaflet-choropleth": "^2.0.1",
+    "react-select": "^4.0.2",
     "urql": "^1.11.4"
   }
 }
