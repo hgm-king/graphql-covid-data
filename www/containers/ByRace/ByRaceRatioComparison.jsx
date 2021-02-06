@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { css } from "@emotion/css";
 
-import PieChart from "../../components/charts/PieChart";
+import DonutChart from "../../components/charts/DonutChart";
 import FlexRow from "../../components/FlexRow";
 
 import theme from "../../theme/";
@@ -23,6 +23,8 @@ export default function ByRaceRatioComparison(props) {
     totalPopulation,
   } = props;
 
+  const [selectedRace, setSelectedRace] = useState(null);
+
   /*
   deathCount : [
     {index: white,
@@ -32,11 +34,13 @@ export default function ByRaceRatioComparison(props) {
   ]
   */
 
+  // this preps our data with the proper shape
   const initializedDataObj = keys.reduce((acc, key) => {
-    acc[key] = { data: [], total: 0 };
+    acc[key] = { data: [], total: 0, keys: [] };
     return acc;
   }, {});
 
+  // each row is one race
   const pieData = data.reduce((acc, d) => {
     const index = indexEliminator(d);
     // we want an object of arrays where each key corresponds to a pie chart
@@ -47,29 +51,41 @@ export default function ByRaceRatioComparison(props) {
         population: populationEliminator(d) / totalPopulation,
       });
       acc[key].total += d[key];
+      acc[key].keys.push(index);
     });
     return acc;
   }, initializedDataObj);
 
-  const makeRatioPie = (height, width) => (key, i) => (
-    <RatioPie
+  const handleClick = (e, pie, key) => {
+    if (selectedRace == key) {
+      setSelectedRace(null);
+    } else {
+      setSelectedRace(key);
+    }
+  };
+
+  console.log(selectedRace);
+
+  const makeRatioDonut = (radius) => (key, i) => (
+    <RatioDonut
       key={i}
       title={key}
-      height={height}
-      width={width}
+      radius={radius}
       data={pieData[key]}
+      selectedRace={selectedRace}
+      handleClick={handleClick}
     />
   );
 
   return (
     <FlexRow flex="space-between" wrap="wrap">
-      {keys.map(makeRatioPie(300, 300))}
+      {keys.map(makeRatioDonut(200))}
     </FlexRow>
   );
 }
 
-function RatioPie(props) {
-  const { title, width, height, data } = props;
+function RatioDonut(props) {
+  const { title, radius, data, selectedRace, handleClick } = props;
 
   const makeSummary = (total) => (d, i) => (
     <Summary key={i} d={d} total={total} />
@@ -78,19 +94,20 @@ function RatioPie(props) {
   return (
     <div className={pieWrapperStyle}>
       <h6>{title}</h6>
-      <PieChart
+      <DonutChart
         data={data.data}
+        keys={data.keys}
         valueEliminator={(d) => d.value}
         labelEliminator={(d) => d.index}
-        width={width}
-        height={height}
-        outerRadius={width / 2}
+        radius={radius}
+        outerRadius={radius / 2}
         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         colors={theme.palettes.DataVizPalette}
         backgroundColor={"transparent"}
         backgroundRadius={0}
+        selected={selectedRace}
+        onClick={handleClick}
       />
-      <div>{data.data.map(makeSummary(data.total))}</div>
     </div>
   );
 }

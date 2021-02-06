@@ -9,7 +9,6 @@ import ByRacePieChart from "./ByRacePieChart";
 import ByRaceRatioComparison from "./ByRaceRatioComparison";
 import ByRaceTrendLineChart from "./ByRaceTrendLineChart";
 import Population from "../../components/Population";
-import PopulationValues from "./PopulationValues";
 
 import ByRaceQuery from "../../queries/by-race";
 import { getPopulationFromRate } from "./calculations";
@@ -31,11 +30,14 @@ export default function ByRace(_props) {
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
 
-  // const field = "DEATHRATEADJ";
-  // const getField = (d) => d[field];
-  const getIndex = (d) => d.RACEGROUP;
-
   const selectedDay = data.ByRace[data.ByRace.length - 1].date;
+  const dateString = new Date(selectedDay).toDateString();
+
+  const indexKey = "RACEGROUP";
+  const totalKey = "TOTALPOPCASE";
+
+  const getIndex = (d) => d[indexKey];
+  const getTotal = (d) => d[totalKey];
 
   const dataForDay = data.ByRace.filter((d) => d.date === selectedDay).map(
     getPopulationFromRate
@@ -45,10 +47,7 @@ export default function ByRace(_props) {
     return <p>No Data for {selectedDay}</p>;
   }
 
-  const totalPopulation = dataForDay.reduce(
-    (acc, d) => acc + d["TOTALPOPCASE"],
-    0
-  );
+  const totalPopulation = dataForDay.reduce((acc, d) => acc + getTotal(d), 0);
 
   const pieKeys = Object.keys(dataForDay[0]).filter((key) =>
     key.match(/COUNT/)
@@ -61,17 +60,7 @@ export default function ByRace(_props) {
   return (
     <>
       <h3>By Race</h3>
-      <h6>Showing data for {new Date(selectedDay).toDateString()}</h6>
-      <p>What is the racial make-up of New York City?</p>
-      <div className={populationValuesStyle}>
-        <PopulationValues
-          data={dataForDay}
-          index={"RACEGROUP"}
-          field={"TOTALPOPCASE"}
-          keys={raceIndexes}
-          total={totalPopulation}
-        />
-      </div>
+      <h6>Showing data for {dateString}</h6>
       <p>
         How does the case, hospitalization, and death percentages deviate from
         the total population?
@@ -79,21 +68,19 @@ export default function ByRace(_props) {
       <div className={byRaceRatioComparisonStyle}>
         <ByRaceRatioComparison
           data={dataForDay}
-          keys={pieKeys}
+          keys={pieKeys.concat(totalKey)}
           indexEliminator={getIndex}
-          populationEliminator={(d) => d["TOTALPOPCASE"]}
+          populationEliminator={getTotal}
           totalPopulation={totalPopulation}
         />
       </div>
       <p>What percent of cases result in death or hospitalization?</p>
-      {/*<Population data={dataForDay} height={500} width={1200} />*/}
       <div className={byRaceBarChartStyle}>
         <ByRaceBarChart data={dataForDay} />
       </div>
       <div className={byRaceTrendLineChartStyle}>
         <ByRaceTrendLineChart data={data.ByRace} keys={raceIndexes} />
       </div>
-      {/*<ByRacePieChart data={data.ByRace} keys={pieKeys} />*/}
       <h6>Statement from NYC Dept. of Health</h6>
       <p>
         Differences in health outcomes among racial and ethnic groups are due to

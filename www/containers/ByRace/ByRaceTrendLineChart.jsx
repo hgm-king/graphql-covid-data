@@ -33,7 +33,7 @@ export default function ByRaceLineTrendLineChart(props) {
     setSelectedCalculation(target.value);
   };
 
-  const widthBreakpoint = width => width < 600 ? "100%" : "40%";
+  const widthBreakpoint = (width) => (width < 600 ? "100%" : "40%");
 
   return (
     <>
@@ -41,21 +41,21 @@ export default function ByRaceLineTrendLineChart(props) {
       <ParentSize>
         {({ width, height }) => (
           <>
-            <FlexRow flex='flex-start' wrap="wrap">
+            <FlexRow flex="flex-start" wrap="wrap">
               <Select
                 label="Field"
                 options={fields}
                 selected={selectedField}
                 onChange={setSelectedFieldHandler}
                 width={widthBreakpoint(width)}
-                />
+              />
               <Select
                 label="Calculation"
                 options={calculations}
                 selected={selectedCalculation}
                 onChange={setSelectedCalculationHandler}
                 width={widthBreakpoint(width)}
-                />
+              />
             </FlexRow>
             <LineChart
               data={trendData}
@@ -69,7 +69,8 @@ export default function ByRaceLineTrendLineChart(props) {
               colors={theme.palettes.DataVizPalette}
               legendFormatter={(d) => d}
               backgroundColor={theme.charts.background}
-              backgroundRadius={theme.charts.radius} />
+              backgroundRadius={theme.charts.radius}
+            />
           </>
         )}
       </ParentSize>

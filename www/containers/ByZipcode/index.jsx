@@ -6,6 +6,7 @@ import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import ZctaMap from "./ZctaMap";
 import ZipcodeTable from "./ZipcodeTable";
+import ScatterChart from "../../components/charts/ScatterChart";
 
 import DataByModzctaQuery from "../../queries/data-by-modzcta";
 
@@ -33,8 +34,15 @@ export default function ByZipcodeContainer(props) {
   if (error) return <Error error={error} />;
   if (!geoJson) return <p>Fetching map ...</p>;
 
+  const margin = {
+    left: 24,
+    right: 24,
+    top: 24,
+    bottom: 24,
+  };
+
   const percentTested = (row) =>
-    ((100 * row["TOTALCOVIDTESTS"]) / row["POPDENOMINATOR"]).toFixed(2);
+    (100 * row["TOTALCOVIDTESTS"]) / row["POPDENOMINATOR"];
 
   const mappedData = data.DataByModzcta.map((row) => ({
     PERCENTTESTED: percentTested(row),
@@ -49,6 +57,15 @@ export default function ByZipcodeContainer(props) {
         data={mappedData
           .slice()
           .sort((a, b) => a.PERCENTTESTED - b.PERCENTTESTED)}
+      />
+      <ScatterChart
+        height={600}
+        width={1000}
+        data={mappedData}
+        yEliminator={(d) => +d.POPDENOMINATOR}
+        xEliminator={(d) => +d.ZCTA}
+        colorEliminator={(d) => d.BOROUGHGROUP}
+        margin={margin}
       />
     </>
   );

@@ -12,8 +12,10 @@ export default function Footer(props) {
       <p style={{ textAlign: "center" }}>
         v0.2.0&nbsp;|&nbsp;Data updated 1-31-21&nbsp;|&nbsp;
         <a href="https://github.com/nychealth/coronavirus-data">
-        Source Data</a> provided by NYC Deptartment of Health
-        &nbsp;|&nbsp;Calculations and presentation by{" "}
+          Source Data
+        </a>{" "}
+        provided by NYC Deptartment of Health &nbsp;|&nbsp;Calculations and
+        presentation by{" "}
         <a href="https://github.com/HGHimself/graphql-covid-data">HG King</a>
         &nbsp;|&nbsp;Made in Astoria
       </p>

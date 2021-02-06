@@ -5,8 +5,7 @@ import { Group } from "@visx/group";
 export default function PieChart(props) {
   const {
     data,
-    width,
-    height,
+    radius,
     valueEliminator,
     labelEliminator,
     margin,
@@ -20,17 +19,17 @@ export default function PieChart(props) {
   const colors = props.colors ?? ["#000"];
   const colorCount = colors.length;
 
-  const innerWidth = width - margin.left - margin.right;
-  const innerHeight = height - margin.top - margin.bottom;
+  const innerWidth = radius - margin.left - margin.right;
+  const innerHeight = radius - margin.top - margin.bottom;
 
   const centerY = innerHeight / 2;
   const centerX = innerWidth / 2;
 
   return (
-    <svg width={width} height={height}>
+    <svg width={radius} height={radius}>
       <rect
-        width={width}
-        height={height}
+        width={radius}
+        height={radius}
         fill={backgroundColor}
         rx={backgroundRadius}
         ry={backgroundRadius}

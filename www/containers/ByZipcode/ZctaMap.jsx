@@ -89,7 +89,13 @@ export default function ZctaMap(props) {
         {Object.keys(data[0]).filter(includedKeys).map(toOption)}
       </select>
       <p>Min: {min}</p>
+      <div
+        style={{ height: 20, width: 20, backgroundColor: colorScale(min) }}
+      />
       <p>Max: {max}</p>
+      <div
+        style={{ height: 20, width: 20, backgroundColor: colorScale(max) }}
+      />
       <FlexRow flex={"space-between"}>
         <Animator drawer={map} setVis={setVis} options={options} />
         <div>
