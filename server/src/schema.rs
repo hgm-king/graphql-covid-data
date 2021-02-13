@@ -156,6 +156,23 @@ table! {
 }
 
 table! {
+    DataByModzctaPrime (id) {
+        id -> Int4,
+        MODIFIED_ZCTA -> Nullable<Float8>,
+        NEIGHBORHOOD_NAME -> Nullable<Text>,
+        BOROUGH_GROUP -> Nullable<Text>,
+        COVID_CASE_COUNT -> Nullable<Float8>,
+        COVID_CASE_RATE -> Nullable<Float8>,
+        POP_DENOMINATOR -> Nullable<Float8>,
+        COVID_DEATH_COUNT -> Nullable<Float8>,
+        COVID_DEATH_RATE -> Nullable<Float8>,
+        PERCENT_POSITIVE -> Nullable<Float8>,
+        TOTAL_COVID_TESTS -> Nullable<Float8>,
+        date -> Nullable<Text>,
+    }
+}
+
+table! {
     DeathsByBoroAge (id) {
         id -> Int4,
         BOROUGH_GROUP -> Nullable<Text>,
@@ -345,6 +362,21 @@ table! {
 }
 
 table! {
+    SummaryPrime (id) {
+        id -> Int4,
+        NYC_PROBABLE_CASE_COUNT -> Nullable<Int4>,
+        NYC_HOSPITALIZED_COUNT -> Nullable<Int4>,
+        NYC_CASE_COUNT -> Nullable<Int4>,
+        NYC_TOTAL_CASE_COUNT -> Nullable<Int4>,
+        NYC_TOTAL_DEATH_COUNT -> Nullable<Int4>,
+        DATE_UPDATED -> Nullable<Text>,
+        NYC_PROBABLE_DEATH_COUNT -> Nullable<Int4>,
+        NYC_CONFIRMED_DEATH_COUNT -> Nullable<Int4>,
+        date -> Nullable<Text>,
+    }
+}
+
+table! {
     TestrateByModzctaPrime (id) {
         id -> Int4,
         MODZCTA -> Nullable<Int4>,
@@ -374,6 +406,7 @@ allow_tables_to_appear_in_same_query!(
     BySex,
     CaserateByModzctaPrime,
     DataByModzcta,
+    DataByModzctaPrime,
     DeathsByBoroAge,
     DeathsByRaceAge,
     DeathsByUnderlyingConditions,
@@ -388,6 +421,7 @@ allow_tables_to_appear_in_same_query!(
     ProbableConfirmedByRace,
     ProbableConfirmedBySex,
     Summary,
+    SummaryPrime,
     TestrateByModzctaPrime,
     ZctaToModzcta,
 );
