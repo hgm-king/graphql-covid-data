@@ -16,7 +16,9 @@ use dotenv::dotenv;
 use juniper::FieldResult;
 use std::env;
 
-use models::{AntibodyByAgeModel, ByRaceModel, DataByModzctaModel, ZctaToModzctaModel};
+use models::{
+    AntibodyByAgeModel, ByRaceModel, DataByModzctaModel, SummaryModel, ZctaToModzctaModel,
+};
 
 pub struct Context {
     // Use your real database pool here.
@@ -56,5 +58,11 @@ impl QueryRoot {
             .map(DataByModzctaModel::to_DataByModzctaWithZctaT)
             .collect();
         Ok(by_modzcta)
+    }
+
+    fn Summary(_context: &Context) -> FieldResult<Vec<SummaryModel::SummaryT>> {
+        let connection = establish_connection();
+        let summary = SummaryModel::read(&connection);
+        Ok(summary)
     }
 }

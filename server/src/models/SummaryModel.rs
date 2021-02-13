@@ -4,13 +4,11 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::Summary;
 use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="Summary"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "Summary"]
 pub struct SummaryT {
     pub id: i32,
     pub MEASURE: Option<String>,
