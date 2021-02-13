@@ -1,7 +1,6 @@
 {
   "files": [
     "totals/by-age.csv",
-    "totals/by-boro.csv",
     "totals/by-poverty.csv",
     "totals/by-race.csv",
     "totals/by-sex.csv",

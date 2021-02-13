@@ -68,8 +68,9 @@ def save_dataframe_to_database(engine, df, table_name):
     try:
         with engine.connect() as conn:
             df.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
-    except:
+    except Exception as exception:
         print("Could not save table {}".format(table_name))
+        print(exception)
 
 # given a url to a raw file on github and a date the file was commited on
 # saves the file as a csv and returns a dataframe
