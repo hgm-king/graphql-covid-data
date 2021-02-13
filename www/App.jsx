@@ -4,7 +4,7 @@ import { css } from "@emotion/css";
 import { createClient, Provider } from "urql";
 
 // containers
-import Antibody from "./containers/Antibody/";
+import Summary from "./containers/Summary/";
 import ByRace from "./containers/ByRace/";
 import ByZipcode from "./containers/ByZipcode/";
 
@@ -17,6 +17,7 @@ import Footer from "./components/Footer";
 import theme from "./theme/";
 
 const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
+// const serverHost = "localhost";
 const serverPort = process.env.SERVER_PORT ?? "3000";
 
 const client = createClient({
@@ -24,9 +25,9 @@ const client = createClient({
 });
 
 export default function App(_props) {
-  const navs = ["Antibodies", "ByRace", "ByZipcode"];
+  const navs = ["Summary", "ByRace", "ByZipcode"];
 
-  const [selected, setSelected] = useState(navs[1]);
+  const [selected, setSelected] = useState(navs[0]);
 
   const main = css`
     color: ${theme.colors.black};
@@ -50,9 +51,11 @@ export default function App(_props) {
       <div id="main" className={main}>
         <h6>Hello, World!</h6>
         <p>NYC Covid Data Dashboard by HG King</p>
-        <FlexRow flex="flex-start">{navs.map(makeNav)}</FlexRow>
-        {selected === "Antibodies" ? (
-          <Antibody />
+        <FlexRow flex="flex-start" wrap="wrap">
+          {navs.map(makeNav)}
+        </FlexRow>
+        {selected === "Summary" ? (
+          <Summary />
         ) : selected === "ByRace" ? (
           <ByRace />
         ) : selected === "ByZipcode" ? (

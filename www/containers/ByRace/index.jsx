@@ -8,7 +8,7 @@ import ByRaceBarChart from "./ByRaceBarChart";
 import ByRacePieChart from "./ByRacePieChart";
 import ByRaceRatioComparison from "./ByRaceRatioComparison";
 import ByRaceTrendLineChart from "./ByRaceTrendLineChart";
-import Population from "../../components/Population";
+import Population from "../../components/animated/Population";
 
 import ByRaceQuery from "../../queries/by-race";
 import { getPopulationFromRate } from "./calculations";

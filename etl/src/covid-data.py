@@ -86,6 +86,7 @@ def get_csv_from_github(url, date, local_path):
             data['date'] = dates
 
         if local_path != "":
+            print(local_path)
             local_data_set = CSVDataSet(filepath=local_path)
             local_data_set.save(data)
 
@@ -116,8 +117,8 @@ def get_history_data_from_git(url, path):
         print('Error: could not get {}'.format(url))
         return []
 
-def map_over_commits_for_file(history_data):
-    return [get_csv_from_github(url, date, "") for (url, date) in history_data]
+def map_over_commits_for_file(history_data, path):
+    return [get_csv_from_github(url, date, "data/{}/{}.csv".format(path, date)) for (url, date) in history_data]
 
 # given a path, we get every version of the file from the git history
 # and return each version as an array of dataframes
@@ -138,7 +139,7 @@ def get_each_commit_for_csv(path):
         num_commits = len(history_data)
         print('Found {} entries'.format(num_commits))
         if num_commits > 0:
-            saved_files = map_over_commits_for_file(history_data)
+            saved_files = map_over_commits_for_file(history_data, path)
             files_saved = files_saved + saved_files
         else:
             has_commits = False

@@ -1,11 +1,11 @@
 import React from "react";
 
-import Animator from "./Animator.jsx";
-import LegendBox from "./LegendBox";
+import Animator from "../Animator.jsx";
+import LegendBox from "../LegendBox";
 
-import population from "../vectors/population";
-import theme from "../theme";
-import { OrdinalScale } from "../utils/scale-tools";
+import population from "../../vectors/population";
+import theme from "../../theme";
+import { OrdinalScale } from "../../utils/scale-tools";
 
 let vis;
 const setVis = (v) => {
