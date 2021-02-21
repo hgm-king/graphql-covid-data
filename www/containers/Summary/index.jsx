@@ -8,6 +8,7 @@ import SummaryQuery from "../../queries/summary";
 import Select from "../../components/Select";
 import SummaryLineChart from "./SummaryLineChart";
 import FlexRow from "../../components/FlexRow";
+import DataTable from "../../components/charts/DataTable";
 
 import { getTrend } from "../ByRace/calculations";
 
@@ -29,8 +30,13 @@ export default function Summary(_props) {
   const getIndex = (d) => selectedField;
   const getValue = (d) => d[selectedField];
 
+  const selectedDay = data.SummaryPrime[data.SummaryPrime.length - 1].date;
+  const dateString = new Date(selectedDay).toDateString();
+
   const fields = Object.keys(data.SummaryPrime[0])
     .filter((k) => k.match(/NYC/))
+    .filter((k) => !k.match(/TOTAL/))
+    .filter((k) => !k.match(/PROBABLE/))
     .sort();
 
   const handleFieldOnChange = (option) => {
@@ -50,6 +56,12 @@ export default function Summary(_props) {
   return (
     <>
       <h3>Summary</h3>
+      <h6>Showing data for {dateString}</h6>
+      <DataTable
+        data={data.SummaryPrime.slice(-1)}
+        keys={fields}
+        formatValue={(d) => d.toLocaleString(d)}
+      />
       <FlexRow flex="space-between">
         <div style={{ width: "25%", marginTop: 48 }}>
           <Select

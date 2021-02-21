@@ -3,7 +3,6 @@ import { css } from "@emotion/css";
 
 const tableStyle = css`
   overflow-y: auto;
-  height: 500px;
 
   thead th {
     position: sticky;
@@ -24,24 +23,23 @@ const tableStyle = css`
 `;
 
 export default function DataTable(props) {
-  const { data } = props;
-
-  const keys = Object.keys(data[0]).filter(includedKeys);
+  const { data, keys, formatValue, formatHeader } = props;
 
   return (
     <div className={tableStyle}>
       <table>
-        <Header keys={keys} />
-        <Body data={data} keys={keys} />
+        <Header keys={keys} formatHeader={formatHeader} />
+        <Body data={data} keys={keys} formatValue={formatValue} />
       </table>
     </div>
   );
 }
 
 function Header(props) {
-  const { keys } = props;
+  const { keys, formatHeader } = props;
 
-  const makeKey = (key, i) => <th key={i}>{key}</th>;
+  const doFormat = (key) => (formatHeader ? formatHeader(key) : key);
+  const makeKey = (key, i) => <th key={i}>{doFormat(key)}</th>;
 
   return (
     <thead>
@@ -51,10 +49,11 @@ function Header(props) {
 }
 
 function Body(props) {
-  const { data, keys } = props;
+  const { data, keys, formatValue } = props;
 
+  const doFormat = (value) => (formatValue ? formatValue(value) : value);
   const makeRow = (row, i) => <tr key={i}>{keys.map(makeCell(row))}</tr>;
-  const makeCell = (row) => (key, i) => <td>{row[key]}</td>;
+  const makeCell = (row) => (key, i) => <td>{doFormat(row[key])}</td>;
 
   return <tbody>{data.map(makeRow)}</tbody>;
 }
