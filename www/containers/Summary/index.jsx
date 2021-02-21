@@ -65,35 +65,36 @@ export default function Summary(_props) {
       />
       <ParentSize>
         {({ width, height }) => {
-        const dropdownWidth = width > 800 ? "30%" : "100%";
-        const chartWidth = width > 800 ? 800 : width;
-        return (
-          <FlexRow flex="space-between" wrap="wrap">
-            <div style={{ width: dropdownWidth, marginTop: 48 }}>
-              <Select
-                options={fields}
-                selected={selectedField}
-                onChange={handleFieldOnChange}
-                label="field"
-                width="100%"
+          const dropdownWidth = width > 800 ? "30%" : "100%";
+          const chartWidth = width > 800 ? 800 : width;
+          return (
+            <FlexRow flex="space-between" wrap="wrap">
+              <div style={{ width: dropdownWidth, marginTop: 48 }}>
+                <Select
+                  options={fields}
+                  selected={selectedField}
+                  onChange={handleFieldOnChange}
+                  label="field"
+                  width="100%"
+                />
+                <Select
+                  options={calculationTypes}
+                  selected={selectedCalculation}
+                  onChange={handleCalculationOnChange}
+                  label="calculation"
+                  width="100%"
+                />
+              </div>
+              <SummaryLineChart
+                data={trendData}
+                field={selectedField}
+                calculation={selectedCalculation}
+                width={chartWidth}
+                height={400}
               />
-              <Select
-                options={calculationTypes}
-                selected={selectedCalculation}
-                onChange={handleCalculationOnChange}
-                label="calculation"
-                width="100%"
-              />
-            </div>
-            <SummaryLineChart
-              data={trendData}
-              field={selectedField}
-              calculation={selectedCalculation}
-              width={chartWidth}
-              height={400}
-            />
-          </FlexRow>
-        )}}
+            </FlexRow>
+          );
+        }}
       </ParentSize>
     </>
   );

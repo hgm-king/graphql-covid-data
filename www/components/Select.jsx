@@ -7,7 +7,7 @@ export default function SelectPrime(props) {
   const { options, selected, onChange, width, label } = props;
 
   const optionsMapped = options.map(toOption);
-  
+
   return (
     <div style={{ width: width, padding: 24 }}>
       {label && <label htmlFor={label}>{label}:</label>}
