@@ -1,11 +1,18 @@
 const SummaryQuery = `
 {
-  Summary {
+  SummaryPrime {
     id,
-    MEASURE,
-    NUMBEROFNYCRESIDENTS,
+    NYCPROBABLECASECOUNT,
+    NYCHOSPITALIZEDCOUNT
+    NYCCASECOUNT,
+    NYCTOTALCASECOUNT,
+    NYCTOTALDEATHCOUNT,
+    DATEUPDATED,
+    NYCPROBABLEDEATHCOUNT,
+    NYCCONFIRMEDDEATHCOUNT,
     date
   }
 }
+
 `;
 export default SummaryQuery;

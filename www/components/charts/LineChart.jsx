@@ -41,8 +41,13 @@ export default function LineChart(props) {
   const xRange = calculateXRange(width, margin);
   const yRange = calculateYRange(height, margin);
 
+  // calculate or override the y scale bounds
+  const yExtent = extent(data, yExtractor);
+  const min = props.min ?? yExtent[0];
+  const max = props.max ?? yExtent[1];
+
   const xScale = TimeScale(extent(data, xExtractor), xRange);
-  const yScale = LinearScale(extent(data, yExtractor), yRange);
+  const yScale = LinearScale([min, max], yRange);
 
   const colorsMapped = colors.map((c, i) =>
     !selected || keys[i] === selected ? c : `${c}20`
@@ -60,12 +65,14 @@ export default function LineChart(props) {
 
   return (
     <div>
-      <LegendBox
-        scale={ordinalColorScale}
-        formatter={legendFormatter}
-        width={width}
-        onClick={selectIndex}
-      />
+      {!props.disableLegend && (
+        <LegendBox
+          scale={ordinalColorScale}
+          formatter={legendFormatter}
+          width={width}
+          onClick={selectIndex}
+        />
+      )}
       <svg width={width} height={height}>
         <rect
           width={width}
@@ -77,17 +84,17 @@ export default function LineChart(props) {
           const values = data.filter((d) => indexExtractor(d) === index);
           return (
             <Group key={`lines-${i}`}>
-              {values.map((d, j) => (
-                <circle
-                  key={i + j}
-                  r={2}
-                  cx={xScale(xExtractor(d))}
-                  cy={yScale(yExtractor(d))}
-                  fill={theme.colors.black}
-                />
-              ))}
+              {!props.disableCircles &&
+                values.map((d, j) => (
+                  <circle
+                    key={i + j}
+                    r={2}
+                    cx={xScale(xExtractor(d))}
+                    cy={yScale(yExtractor(d))}
+                    fill={theme.colors.black}
+                  />
+                ))}
               <LinePath
-                curve={allCurves[curve]}
                 data={values}
                 x={(d) => xScale(xExtractor(d)) ?? 0}
                 y={(d) => yScale(yExtractor(d)) ?? 0}
@@ -104,7 +111,9 @@ export default function LineChart(props) {
         <AxisBottom
           top={height - margin.bottom}
           scale={xScale}
-          tickFormat={(d) => d.toDateString()}
+          tickFormat={(d) =>
+            d.toDateString().replace(/\d{4}/, "").replace(/Sun /, "")
+          }
           stroke={theme.colors.black}
           tickStroke={theme.colors.black}
           tickLabelProps={() => ({
@@ -116,14 +125,15 @@ export default function LineChart(props) {
         <AxisLeft
           left={margin.left}
           scale={yScale}
-          tickFormat={(d) => d}
+          tickFormat={(d) => d.toLocaleString()}
           stroke={theme.colors.black}
           tickStroke={theme.colors.black}
           tickLabelProps={() => ({
             fill: theme.colors.black,
             fontSize: 11,
-            textAnchor: "middle",
+            textAnchor: "end",
           })}
+          numTicks={5}
         />
       </svg>
     </div>

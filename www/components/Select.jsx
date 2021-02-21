@@ -8,7 +8,7 @@ export default function SelectPrime(props) {
 
   return (
     <div style={{ width: width, padding: 24 }}>
-      <label htmlFor={label}>{label}:</label>
+      {label && <label htmlFor={label}>{label}:</label>}
       <Select
         options={options.map(toOption)}
         selected={toOption(selected)}

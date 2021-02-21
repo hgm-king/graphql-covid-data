@@ -17,7 +17,7 @@ use juniper::FieldResult;
 use std::env;
 
 use models::{
-    AntibodyByAgeModel, ByRaceModel, DataByModzctaModel, SummaryModel, ZctaToModzctaModel,
+    AntibodyByAgeModel, ByRaceModel, DataByModzctaModel, SummaryPrimeModel, ZctaToModzctaModel,
 };
 
 pub struct Context {
@@ -60,9 +60,9 @@ impl QueryRoot {
         Ok(by_modzcta)
     }
 
-    fn Summary(_context: &Context) -> FieldResult<Vec<SummaryModel::SummaryT>> {
+    fn SummaryPrime(_context: &Context) -> FieldResult<Vec<SummaryPrimeModel::SummaryPrimeT>> {
         let connection = establish_connection();
-        let summary = SummaryModel::read(&connection);
+        let summary = SummaryPrimeModel::read(&connection);
         Ok(summary)
     }
 }

@@ -4,13 +4,11 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::SummaryPrime;
 use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="SummaryPrime"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "SummaryPrime"]
 pub struct SummaryPrimeT {
     pub id: i32,
     pub NYC_PROBABLE_CASE_COUNT: Option<i32>,

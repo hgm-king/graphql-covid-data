@@ -7,3 +7,5 @@ export const toOption = (v) => ({
   label: v,
   value: v,
 });
+
+export const range = (count) => [...Array(count).keys()];
