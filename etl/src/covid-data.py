@@ -20,8 +20,8 @@ from sqlalchemy import create_engine, Integer
 
 os.environ['LOCAL_ROOT'] = '/app/data'
 
+print("Connecting to {}".format(os.environ['DATABASE_URL_ETL']))
 engine = create_engine(os.environ['DATABASE_URL_ETL'])
-
 
 # These functions are utilities
 def get_table_name_from_path(path):
@@ -76,25 +76,32 @@ def save_dataframe_to_database(engine, df, table_name):
 # saves the file as a csv and returns a dataframe
 def get_csv_from_github(url, date, local_path):
     # print('Loading and saving data for {} to {}'.format(date, local_path))
+    # we want to use the local one if we have it
+    local_data_set = CSVDataSet(filepath=local_path)
+
     try:
+        data = local_data_set.load()
+        print("Loaded from local {}".format(local_path))
+        return data
+    except Exception as exception:
+        # pull it from internet
         data_set = CSVDataSet(filepath=url)
-        data = data_set.load()
+        try:
+            data = data_set.load()
 
-        # print('{} columns found'.format(len(data.columns)))
-        if date != "":
-            dates = np.repeat(date, len(data))
-            data['date'] = dates
+            # print('{} columns found'.format(len(data.columns)))
+            if date != "":
+                dates = np.repeat(date, len(data))
+                data['date'] = dates
 
-        if local_path != "":
-            print(local_path)
             local_data_set = CSVDataSet(filepath=local_path)
             local_data_set.save(data)
 
-        return data
-    except Exception as exception:
-        print('Error: could not get {}'.format(url))
-        print(exception)
-        return []
+            return data
+        except Exception as exception:
+            print('Error: could not get {}'.format(url))
+            print(exception)
+            return []
 
 
 # given a json object that represents the one commit in a git repo and a file path
@@ -165,7 +172,6 @@ def save_singular_file_to_database(engine, path, filetype, table_name):
     save_dataframe_to_database(engine, cleaned_df, table_name)
 
 
-#
 config_path = './src/config.json'
 with open(config_path) as f:
     data = json.load(f)
