@@ -5,6 +5,7 @@ export default function FlexRow(props) {
   const flexRow = css`
     display: flex;
     justify-content: ${props.flex};
+    align-items: ${props.align};
     flex-direction: ${props.direction};
     flex-wrap: ${props.wrap};
   `;

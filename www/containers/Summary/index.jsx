@@ -7,17 +7,18 @@ import Error from "../../components/Error";
 
 import SummaryQuery from "../../queries/summary";
 import Select from "../../components/Select";
+import Switch from "../../components/Switch";
 import SummaryLineChart from "./SummaryLineChart";
 import FlexRow from "../../components/FlexRow";
 import DataTable from "../../components/charts/DataTable";
 
 import { getTrend } from "../ByRace/calculations";
 
-const calculationTypes = ["value", "rate", "trend"];
+const calculationType = (flag) => flag ? "trend" : "value";
 
 export default function Summary(_props) {
   const [selectedField, setSelectedField] = useState("NYCCASECOUNT");
-  const [selectedCalculation, setSelectedCalculation] = useState("value");
+  const [selectedCalculation, setSelectedCalculation] = useState(false);
 
   const [result, _reexecuteQuery] = useQuery({
     query: SummaryQuery,
@@ -34,6 +35,11 @@ export default function Summary(_props) {
   const selectedDay = data.SummaryPrime[data.SummaryPrime.length - 1].date;
   const dateString = new Date(selectedDay).toDateString();
 
+  const title = `${selectedField}`;
+  const subtitle = `as of ${dateString}`;
+  const switchText = `Click to view ${selectedCalculation ? "values" : "daily changes"}`;
+
+
   const fields = Object.keys(data.SummaryPrime[0])
     .filter((k) => k.match(/NYC/))
     .filter((k) => !k.match(/TOTAL/))
@@ -44,15 +50,13 @@ export default function Summary(_props) {
     setSelectedField(option.value);
   };
 
-  const handleCalculationOnChange = (option) => {
-    setSelectedCalculation(option.value);
+  const handleCalculationOnChange = () => {
+    setSelectedCalculation(!selectedCalculation);
   };
 
   const trendData = data.SummaryPrime.map(getTrend(getIndex, getValue)).filter(
     (d) => Math.abs(d["rate"]) < 2.0 && d.trend > 0
   );
-
-  console.log(data.SummaryPrime[data.SummaryPrime.length - 1]);
 
   return (
     <>
@@ -65,8 +69,8 @@ export default function Summary(_props) {
       />
       <ParentSize>
         {({ width, height }) => {
-          const dropdownWidth = width > 800 ? "30%" : "100%";
-          const chartWidth = width > 800 ? 800 : width;
+          const dropdownWidth = width > 846 ? "30%" : "100%";
+          const chartWidth = width > 846 ? 800 : width;
           return (
             <FlexRow flex="space-between" wrap="wrap">
               <div style={{ width: dropdownWidth, marginTop: 48 }}>
@@ -77,18 +81,20 @@ export default function Summary(_props) {
                   label="field"
                   width="100%"
                 />
-                <Select
-                  options={calculationTypes}
-                  selected={selectedCalculation}
-                  onChange={handleCalculationOnChange}
-                  label="calculation"
-                  width="100%"
-                />
+                <FlexRow flex="space-betwen" align="center">
+                  <Switch
+                    onClick={handleCalculationOnChange}
+                    state={selectedCalculation}
+                  />
+                  <p>{switchText}</p>
+                </FlexRow>
               </div>
               <SummaryLineChart
+                title={title}
+                subtitle={subtitle}
                 data={trendData}
                 field={selectedField}
-                calculation={selectedCalculation}
+                calculation={calculationType(selectedCalculation)}
                 width={chartWidth}
                 height={400}
               />

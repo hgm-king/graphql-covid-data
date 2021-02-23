@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { extent } from "d3-array";
 import * as allCurves from "@visx/curve";
 import { Group } from "@visx/group";
-import { LinePath } from "@visx/shape";
+import { LinePath, AreaClosed } from "@visx/shape";
 import { AxisBottom, AxisLeft } from "@visx/axis";
+import { GridRows, GridColumns } from '@visx/grid';
 
 import LegendBox from "../LegendBox";
+import Pattern from "../chartHelpers/Pattern";
 
 import theme from "../../theme/";
 import {
@@ -63,6 +65,8 @@ export default function LineChart(props) {
 
   const ordinalColorScale = OrdinalScale(keys, colorsMapped);
 
+  const formatDate = (d) => d.toDateString().replace(/\d{4}/, "").replace(/Sun /, "")
+
   return (
     <div>
       {!props.disableLegend && (
@@ -80,6 +84,13 @@ export default function LineChart(props) {
           fill={backgroundColor}
           ry={backgroundRadius}
         />
+        <GridColumns
+          top={margin.top}
+          scale={xScale}
+          width={xRange[1]}
+          height={yRange[0]}
+          stroke="#e0e0e0" />
+        <Pattern id="circles" fill={theme.colors.black}/>
         {keys.map((index, i) => {
           const values = data.filter((d) => indexExtractor(d) === index);
           return (
@@ -101,19 +112,41 @@ export default function LineChart(props) {
                 stroke={colorsMapped[i % colorCount]}
                 strokeWidth={2}
                 strokeOpacity={1}
-                shapeRendering="geometricPrecision"
-                markerMid="url(#marker-circle)"
                 onClick={() => selectIndex(index)}
               />
+              <AreaClosed
+                  data={values.filter(d => {
+                    const date = xExtractor(d);
+                    const xmas = new Date("2021-01-07T18:17:30Z");
+                    const xmas2 = new Date("2021-01-15T18:17:30Z");
+                    return date > xmas && date < xmas2;
+                  })}
+                  x={(d) => xScale(xExtractor(d)) ?? 0}
+                  y={(d) => yScale(yExtractor(d)) ?? 0}
+                  yScale={yScale}
+                  strokeWidth={1}
+                  fill="url(#circles)"
+                />
+              <AreaClosed
+                  data={values.filter(d => {
+                    const date = xExtractor(d);
+                    const xmas = new Date("2021-02-14T18:17:30Z");
+                    const xmas2 = new Date("2021-02-21T18:17:30Z");
+                    return date > xmas && date < xmas2;
+                  })}
+                  x={(d) => xScale(xExtractor(d)) ?? 0}
+                  y={(d) => yScale(yExtractor(d)) ?? 0}
+                  yScale={yScale}
+                  strokeWidth={1}
+                  fill="url(#circles)"
+                />
             </Group>
           );
         })}
         <AxisBottom
           top={height - margin.bottom}
           scale={xScale}
-          tickFormat={(d) =>
-            d.toDateString().replace(/\d{4}/, "").replace(/Sun /, "")
-          }
+          tickFormat={formatDate}
           stroke={theme.colors.black}
           tickStroke={theme.colors.black}
           tickLabelProps={() => ({
