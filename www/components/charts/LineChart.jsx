@@ -4,7 +4,7 @@ import * as allCurves from "@visx/curve";
 import { Group } from "@visx/group";
 import { LinePath, AreaClosed } from "@visx/shape";
 import { AxisBottom, AxisLeft } from "@visx/axis";
-import { GridRows, GridColumns } from '@visx/grid';
+import { GridRows, GridColumns } from "@visx/grid";
 
 import LegendBox from "../LegendBox";
 import Pattern from "../chartHelpers/Pattern";
@@ -52,7 +52,9 @@ export default function LineChart(props) {
   const yScale = LinearScale([min, max], yRange);
 
   const colorsMapped = colors.map((c, i) =>
-    !selected || keys[i] === selected ? c : `${c}20`
+    !selected || keys[i] === selected
+      ? c
+      : `${c}${theme.charts.selectedOpacity}`
   );
 
   const selectIndex = (index) => {
@@ -65,7 +67,8 @@ export default function LineChart(props) {
 
   const ordinalColorScale = OrdinalScale(keys, colorsMapped);
 
-  const formatDate = (d) => d.toDateString().replace(/\d{4}/, "").replace(/Sun /, "")
+  const formatDate = (d) =>
+    d.toDateString().replace(/\d{4}/, "").replace(/Sun /, "");
 
   return (
     <div>
@@ -88,9 +91,10 @@ export default function LineChart(props) {
           top={margin.top}
           scale={xScale}
           width={xRange[1]}
-          height={yRange[0]}
-          stroke="#e0e0e0" />
-        <Pattern id="circles" fill={theme.colors.black}/>
+          height={yRange[0] - margin.top}
+          stroke="#e0e0e0"
+        />
+        <Pattern id="circles" fill={theme.colors.black} />
         {keys.map((index, i) => {
           const values = data.filter((d) => indexExtractor(d) === index);
           return (
@@ -115,31 +119,31 @@ export default function LineChart(props) {
                 onClick={() => selectIndex(index)}
               />
               <AreaClosed
-                  data={values.filter(d => {
-                    const date = xExtractor(d);
-                    const xmas = new Date("2021-01-07T18:17:30Z");
-                    const xmas2 = new Date("2021-01-15T18:17:30Z");
-                    return date > xmas && date < xmas2;
-                  })}
-                  x={(d) => xScale(xExtractor(d)) ?? 0}
-                  y={(d) => yScale(yExtractor(d)) ?? 0}
-                  yScale={yScale}
-                  strokeWidth={1}
-                  fill="url(#circles)"
-                />
+                data={values.filter((d) => {
+                  const date = xExtractor(d);
+                  const xmas = new Date("2021-01-07T18:17:30Z");
+                  const xmas2 = new Date("2021-01-15T18:17:30Z");
+                  return date > xmas && date < xmas2;
+                })}
+                x={(d) => xScale(xExtractor(d)) ?? 0}
+                y={(d) => yScale(yExtractor(d)) ?? 0}
+                yScale={yScale}
+                strokeWidth={1}
+                fill="url(#circles)"
+              />
               <AreaClosed
-                  data={values.filter(d => {
-                    const date = xExtractor(d);
-                    const xmas = new Date("2021-02-14T18:17:30Z");
-                    const xmas2 = new Date("2021-02-21T18:17:30Z");
-                    return date > xmas && date < xmas2;
-                  })}
-                  x={(d) => xScale(xExtractor(d)) ?? 0}
-                  y={(d) => yScale(yExtractor(d)) ?? 0}
-                  yScale={yScale}
-                  strokeWidth={1}
-                  fill="url(#circles)"
-                />
+                data={values.filter((d) => {
+                  const date = xExtractor(d);
+                  const xmas = new Date("2021-02-14T18:17:30Z");
+                  const xmas2 = new Date("2021-02-21T18:17:30Z");
+                  return date > xmas && date < xmas2;
+                })}
+                x={(d) => xScale(xExtractor(d)) ?? 0}
+                y={(d) => yScale(yExtractor(d)) ?? 0}
+                yScale={yScale}
+                strokeWidth={1}
+                fill="url(#circles)"
+              />
             </Group>
           );
         })}

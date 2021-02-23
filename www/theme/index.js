@@ -16,6 +16,7 @@ const theme = {
   charts: {
     background: c["PAPER"],
     radius: 14,
+    selectedOpacity: 20,
   },
 };
 

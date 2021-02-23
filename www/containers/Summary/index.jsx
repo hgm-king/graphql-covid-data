@@ -14,7 +14,7 @@ import DataTable from "../../components/charts/DataTable";
 
 import { getTrend } from "../ByRace/calculations";
 
-const calculationType = (flag) => flag ? "trend" : "value";
+const calculationType = (flag) => (flag ? "trend" : "value");
 
 export default function Summary(_props) {
   const [selectedField, setSelectedField] = useState("NYCCASECOUNT");
@@ -37,8 +37,9 @@ export default function Summary(_props) {
 
   const title = `${selectedField}`;
   const subtitle = `as of ${dateString}`;
-  const switchText = `Click to view ${selectedCalculation ? "values" : "daily changes"}`;
-
+  const switchText = `Click to view ${
+    selectedCalculation ? "values" : "daily changes"
+  }`;
 
   const fields = Object.keys(data.SummaryPrime[0])
     .filter((k) => k.match(/NYC/))

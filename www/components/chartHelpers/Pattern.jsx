@@ -6,6 +6,6 @@ export default function Pattern(props) {
   const { fill, id, ...other } = props;
 
   return (
-      <PatternCircles id={id} width={10} height={10} fill={fill} complement />
+    <PatternCircles id={id} width={10} height={10} fill={fill} complement />
   );
 }

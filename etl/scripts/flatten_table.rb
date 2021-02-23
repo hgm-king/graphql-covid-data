@@ -9,7 +9,7 @@
 
 require 'csv'
 
-data_dir = './totals/summary/'
+data_dir = './data/totals/summary/'
 table_name = "SummaryPrime"
 
 options = {
@@ -35,7 +35,7 @@ VALUES
   #{data["NYC_CASE_COUNT"] ? data["NYC_CASE_COUNT"]: 'null'},
   #{data["NYC_TOTAL_CASE_COUNT"] ? data["NYC_TOTAL_CASE_COUNT"] : 'null'},
   #{data["NYC_TOTAL_DEATH_COUNT"] ? data["NYC_TOTAL_DEATH_COUNT"] : 'null'},
-  #{data["DATE_UPDATED"] ? "'#{data["DATE_UPDATED"]}'" : 'null'}, 
+  #{data["DATE_UPDATED"] ? "'#{data["DATE_UPDATED"]}'" : 'null'},
   #{data["NYC_PROBABLE_DEATH_COUNT"] ? data["NYC_PROBABLE_DEATH_COUNT"] : 'null'},
   #{data["NYC_CONFIRMED_DEATH_COUNT"] ? data["NYC_CONFIRMED_DEATH_COUNT"] : 'null'},
   '#{filename.gsub(/\.csv/, "")}'
