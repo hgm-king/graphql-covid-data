@@ -7,5 +7,5 @@ export const byRaceBarChartStyle = css`
 
 export const byRaceRatioComparisonStyle = css`
   width: 100%;
-  margin-bottom: 128px;
+  margin-bottom: 16px;
 `;

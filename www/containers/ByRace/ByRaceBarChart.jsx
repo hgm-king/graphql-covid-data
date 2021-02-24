@@ -7,6 +7,7 @@ import theme from "../../theme/";
 
 export default function ByRaceBarChart(props) {
   const { data } = props;
+
   const keys = Object.keys(data[0]).filter((key) => key.match(/(COUNT)/));
 
   const valueLabel = (d, group) => {
@@ -23,9 +24,9 @@ export default function ByRaceBarChart(props) {
           data={data}
           keys={keys}
           indexExtractor={(d) => d.RACEGROUP}
-          width={600}
+          width={width}
           height={600}
-          margin={{ top: 0, right: 256, bottom: 64, left: 128 }}
+          margin={{ top: 0, right: 256, bottom: 0, left: 128 }}
           legendFormatter={(d) => d}
           colors={theme.palettes.DataVizPalette.slice().reverse()}
           backgroundColor={theme.charts.background}

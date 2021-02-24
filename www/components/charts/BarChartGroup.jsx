@@ -135,17 +135,19 @@ export default function BarChartGroup(props) {
               dy: "0.33em",
             })}
           />
-          <AxisBottom
-            top={height - margin.bottom}
-            scale={xScale}
-            stroke={theme.colors.black}
-            tickStroke={theme.colors.black}
-            tickLabelProps={() => ({
-              fill: theme.colors.black,
-              fontSize: 11,
-              textAnchor: "middle",
-            })}
-          />
+          {props.showAxisBottom && (
+            <AxisBottom
+              top={height - margin.bottom}
+              scale={xScale}
+              stroke={theme.colors.black}
+              tickStroke={theme.colors.black}
+              tickLabelProps={() => ({
+                fill: theme.colors.black,
+                fontSize: 11,
+                textAnchor: "middle",
+              })}
+            />
+          )}
         </Group>
       </svg>
     </div>
