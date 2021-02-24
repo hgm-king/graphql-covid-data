@@ -94,7 +94,6 @@ export default function LineChart(props) {
           height={yRange[0] - margin.top}
           stroke="#e0e0e0"
         />
-        <Pattern id="circles" fill={theme.colors.black} />
         {keys.map((index, i) => {
           const values = data.filter((d) => indexExtractor(d) === index);
           return (
@@ -117,32 +116,6 @@ export default function LineChart(props) {
                 strokeWidth={2}
                 strokeOpacity={1}
                 onClick={() => selectIndex(index)}
-              />
-              <AreaClosed
-                data={values.filter((d) => {
-                  const date = xExtractor(d);
-                  const xmas = new Date("2021-01-07T18:17:30Z");
-                  const xmas2 = new Date("2021-01-15T18:17:30Z");
-                  return date > xmas && date < xmas2;
-                })}
-                x={(d) => xScale(xExtractor(d)) ?? 0}
-                y={(d) => yScale(yExtractor(d)) ?? 0}
-                yScale={yScale}
-                strokeWidth={1}
-                fill="url(#circles)"
-              />
-              <AreaClosed
-                data={values.filter((d) => {
-                  const date = xExtractor(d);
-                  const xmas = new Date("2021-02-14T18:17:30Z");
-                  const xmas2 = new Date("2021-02-21T18:17:30Z");
-                  return date > xmas && date < xmas2;
-                })}
-                x={(d) => xScale(xExtractor(d)) ?? 0}
-                y={(d) => yScale(yExtractor(d)) ?? 0}
-                yScale={yScale}
-                strokeWidth={1}
-                fill="url(#circles)"
               />
             </Group>
           );
