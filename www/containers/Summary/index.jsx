@@ -12,7 +12,7 @@ import SummaryLineChart from "./SummaryLineChart";
 import FlexRow from "../../components/FlexRow";
 import DataTable from "../../components/charts/DataTable";
 
-import { getTrend } from "../ByRace/calculations";
+import { getTrend } from "./calculations";
 
 const calculationType = (flag) => (flag ? "trend" : "value");
 

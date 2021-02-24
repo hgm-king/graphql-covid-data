@@ -64,8 +64,6 @@ export default function ByRaceRatioComparison(props) {
     }
   };
 
-  console.log(selectedRace);
-
   const makeRatioDonut = (radius) => (key, i) => (
     <RatioDonut
       key={i}

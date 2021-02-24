@@ -54,10 +54,6 @@ export default function BarChartGroup(props) {
     xRange
   );
 
-  console.log({
-    xRange,
-    xDomain: [0, max(data, (d) => max(keys, (key) => d[key]))],
-  });
   const yScale = BandScale(data.map(indexExtractor), yRange, 0.4);
   const y1Scale = BandScale(keys, [0, yScale.bandwidth()], 0.1);
 

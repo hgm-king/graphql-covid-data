@@ -5,10 +5,7 @@ import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import FlexRow from "../../components/FlexRow";
 import ByRaceBarChart from "./ByRaceBarChart";
-import ByRacePieChart from "./ByRacePieChart";
 import ByRaceRatioComparison from "./ByRaceRatioComparison";
-import ByRaceTrendLineChart from "./ByRaceTrendLineChart";
-import Population from "../../components/animated/Population";
 
 import ByRaceQuery from "../../queries/by-race";
 import { getPopulationFromRate } from "./calculations";
@@ -78,9 +75,6 @@ export default function ByRace(_props) {
       <div className={byRaceBarChartStyle}>
         <ByRaceBarChart data={dataForDay} />
       </div>
-      <div className={byRaceTrendLineChartStyle}>
-        <ByRaceTrendLineChart data={data.ByRace} keys={raceIndexes} />
-      </div>
       <h6>Statement from NYC Dept. of Health</h6>
       <p>
         Differences in health outcomes among racial and ethnic groups are due to
@@ -95,5 +89,3 @@ export default function ByRace(_props) {
     </>
   );
 }
-
-// Here is the ticket ID MYM-408-83276 for the reference.

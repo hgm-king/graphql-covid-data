@@ -53,7 +53,7 @@ function Body(props) {
 
   const doFormat = (value) => (formatValue ? formatValue(value) : value);
   const makeRow = (row, i) => <tr key={i}>{keys.map(makeCell(row))}</tr>;
-  const makeCell = (row) => (key, i) => <td>{doFormat(row[key])}</td>;
+  const makeCell = (row) => (key, i) => <td key={i}>{doFormat(row[key])}</td>;
 
   return <tbody>{data.map(makeRow)}</tbody>;
 }
