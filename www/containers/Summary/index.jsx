@@ -70,8 +70,8 @@ export default function Summary(_props) {
       />
       <ParentSize>
         {({ width, height }) => {
-          const dropdownWidth = width > 846 ? "30%" : "100%";
-          const chartWidth = width > 846 ? 800 : width;
+          const dropdownWidth = width > 1100 ? "25%" : "100%";
+          const chartWidth = width > 1100 ? 800 : width < 20 ? 20 : width;
           return (
             <FlexRow flex="space-between" wrap="wrap">
               <div style={{ width: dropdownWidth, marginTop: 48 }}>
@@ -82,13 +82,15 @@ export default function Summary(_props) {
                   label="field"
                   width="100%"
                 />
-                <FlexRow flex="space-betwen" align="center">
-                  <Switch
-                    onClick={handleCalculationOnChange}
-                    state={selectedCalculation}
-                  />
-                  <p>{switchText}</p>
-                </FlexRow>
+                <div style={{ marginLeft: 24 }}>
+                  <FlexRow flex="space-betwen" align="center">
+                    <Switch
+                      onClick={handleCalculationOnChange}
+                      state={selectedCalculation}
+                    />
+                    <span>{switchText}</span>
+                  </FlexRow>
+                </div>
               </div>
               <SummaryLineChart
                 title={title}
