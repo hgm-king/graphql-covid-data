@@ -4,14 +4,14 @@ import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
-
-import SummaryQuery from "../../queries/summary";
 import Select from "../../components/Select";
 import Switch from "../../components/Switch";
-import SummaryLineChart from "./SummaryLineChart";
 import FlexRow from "../../components/FlexRow";
+
+import SummaryLineChart from "./SummaryLineChart";
 import DataTable from "../../components/charts/DataTable";
 
+import SummaryQuery from "../../queries/summary";
 import { getTrend } from "./calculations";
 
 const calculationType = (flag) => (flag ? "trend" : "value");
@@ -68,6 +68,7 @@ export default function Summary(_props) {
         keys={fields}
         formatValue={(d) => d.toLocaleString(d)}
       />
+      <p>How have cases in the city been trending in relation to holidays and other events?</p>
       <ParentSize>
         {({ width, height }) => {
           const dropdownWidth = width > 1100 ? "25%" : "100%";

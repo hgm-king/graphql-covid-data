@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "urql";
 
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import FlexRow from "../../components/FlexRow";
+import Switch from "../../components/Switch";
+
 import ByRaceBarChart from "./ByRaceBarChart";
 import ByRaceRatioComparison from "./ByRaceRatioComparison";
 
@@ -12,12 +14,12 @@ import { getPopulationFromRate } from "./calculations";
 
 import {
   byRaceBarChartStyle,
-  populationValuesStyle,
   byRaceRatioComparisonStyle,
-  byRaceTrendLineChartStyle,
 } from "./styles";
 
 export default function ByRace(_props) {
+  const [selectedKey, setSelectedKey] = useState("CASECOUNT");
+
   const [result, _reexecuteQuery] = useQuery({
     query: ByRaceQuery,
   });
@@ -50,9 +52,18 @@ export default function ByRace(_props) {
     key.match(/COUNT/)
   );
 
+  const makeSwitches = (key, i) => (
+    <FlexRow key={i} flex="flex-start" align="center">
+      <Switch state={key == selectedKey} onClick={() => setSelectedKey(key)}/>
+      {key}
+    </FlexRow>
+  )
+
   const raceIndexes = [...new Set(data.ByRace.map(getIndex).sort())].filter(
     (d) => d
   );
+
+  console.log({pieKeys, raceIndexes});
 
   return (
     <>
@@ -62,13 +73,19 @@ export default function ByRace(_props) {
         How does the case, hospitalization, and death percentages deviate from
         the total population?
       </p>
+      <div style={{marginLeft: 24, marginBottom: 24, width: '50%'}}>
+        <FlexRow flex="space-between" wrap="wrap">
+            { pieKeys.map(makeSwitches) }
+        </FlexRow>
+      </div>
       <div className={byRaceRatioComparisonStyle}>
         <ByRaceRatioComparison
           data={dataForDay}
-          keys={pieKeys.concat(totalKey)}
+          keys={[selectedKey, totalKey]}
           indexEliminator={getIndex}
           populationEliminator={getTotal}
           totalPopulation={totalPopulation}
+          radius={350}
         />
       </div>
       <p>What percent of cases result in death or hospitalization?</p>

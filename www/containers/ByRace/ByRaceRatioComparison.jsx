@@ -9,6 +9,7 @@ import { percent } from "../../utils/maths-tools";
 
 const pieWrapperStyle = css`
   margin-bottom: 64px;
+  margin-right: 48px;
   background-color: #f5f2e3;
   background-radius: 14px;
   padding: 24px;
@@ -21,6 +22,7 @@ export default function ByRaceRatioComparison(props) {
     indexEliminator,
     populationEliminator,
     totalPopulation,
+    radius
   } = props;
 
   const [selectedRace, setSelectedRace] = useState(null);
@@ -76,14 +78,14 @@ export default function ByRaceRatioComparison(props) {
   );
 
   return (
-    <FlexRow flex="space-between" wrap="wrap">
-      {keys.map(makeRatioDonut(200))}
+    <FlexRow flex="flex-start"  wrap="wrap">
+      {keys.map(makeRatioDonut(radius))}
     </FlexRow>
   );
 }
 
 function RatioDonut(props) {
-  const { title, radius, data, selectedRace, handleClick } = props;
+  const { title, radius, data, selectedRace, handleClick, totalPopulation } = props;
 
   const makeSummary = (total) => (d, i) => (
     <Summary key={i} d={d} total={total} />
@@ -106,6 +108,9 @@ function RatioDonut(props) {
         selected={selectedRace}
         onClick={handleClick}
       />
+      <div>
+        {data.data.map(makeSummary(data.total))}
+      </div>
     </div>
   );
 }
@@ -117,16 +122,18 @@ function Summary(props) {
   const percentDelta = percent(d.value / total - d.population, 1);
 
   const deltaColor =
-    percentDelta < 0 ? theme.colors.success : theme.colors.danger;
+    percentDelta <= 0 ? theme.colors.success : theme.colors.danger;
 
-  const trendArrow = percentDelta < 0 ? "▼" : "▲";
+  const trendArrow = percentDelta < 0 ? "▼"
+    : percentDelta > 0 ? "▲"
+    : "";
 
   return (
     <p>
-      {d.index}: {d.value} ({percentValue}%){" "}
+      {d.index}: {Math.ceil(d.value).toLocaleString()} ({percentValue.toFixed(1)}%){" "}
       <span style={{ color: deltaColor }}>
         {trendArrow}
-        {percentDelta}
+        {percentDelta.toFixed(1)}
       </span>
     </p>
   );
