@@ -12,10 +12,7 @@ import ByRaceRatioComparison from "./ByRaceRatioComparison";
 import ByRaceQuery from "../../queries/by-race";
 import { getPopulationFromRate } from "./calculations";
 
-import {
-  byRaceBarChartStyle,
-  byRaceRatioComparisonStyle,
-} from "./styles";
+import { byRaceBarChartStyle, byRaceRatioComparisonStyle } from "./styles";
 
 export default function ByRace(_props) {
   const [selectedKey, setSelectedKey] = useState("CASECOUNT");
@@ -54,16 +51,14 @@ export default function ByRace(_props) {
 
   const makeSwitches = (key, i) => (
     <FlexRow key={i} flex="flex-start" align="center">
-      <Switch state={key == selectedKey} onClick={() => setSelectedKey(key)}/>
+      <Switch state={key == selectedKey} onClick={() => setSelectedKey(key)} />
       {key}
     </FlexRow>
-  )
+  );
 
   const raceIndexes = [...new Set(data.ByRace.map(getIndex).sort())].filter(
     (d) => d
   );
-
-  console.log({pieKeys, raceIndexes});
 
   return (
     <>
@@ -73,9 +68,9 @@ export default function ByRace(_props) {
         How does the case, hospitalization, and death percentages deviate from
         the total population?
       </p>
-      <div style={{marginLeft: 24, marginBottom: 24, width: '50%'}}>
+      <div style={{ marginLeft: 24, marginBottom: 24, width: "50%" }}>
         <FlexRow flex="space-between" wrap="wrap">
-            { pieKeys.map(makeSwitches) }
+          {pieKeys.map(makeSwitches)}
         </FlexRow>
       </div>
       <div className={byRaceRatioComparisonStyle}>

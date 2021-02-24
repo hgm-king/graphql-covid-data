@@ -68,7 +68,10 @@ export default function Summary(_props) {
         keys={fields}
         formatValue={(d) => d.toLocaleString(d)}
       />
-      <p>How have cases in the city been trending in relation to holidays and other events?</p>
+      <p>
+        How have cases in the city been trending in relation to holidays and
+        other events?
+      </p>
       <ParentSize>
         {({ width, height }) => {
           const dropdownWidth = width > 1100 ? "25%" : "100%";

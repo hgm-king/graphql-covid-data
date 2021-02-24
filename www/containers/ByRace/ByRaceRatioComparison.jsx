@@ -22,7 +22,7 @@ export default function ByRaceRatioComparison(props) {
     indexEliminator,
     populationEliminator,
     totalPopulation,
-    radius
+    radius,
   } = props;
 
   const [selectedRace, setSelectedRace] = useState(null);
@@ -78,14 +78,21 @@ export default function ByRaceRatioComparison(props) {
   );
 
   return (
-    <FlexRow flex="flex-start"  wrap="wrap">
+    <FlexRow flex="flex-start" wrap="wrap">
       {keys.map(makeRatioDonut(radius))}
     </FlexRow>
   );
 }
 
 function RatioDonut(props) {
-  const { title, radius, data, selectedRace, handleClick, totalPopulation } = props;
+  const {
+    title,
+    radius,
+    data,
+    selectedRace,
+    handleClick,
+    totalPopulation,
+  } = props;
 
   const makeSummary = (total) => (d, i) => (
     <Summary key={i} d={d} total={total} />
@@ -108,9 +115,7 @@ function RatioDonut(props) {
         selected={selectedRace}
         onClick={handleClick}
       />
-      <div>
-        {data.data.map(makeSummary(data.total))}
-      </div>
+      <div>{data.data.map(makeSummary(data.total))}</div>
     </div>
   );
 }
@@ -124,13 +129,12 @@ function Summary(props) {
   const deltaColor =
     percentDelta <= 0 ? theme.colors.success : theme.colors.danger;
 
-  const trendArrow = percentDelta < 0 ? "▼"
-    : percentDelta > 0 ? "▲"
-    : "";
+  const trendArrow = percentDelta < 0 ? "▼" : percentDelta > 0 ? "▲" : "";
 
   return (
     <p>
-      {d.index}: {Math.ceil(d.value).toLocaleString()} ({percentValue.toFixed(1)}%){" "}
+      {d.index}: {Math.ceil(d.value).toLocaleString()} (
+      {percentValue.toFixed(1)}%){" "}
       <span style={{ color: deltaColor }}>
         {trendArrow}
         {percentDelta.toFixed(1)}
