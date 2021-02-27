@@ -139,6 +139,24 @@ table! {
 }
 
 table! {
+    DataByDay (id) {
+        id -> Int4,
+        date_of_interest -> Nullable<Text>,
+        CASE_COUNT -> Nullable<Int8>,
+        PROBABLE_CASE_COUNT -> Nullable<Int8>,
+        HOSPITALIZED_COUNT -> Nullable<Int8>,
+        DEATH_COUNT -> Nullable<Int8>,
+        PROBABLE_DEATH_COUNT -> Nullable<Int8>,
+        CASE_COUNT_7DAY_AVG -> Nullable<Int8>,
+        ALL_CASE_COUNT_7DAY_AVG -> Nullable<Int8>,
+        HOSP_COUNT_7DAY_AVG -> Nullable<Int8>,
+        DEATH_COUNT_7DAY_AVG -> Nullable<Int8>,
+        ALL_DEATH_COUNT_7DAY_AVG -> Nullable<Int8>,
+        INCOMPLETE -> Nullable<Int8>,
+    }
+}
+
+table! {
     DataByModzcta (id) {
         id -> Int4,
         MODIFIED_ZCTA -> Nullable<Float8>,
@@ -405,6 +423,7 @@ allow_tables_to_appear_in_same_query!(
     ByRace,
     BySex,
     CaserateByModzctaPrime,
+    DataByDay,
     DataByModzcta,
     DataByModzctaPrime,
     DeathsByBoroAge,

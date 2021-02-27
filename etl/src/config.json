@@ -11,5 +11,6 @@
     "totals/summary.csv"
   ],
   "singular": [
+    "trends/data-by-day.csv"
   ]
 }

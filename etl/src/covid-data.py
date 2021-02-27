@@ -74,8 +74,9 @@ def save_dataframe_to_database(engine, df, table_name):
 
 # given a url to a raw file on github and a date the file was commited on
 # saves the file as a csv and returns a dataframe
-def get_csv_from_github(url, date, local_path):
+def get_csv(url, date, local_path):
     # print('Loading and saving data for {} to {}'.format(date, local_path))
+
     # we want to use the local one if we have it
     local_data_set = CSVDataSet(filepath=local_path)
 
@@ -85,23 +86,26 @@ def get_csv_from_github(url, date, local_path):
         return data
     except Exception as exception:
         # pull it from internet
-        data_set = CSVDataSet(filepath=url)
-        try:
-            data = data_set.load()
+        return get_csv_file_from_github(url, date, local_path)
 
-            # print('{} columns found'.format(len(data.columns)))
-            if date != "":
-                dates = np.repeat(date, len(data))
-                data['date'] = dates
+def get_csv_file_from_github(url, date, local_path):
+    data_set = CSVDataSet(filepath=url)
+    try:
+        data = data_set.load()
 
-            local_data_set = CSVDataSet(filepath=local_path)
-            local_data_set.save(data)
+        # print('{} columns found'.format(len(data.columns)))
+        if date != "":
+            dates = np.repeat(date, len(data))
+            data['date'] = dates
 
-            return data
-        except Exception as exception:
-            print('Error: could not get {}'.format(url))
-            print(exception)
-            return []
+        local_data_set = CSVDataSet(filepath=local_path)
+        local_data_set.save(data)
+
+        return data
+    except Exception as exception:
+        print('Error: could not get {}'.format(url))
+        print(exception)
+        return []
 
 
 # given a json object that represents the one commit in a git repo and a file path
@@ -125,7 +129,7 @@ def get_history_data_from_git(url, path):
         return []
 
 def map_over_commits_for_file(history_data, path):
-    return [get_csv_from_github(url, date, "data/{}/{}.csv".format(path, date)) for (url, date) in history_data]
+    return [get_csv(url, date, "data/{}/{}.csv".format(path, date)) for (url, date) in history_data]
 
 # given a path, we get every version of the file from the git history
 # and return each version as an array of dataframes
@@ -167,7 +171,7 @@ def save_singular_file_to_database(engine, path, filetype, table_name):
 
     #spits out root/path/date.filetype
     local_path = format_local_path(os.environ['LOCAL_ROOT'], path, filetype)
-    data = get_csv_from_github(url, "", local_path)
+    data = get_csv_file_from_github(url, "", local_path)
     cleaned_df = cleanup_data_frame(data)
     save_dataframe_to_database(engine, cleaned_df, table_name)
 
@@ -175,7 +179,7 @@ def save_singular_file_to_database(engine, path, filetype, table_name):
 config_path = './src/config.json'
 with open(config_path) as f:
     data = json.load(f)
-#
+
 for file in data['singular']:
     [path, filetype] = file.split('.')
     table_name = get_table_name_from_path(path)
