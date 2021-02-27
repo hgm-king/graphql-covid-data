@@ -16,8 +16,8 @@ import Footer from "./components/Footer";
 // utils
 import theme from "./theme/";
 
-const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
-// const serverHost = "localhost";
+// const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
+const serverHost = "localhost";
 const serverPort = process.env.SERVER_PORT ?? "3000";
 
 const client = createClient({
@@ -27,7 +27,7 @@ const client = createClient({
 export default function App(_props) {
   const navs = ["Summary", "ByRace", "ByZipcode"];
 
-  const [selected, setSelected] = useState(navs[0]);
+  const [selected, setSelected] = useState(navs[1]);
 
   const main = css`
     color: ${theme.colors.black};
