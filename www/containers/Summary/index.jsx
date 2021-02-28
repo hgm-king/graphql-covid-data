@@ -13,6 +13,7 @@ import DataTable from "../../components/charts/DataTable";
 
 import SummaryQuery from "../../queries/summary";
 import { getTrend } from "./calculations";
+import { summedObject } from "../../utils/data-tools";
 
 const calculationType = (flag) => (flag ? "trend" : "value");
 
@@ -54,17 +55,11 @@ export default function Summary(_props) {
   };
 
   const trendData = data.DataByDay;
-  const summedTotals = data.DataByDay.reduce((acc, row) => {
-    acc.CASECOUNT += row.CASECOUNT;
-    acc.DEATHCOUNT += row.DEATHCOUNT;
-    acc.HOSPITALIZEDCOUNT += row.HOSPITALIZEDCOUNT;
-
-    return acc;
-  }, {
-    CASECOUNT: 0,
-    DEATHCOUNT: 0,
-    HOSPITALIZEDCOUNT: 0,
-  })
+  const summedTotals = summedObject(data.DataByDay, [
+    "CASECOUNT",
+    "DEATHCOUNT",
+    "HOSPITALIZEDCOUNT",
+  ]);
 
   return (
     <>
@@ -77,7 +72,6 @@ export default function Summary(_props) {
       />
       <ParentSize>
         {({ width, height }) => {
-          console.log({ width, height });
           const dropdownWidth = width > 1100 ? "25%" : "100%";
           const chartWidth = width > 1100 ? 800 : width < 20 ? 20 : width;
           const numTicksY = width < 690 ? 4 : undefined;

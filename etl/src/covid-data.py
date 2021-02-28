@@ -180,15 +180,14 @@ config_path = './src/config.json'
 with open(config_path) as f:
     data = json.load(f)
 
-for file in data['singular']:
-    [path, filetype] = file.split('.')
-    table_name = get_table_name_from_path(path)
-    print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-    data = save_singular_file_to_database(engine, path, filetype, table_name)
+    for file in data['singular']:
+        [path, filetype] = file.split('.')
+        table_name = get_table_name_from_path(path)
+        print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+        data = save_singular_file_to_database(engine, path, filetype, table_name)
 
-
-for file in data['files']:
-    [path, filetype] = file.split('.')
-    table_name = get_table_name_from_path(path)
-    print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-    data = save_file_commits_to_database(engine, path, filetype, table_name)
+    for file in data['files']:
+        [path, filetype] = file.split('.')
+        table_name = get_table_name_from_path(path)
+        print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+        data = save_file_commits_to_database(engine, path, filetype, table_name)

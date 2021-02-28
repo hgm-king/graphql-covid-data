@@ -9,3 +9,19 @@ export const toOption = (v) => ({
 });
 
 export const range = (count) => [...Array(count).keys()];
+
+export const initializeSumObject = (keys, initialValue) =>
+  keys.reduce((acc, key) => {
+    acc[key] = initialValue;
+    return acc;
+  }, {});
+
+export const summedObject = (data, keys) =>
+  data.reduce(
+    (acc, row) =>
+      keys.reduce((acc, key) => {
+        acc[key] += row[key];
+        return acc;
+      }, acc),
+    initializeSumObject(keys, 0)
+  );
