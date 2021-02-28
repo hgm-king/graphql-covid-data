@@ -17,7 +17,7 @@ import { getTrend } from "./calculations";
 const calculationType = (flag) => (flag ? "trend" : "value");
 
 export default function Summary(_props) {
-  const [selectedField, setSelectedField] = useState("NYCCASECOUNT");
+  const [selectedField, setSelectedField] = useState("CASECOUNT");
   const [selectedCalculation, setSelectedCalculation] = useState(false);
 
   const [result, _reexecuteQuery] = useQuery({
@@ -32,7 +32,7 @@ export default function Summary(_props) {
   const getIndex = (d) => selectedField;
   const getValue = (d) => d[selectedField];
 
-  const selectedDay = data.SummaryPrime[data.SummaryPrime.length - 1].date;
+  const selectedDay = data.DataByDay[data.DataByDay.length - 1].date;
   const dateString = new Date(selectedDay).toDateString();
 
   const title = `${selectedField}`;
@@ -41,10 +41,8 @@ export default function Summary(_props) {
     selectedCalculation ? "values" : "daily changes"
   }`;
 
-  const fields = Object.keys(data.SummaryPrime[0])
-    .filter((k) => k.match(/NYC/))
-    .filter((k) => !k.match(/TOTAL/))
-    .filter((k) => !k.match(/PROBABLE/))
+  const fields = Object.keys(data.DataByDay[0])
+    .filter((k) => k.match(/COUNT/))
     .sort();
 
   const handleFieldOnChange = (option) => {
@@ -55,30 +53,37 @@ export default function Summary(_props) {
     setSelectedCalculation(!selectedCalculation);
   };
 
-  const trendData = data.SummaryPrime.map(getTrend(getIndex, getValue)).filter(
-    (d) => Math.abs(d["rate"]) < 2.0 && d.trend > 0
-  );
+  const trendData = data.DataByDay;
+  const summedTotals = data.DataByDay.reduce((acc, row) => {
+    acc.CASECOUNT += row.CASECOUNT;
+    acc.DEATHCOUNT += row.DEATHCOUNT;
+    acc.HOSPITALIZEDCOUNT += row.HOSPITALIZEDCOUNT;
+
+    return acc;
+  }, {
+    CASECOUNT: 0,
+    DEATHCOUNT: 0,
+    HOSPITALIZEDCOUNT: 0,
+  })
 
   return (
     <>
       <h3>Summary</h3>
       <h6>Showing data for {dateString}</h6>
       <DataTable
-        data={data.SummaryPrime.slice(-1)}
+        data={[summedTotals]}
         keys={fields}
         formatValue={(d) => d.toLocaleString(d)}
       />
-      <p>
-        How have cases in the city been trending in relation to holidays and
-        other events?
-      </p>
       <ParentSize>
         {({ width, height }) => {
+          console.log({ width, height });
           const dropdownWidth = width > 1100 ? "25%" : "100%";
           const chartWidth = width > 1100 ? 800 : width < 20 ? 20 : width;
+          const numTicksY = width < 690 ? 4 : undefined;
           return (
-            <FlexRow flex="space-between" wrap="wrap">
-              <div style={{ width: dropdownWidth, marginTop: 48 }}>
+            <>
+              <div style={{ width: dropdownWidth, marginTop: 24 }}>
                 <Select
                   options={fields}
                   selected={selectedField}
@@ -86,15 +91,6 @@ export default function Summary(_props) {
                   label="field"
                   width="100%"
                 />
-                <div style={{ marginLeft: 24 }}>
-                  <FlexRow flex="space-betwen" align="center">
-                    <Switch
-                      onClick={handleCalculationOnChange}
-                      state={selectedCalculation}
-                    />
-                    <span>{switchText}</span>
-                  </FlexRow>
-                </div>
               </div>
               <SummaryLineChart
                 title={title}
@@ -102,10 +98,12 @@ export default function Summary(_props) {
                 data={trendData}
                 field={selectedField}
                 calculation={calculationType(selectedCalculation)}
-                width={chartWidth}
+                width={width}
                 height={400}
+                numTicksX={numTicksY}
+                numTicksY={5}
               />
-            </FlexRow>
+            </>
           );
         }}
       </ParentSize>

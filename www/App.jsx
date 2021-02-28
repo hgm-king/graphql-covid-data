@@ -17,7 +17,7 @@ import Footer from "./components/Footer";
 import theme from "./theme/";
 
 // const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
-const serverHost = "localhost";
+const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
 const serverPort = process.env.SERVER_PORT ?? "3000";
 
 const client = createClient({
@@ -31,8 +31,6 @@ export default function App(_props) {
 
   const main = css`
     color: ${theme.colors.black};
-    margin-left: 48px;
-    margin-right: 48px;
   `;
 
   const selectHeader = (header) => (_e) => setSelected(header);

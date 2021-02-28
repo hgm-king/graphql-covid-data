@@ -1,18 +1,12 @@
 const SummaryQuery = `
 {
-  SummaryPrime {
+  DataByDay {
     id,
-    NYCPROBABLECASECOUNT,
-    NYCHOSPITALIZEDCOUNT
-    NYCCASECOUNT,
-    NYCTOTALCASECOUNT,
-    NYCTOTALDEATHCOUNT,
-    DATEUPDATED,
-    NYCPROBABLEDEATHCOUNT,
-    NYCCONFIRMEDDEATHCOUNT,
-    date
+    dateOfInterest,
+    CASECOUNT,
+    HOSPITALIZEDCOUNT,
+    DEATHCOUNT
   }
 }
-
 `;
 export default SummaryQuery;

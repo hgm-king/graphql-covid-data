@@ -3,11 +3,19 @@ body {
   font-family: "Jost", sans-serif;
 }
 
-.main {
-  padding-left: 24px;
-  margin: auto;
-  max-width: 85%;
+#main {
+  margin-left: 48px;
+  margin-right: 48px;
 }
+
+@media only screen and (max-width: 600px) {
+  #main {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+
 
 .container {
   display: flex;

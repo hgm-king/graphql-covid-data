@@ -142,17 +142,11 @@ table! {
     DataByDay (id) {
         id -> Int4,
         date_of_interest -> Nullable<Text>,
-        CASE_COUNT -> Nullable<Int8>,
-        PROBABLE_CASE_COUNT -> Nullable<Int8>,
-        HOSPITALIZED_COUNT -> Nullable<Int8>,
-        DEATH_COUNT -> Nullable<Int8>,
-        PROBABLE_DEATH_COUNT -> Nullable<Int8>,
-        CASE_COUNT_7DAY_AVG -> Nullable<Int8>,
-        ALL_CASE_COUNT_7DAY_AVG -> Nullable<Int8>,
-        HOSP_COUNT_7DAY_AVG -> Nullable<Int8>,
-        DEATH_COUNT_7DAY_AVG -> Nullable<Int8>,
-        ALL_DEATH_COUNT_7DAY_AVG -> Nullable<Int8>,
-        INCOMPLETE -> Nullable<Int8>,
+        CASE_COUNT -> Nullable<Int4>,
+        PROBABLE_CASE_COUNT -> Nullable<Int4>,
+        HOSPITALIZED_COUNT -> Nullable<Int4>,
+        DEATH_COUNT -> Nullable<Int4>,
+        PROBABLE_DEATH_COUNT -> Nullable<Int4>,
     }
 }
 

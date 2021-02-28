@@ -17,7 +17,8 @@ use juniper::FieldResult;
 use std::env;
 
 use models::{
-    AntibodyByAgeModel, ByRaceModel, DataByModzctaModel, SummaryPrimeModel, ZctaToModzctaModel,
+    AntibodyByAgeModel, ByRaceModel, DataByDayModel, DataByModzctaModel, SummaryPrimeModel,
+    ZctaToModzctaModel,
 };
 
 pub struct Context {
@@ -64,5 +65,11 @@ impl QueryRoot {
         let connection = establish_connection();
         let summary = SummaryPrimeModel::read(&connection);
         Ok(summary)
+    }
+
+    fn DataByDay(_context: &Context) -> FieldResult<Vec<DataByDayModel::DataByDayT>> {
+        let connection = establish_connection();
+        let data_by_day = DataByDayModel::read(&connection);
+        Ok(data_by_day)
     }
 }

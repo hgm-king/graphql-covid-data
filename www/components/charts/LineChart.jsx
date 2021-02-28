@@ -131,6 +131,7 @@ export default function LineChart(props) {
             fontSize: 11,
             textAnchor: "middle",
           })}
+          numTicks={props.numTicksX}
         />
         <AxisLeft
           left={margin.left}
@@ -143,7 +144,7 @@ export default function LineChart(props) {
             fontSize: 11,
             textAnchor: "end",
           })}
-          numTicks={5}
+          numTicks={props.numTicksY}
         />
       </svg>
     </div>
