@@ -39,8 +39,6 @@ class Map {
       props: { data, path, colorHandler, onClick },
     } = this;
 
-    console.log("update");
-
     svg
       .selectAll("path")
       .data(data.features)

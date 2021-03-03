@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 
 import FlexRow from "../../components/FlexRow";
 import Animator from "../../components/Animator.jsx";
+import Select from "../../components/Select";
 
 import map from "../../vectors/map";
 import { OrdinalScale, LinearScale } from "../../utils/scale-tools";
 import theme from "../../theme";
+import { toOption } from "../../utils/data-tools";
 
 const excludedKeys = [
   "__typename",
@@ -16,6 +18,7 @@ const excludedKeys = [
   "BOROUGHGROUP",
   "date",
 ];
+
 const includedKeys = (key) => !excludedKeys.includes(key);
 
 let vis;
@@ -32,10 +35,13 @@ export default function ZctaMap(props) {
   const propertiesIndex = "postalCode";
   const fetchFromData = (zipcode) => data.find((d) => d.ZCTA == zipcode);
 
+  const keys = Object.keys(data[0]).filter(includedKeys);
+
   const colors = [
     theme.palettes.DataVizPalette[0],
     theme.palettes.DataVizPalette[theme.palettes.DataVizPalette.length - 1],
   ];
+
   const scale = OrdinalScale(
     ["N/A", "Brooklyn", "Bronx", "Manhattan", "Queens", "Staten Island"],
     theme.palettes.DataVizPalette
@@ -63,13 +69,9 @@ export default function ZctaMap(props) {
     setSelectedZipcode(d[propertiesIndex]);
   };
 
-  const toOption = (option) => {
-    return <option key={option}>{option}</option>;
-  };
-
-  const handleIndexChange = ({ target }) => {
-    const newValue = target.value;
-    setSelectedIndex(newValue);
+  const handleIndexChange = ({ value }) => {
+    console.log({value});
+    setSelectedIndex(value);
     vis.update();
   };
 
@@ -85,18 +87,24 @@ export default function ZctaMap(props) {
 
   return (
     <>
-      <select selected={selectedIndex} onChange={handleIndexChange}>
-        {Object.keys(data[0]).filter(includedKeys).map(toOption)}
-      </select>
-      <p>Min: {min}</p>
-      <div
-        style={{ height: 20, width: 20, backgroundColor: colorScale(min) }}
-      />
-      <p>Max: {max}</p>
-      <div
-        style={{ height: 20, width: 20, backgroundColor: colorScale(max) }}
-      />
+
       <FlexRow flex={"space-between"}>
+        <div style={{width: 400}}>
+          <Select
+            options={keys}
+            default={selectedIndex}
+            onChange={handleIndexChange}
+            width="100%"
+            />
+          <p>Min: {min}</p>
+          <div
+            style={{ height: 20, width: 20, backgroundColor: colorScale(min) }}
+          />
+          <p>Max: {max}</p>
+          <div
+            style={{ height: 20, width: 20, backgroundColor: colorScale(max) }}
+          />
+        </div>
         <Animator drawer={map} setVis={setVis} options={options} />
         <div>
           <MapSummary

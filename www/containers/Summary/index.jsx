@@ -4,7 +4,6 @@ import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
-import Select from "../../components/Select";
 import Switch from "../../components/Switch";
 import FlexRow from "../../components/FlexRow";
 
