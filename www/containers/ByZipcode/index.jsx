@@ -13,7 +13,6 @@ import DataByModzctaQuery from "../../queries/data-by-modzcta";
 export default function ByZipcodeContainer(props) {
   const [geoJson, setGeoJson] = useState(null);
 
-
   const mapUrl = "./nyc.json";
 
   useEffect(() => {

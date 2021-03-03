@@ -70,7 +70,6 @@ export default function ZctaMap(props) {
   };
 
   const handleIndexChange = ({ value }) => {
-    console.log({value});
     setSelectedIndex(value);
     vis.update();
   };
@@ -87,15 +86,14 @@ export default function ZctaMap(props) {
 
   return (
     <>
-
       <FlexRow flex={"space-between"}>
-        <div style={{width: 400}}>
+        <div style={{ width: 400 }}>
           <Select
             options={keys}
             default={selectedIndex}
             onChange={handleIndexChange}
             width="100%"
-            />
+          />
           <p>Min: {min}</p>
           <div
             style={{ height: 20, width: 20, backgroundColor: colorScale(min) }}
