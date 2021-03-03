@@ -10,7 +10,7 @@ export default function Footer(props) {
   return (
     <div className={footerStyle}>
       <p style={{ textAlign: "center" }}>
-        v0.3.0&nbsp;|&nbsp;Data updated 2-24-21&nbsp;|&nbsp;
+        v0.4.0&nbsp;|&nbsp;Data updated 3-03-21&nbsp;|&nbsp;
         <a href="https://github.com/nychealth/coronavirus-data">
           Source Data
         </a>{" "}
