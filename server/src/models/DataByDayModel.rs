@@ -4,13 +4,11 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::DataByDay;
 use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="DataByDay"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "DataByDay"]
 pub struct DataByDayT {
     pub id: i32,
     pub date_of_interest: Option<String>,
