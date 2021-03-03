@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "urql";
+import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
 import Loader from "../../components/Loader";
 import Error from "../../components/Error";
@@ -64,40 +65,51 @@ export default function ByRace(_props) {
     <>
       <h3>By Race</h3>
       <h6>Showing data for {dateString}</h6>
-      <p>
-        How does the case, hospitalization, and death percentages deviate from
-        the total population?
-      </p>
-      <div style={{ marginLeft: 24, marginBottom: 24, width: "50%" }}>
-        <FlexRow flex="space-between" wrap="wrap">
-          {pieKeys.map(makeSwitches)}
-        </FlexRow>
-      </div>
-      <div className={byRaceRatioComparisonStyle}>
-        <ByRaceRatioComparison
-          data={dataForDay}
-          keys={[selectedKey, totalKey]}
-          indexEliminator={getIndex}
-          populationEliminator={getTotal}
-          totalPopulation={totalPopulation}
-          radius={350}
-        />
-      </div>
-      <p>What percent of cases result in death or hospitalization?</p>
-      <div className={byRaceBarChartStyle}>
-        <ByRaceBarChart data={dataForDay} />
-      </div>
-      <h6>Statement from NYC Dept. of Health</h6>
-      <p>
-        Differences in health outcomes among racial and ethnic groups are due to
-        long-term institutional and personal biases against people of color.
-        There is no evidence that these health inequities are due to personal
-        traits. Lasting racism and an inequitable distribution of resources
-        needed for wellness cause these health inequities. These resources
-        include quality jobs, housing, health care and food, among others. The
-        greater impact of the COVID-19 pandemic on people of color shows how
-        these inequities influence health outcomes.
-      </p>
+      <ParentSize>
+        {({ width, height }) => {
+          const barChartWidth = width < 600 ? width : width * 0.8;
+          const donutRadius = width < 600 ? width - 100 : 400;
+          return (
+            <>
+              <p>
+                How does the case, hospitalization, and death percentages
+                deviate from the total population?
+              </p>
+              <div style={{ marginLeft: 24, marginBottom: 24, width: "50%" }}>
+                <FlexRow flex="space-between" wrap="wrap">
+                  {pieKeys.map(makeSwitches)}
+                </FlexRow>
+              </div>
+              <div className={byRaceRatioComparisonStyle}>
+                <ByRaceRatioComparison
+                  data={dataForDay}
+                  keys={[selectedKey, totalKey]}
+                  indexEliminator={getIndex}
+                  populationEliminator={getTotal}
+                  totalPopulation={totalPopulation}
+                  radius={donutRadius}
+                />
+              </div>
+              <p>What percent of cases result in death or hospitalization?</p>
+              <div className={byRaceBarChartStyle}>
+                <ByRaceBarChart data={dataForDay} width={barChartWidth} />
+              </div>
+              <h6>Statement from NYC Dept. of Health</h6>
+              <p>
+                Differences in health outcomes among racial and ethnic groups
+                are due to long-term institutional and personal biases against
+                people of color. There is no evidence that these health
+                inequities are due to personal traits. Lasting racism and an
+                inequitable distribution of resources needed for wellness cause
+                these health inequities. These resources include quality jobs,
+                housing, health care and food, among others. The greater impact
+                of the COVID-19 pandemic on people of color shows how these
+                inequities influence health outcomes.
+              </p>
+            </>
+          );
+        }}
+      </ParentSize>
     </>
   );
 }

@@ -100,21 +100,23 @@ function RatioDonut(props) {
 
   return (
     <div className={pieWrapperStyle}>
-      <h6>{title}</h6>
-      <DonutChart
-        data={data.data}
-        keys={data.keys}
-        valueEliminator={(d) => d.value}
-        labelEliminator={(d) => d.index}
-        radius={radius}
-        outerRadius={radius / 2}
-        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        colors={theme.palettes.DataVizPalette}
-        backgroundColor={"transparent"}
-        backgroundRadius={0}
-        selected={selectedRace}
-        onClick={handleClick}
-      />
+      <div>
+        <h6>{title}</h6>
+        <DonutChart
+          data={data.data}
+          keys={data.keys}
+          valueEliminator={(d) => d.value}
+          labelEliminator={(d) => d.index}
+          radius={radius}
+          outerRadius={radius / 2}
+          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+          colors={theme.palettes.DataVizPalette}
+          backgroundColor={"transparent"}
+          backgroundRadius={0}
+          selected={selectedRace}
+          onClick={handleClick}
+        />
+      </div>
       <div>{data.data.map(makeSummary(data.total))}</div>
     </div>
   );
