@@ -12,7 +12,6 @@ import SummaryLineChart from "./SummaryLineChart";
 import DataTable from "../../components/charts/DataTable";
 
 import SummaryQuery from "../../queries/summary";
-import { getTrend } from "./calculations";
 import { summedObject } from "../../utils/data-tools";
 
 export default function Summary(_props) {

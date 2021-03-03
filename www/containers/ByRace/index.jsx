@@ -67,8 +67,8 @@ export default function ByRace(_props) {
       <h6>Showing data for {dateString}</h6>
       <ParentSize>
         {({ width, height }) => {
-          const barChartWidth = width < 600 ? width : width * 0.8;
-          const donutRadius = width < 600 ? width - 100 : 400;
+          const barChartWidth = width < 700 ? width : width * 0.8;
+          const donutRadius = width < 700 ? width - 50 : 400;
           return (
             <>
               <p>
