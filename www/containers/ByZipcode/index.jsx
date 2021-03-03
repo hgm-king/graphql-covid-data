@@ -41,7 +41,7 @@ export default function ByZipcodeContainer(props) {
 
   const mappedData = data.DataByModzcta.map((row) => ({
     ...row,
-    PERCENTTESTED: percentTested(row),
+    PERCENTTESTED: Math.round(percentTested(row)),
   }));
 
   return (

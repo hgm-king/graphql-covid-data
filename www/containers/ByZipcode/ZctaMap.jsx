@@ -30,7 +30,7 @@ export default function ZctaMap(props) {
   const { data, geoJson } = props;
 
   const [selectedZipcode, setSelectedZipcode] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState("POPDENOMINATOR");
+  const [selectedIndex, setSelectedIndex] = useState("COVIDCASECOUNT");
 
   const propertiesIndex = "postalCode";
   const fetchFromData = (zipcode) => data.find((d) => d.ZCTA == zipcode);
@@ -38,14 +38,9 @@ export default function ZctaMap(props) {
   const keys = Object.keys(data[0]).filter(includedKeys);
 
   const colors = [
-    theme.palettes.DataVizPalette[0],
     theme.palettes.DataVizPalette[theme.palettes.DataVizPalette.length - 1],
+    theme.palettes.DataVizPalette[0],
   ];
-
-  const scale = OrdinalScale(
-    ["N/A", "Brooklyn", "Bronx", "Manhattan", "Queens", "Staten Island"],
-    theme.palettes.DataVizPalette
-  );
 
   const valueHandler = (properties) => {
     const row = fetchFromData(properties[propertiesIndex]);
@@ -86,7 +81,7 @@ export default function ZctaMap(props) {
 
   return (
     <>
-      <FlexRow flex={"space-between"}>
+      <FlexRow flex="space-between" wrap="wrap">
         <div style={{ width: 400 }}>
           <Select
             options={keys}
@@ -94,22 +89,31 @@ export default function ZctaMap(props) {
             onChange={handleIndexChange}
             width="100%"
           />
-          <p>Min: {min}</p>
-          <div
-            style={{ height: 20, width: 20, backgroundColor: colorScale(min) }}
-          />
-          <p>Max: {max}</p>
-          <div
-            style={{ height: 20, width: 20, backgroundColor: colorScale(max) }}
-          />
-        </div>
-        <Animator drawer={map} setVis={setVis} options={options} />
-        <div>
+          <FlexRow flex="flex-start" align="center">
+            <div
+              style={{
+                height: 20,
+                width: 20,
+                backgroundColor: colorScale(min),
+                marginRight: "16px",
+              }}
+            />
+            Min: {min} | Max: {max}
+            <div
+              style={{
+                height: 20,
+                width: 20,
+                backgroundColor: colorScale(max),
+                marginLeft: "16px",
+              }}
+            />
+          </FlexRow>
           <MapSummary
             selectedZipcode={selectedZipcode}
             data={fetchFromData(selectedZipcode)}
           />
         </div>
+        <Animator drawer={map} setVis={setVis} options={options} />
       </FlexRow>
     </>
   );
@@ -120,18 +124,19 @@ function MapSummary(props) {
   if (!data) return <h6>Select a zipcode...</h6>;
 
   const makeRow = (key, i) => (
-    <div key={i} style={{ textAlign: "right" }}>
-      <h6>{key}</h6>
-      <p style={{ textAlign: "right" }}>{data[key]}</p>
+    <div key={i}>
+      <p>
+        {key} :: {data[key]}
+      </p>
     </div>
   );
 
   return (
     <div>
-      <h5>
+      <h6>
         {data["MODIFIEDZCTA"]} :: {data["BOROUGHGROUP"]} ::{" "}
         {data["NEIGHBORHOODNAME"]}
-      </h5>
+      </h6>
       {Object.keys(data).filter(includedKeys).map(makeRow)}
     </div>
   );
