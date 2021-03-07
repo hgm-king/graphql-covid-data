@@ -31,16 +31,6 @@ export default function Summary(_props) {
   const selectedDay = data.DataByDay[data.DataByDay.length - 1].dateOfInterest;
   const dateString = new Date(selectedDay).toDateString();
 
-  const makeSwitches = (key, i) => (
-    <FlexRow key={i} flex="flex-start" align="center">
-      <Switch
-        state={key == selectedField}
-        onClick={() => setSelectedField(key)}
-      />
-      {key}
-    </FlexRow>
-  );
-
   const title = `${selectedField}`;
   const subtitle = `as of ${dateString}`;
 
@@ -52,31 +42,45 @@ export default function Summary(_props) {
     setSelectedField(option.value);
   };
 
-  const trendData = data.DataByDay;
   const summedTotals = summedObject(data.DataByDay, [
     "CASECOUNT",
     "DEATHCOUNT",
     "HOSPITALIZEDCOUNT",
   ]);
 
+  const makeSwitches = (key, i) => (
+    <FlexRow key={i} flex="flex-start" align="center" wrap="wrap">
+      <Switch
+        state={key == selectedField}
+        onClick={() => setSelectedField(key)}
+      />
+      <span>{key}&nbsp;</span>
+      <span>- Total: {summedTotals[key].toLocaleString()}</span>
+    </FlexRow>
+  );
+
   return (
     <>
       <h3>Summary</h3>
-      <h6>Showing data for {dateString}</h6>
-      <DataTable
-        data={[summedTotals]}
-        keys={fields}
-        formatValue={(d) => d.toLocaleString(d)}
-      />
+      <h6 style={{borderBottom: '1px solid black', marginBottom: 24, paddingBottom: 8}}>
+        Showing data for {dateString} - {data.DataByDay.length} days since outbreak
+      </h6>
       <ParentSize>
         {({ width, height }) => {
-          const dropdownWidth = width > 1100 ? "25%" : "100%";
-          const chartWidth = width > 1100 ? 800 : width < 20 ? 20 : width;
-          const numTicksY = width < 690 ? 4 : undefined;
+          const isLarge = width > 1100;
+          const isSmall = width < 690;
+
+          const dropdownWidth = isLarge ? "25%" : "100%";
+          const chartWidth = isLarge ? 800 : width < 20 ? 20 : width;
+
+          // lower granularity
+          const numTicksY = isSmall ? 4 : undefined;
+          const trendData = data.DataByDay.filter((row, i) => isSmall ? i % 7 == 3 : true);
+
           return (
             <>
-              <div style={{ marginLeft: 24, marginBottom: 24, width: "50%" }}>
-                <FlexRow flex="space-between" wrap="wrap">
+              <div style={{ marginLeft: 24, marginBottom: 24, width: "100%" }}>
+                <FlexRow flex="space-between" direction="column" wrap="wrap">
                   {fields.map(makeSwitches)}
                 </FlexRow>
               </div>

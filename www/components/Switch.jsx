@@ -6,13 +6,6 @@ import theme from "../theme/";
 export default function Switch(props) {
   const { state, type, onClick, ...other } = props;
 
-  const [onOff, flipOnOff] = useState(state);
-
-  // listen for a change in our props to reflect the off/on state
-  useEffect(() => {
-    flipOnOff(state);
-  }, [state]);
-
   const defaultType = "black";
 
   const color = theme.colors[type || defaultType];
@@ -21,8 +14,8 @@ export default function Switch(props) {
   const defaultWidth = 23;
   const defaultHeight = 23;
 
-  const opacityClause = onOff ? opacity : "ff";
-  const foreground = onOff ? color : theme.colors.white;
+  const opacityClause = state ? opacity : "ff";
+  const foreground = state ? color : theme.colors.white;
 
   const background = `${color}${opacityClause}`;
 
@@ -37,9 +30,7 @@ export default function Switch(props) {
   `;
 
   const clickHandler = (e) => {
-    const newState = !onOff;
-    onClick && onClick(e, newState);
-    flipOnOff(newState);
+    onClick && onClick(e);
   };
 
   return <div className={button} onClick={clickHandler} {...other}></div>;
