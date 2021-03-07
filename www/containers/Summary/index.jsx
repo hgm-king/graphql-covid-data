@@ -62,8 +62,15 @@ export default function Summary(_props) {
   return (
     <>
       <h3>Summary</h3>
-      <h6 style={{borderBottom: '1px solid black', marginBottom: 24, paddingBottom: 8}}>
-        Showing data for {dateString} - {data.DataByDay.length} days since outbreak
+      <h6
+        style={{
+          borderBottom: "1px solid black",
+          marginBottom: 24,
+          paddingBottom: 8,
+        }}
+      >
+        Showing data for {dateString} - {data.DataByDay.length} days since
+        outbreak
       </h6>
       <ParentSize>
         {({ width, height }) => {
@@ -75,7 +82,9 @@ export default function Summary(_props) {
 
           // lower granularity
           const numTicksY = isSmall ? 4 : undefined;
-          const trendData = data.DataByDay.filter((row, i) => isSmall ? i % 7 == 3 : true);
+          const trendData = data.DataByDay.filter((row, i) =>
+            isSmall ? i % 7 == 3 : true
+          );
 
           return (
             <>
