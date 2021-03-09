@@ -56,6 +56,7 @@ export default function ByZipcodeContainer(props) {
           );
         }}
       </ParentSize>
+      <p>COVID Data by zipcode.</p>
       <ZipcodeTable
         data={mappedData
           .slice()

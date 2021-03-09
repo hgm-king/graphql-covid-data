@@ -64,11 +64,18 @@ export default function ByRace(_props) {
   return (
     <>
       <h3>By Race</h3>
-      <h6>Showing data for {dateString}</h6>
+      <h6
+        style={{
+          borderBottom: "1px solid black",
+          marginBottom: 24,
+          paddingBottom: 8,
+        }}
+      >
+        Showing data for {dateString}</h6>
       <ParentSize>
         {({ width, height }) => {
           const barChartWidth = width < 700 ? width : width * 0.8;
-          const donutRadius = width < 700 ? width - 50 : 400;
+          const donutRadius = width < 700 ? width - 50 : 200;
           return (
             <>
               <p>
@@ -83,7 +90,7 @@ export default function ByRace(_props) {
               <div className={byRaceRatioComparisonStyle}>
                 <ByRaceRatioComparison
                   data={dataForDay}
-                  keys={[selectedKey, totalKey]}
+                  keys={[totalKey, ...pieKeys]}
                   indexEliminator={getIndex}
                   populationEliminator={getTotal}
                   totalPopulation={totalPopulation}
