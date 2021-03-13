@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery } from "urql";
 import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
@@ -16,8 +16,6 @@ import { getPopulationFromRate } from "./calculations";
 import { byRaceBarChartStyle, byRaceRatioComparisonStyle } from "./styles";
 
 export default function ByRace(_props) {
-  const [selectedKey, setSelectedKey] = useState("CASECOUNT");
-
   const [result, _reexecuteQuery] = useQuery({
     query: ByRaceQuery,
   });
@@ -50,20 +48,13 @@ export default function ByRace(_props) {
     key.match(/COUNT/)
   );
 
-  const makeSwitches = (key, i) => (
-    <FlexRow key={i} flex="flex-start" align="center">
-      <Switch state={key == selectedKey} onClick={() => setSelectedKey(key)} />
-      {key}
-    </FlexRow>
-  );
-
   const raceIndexes = [...new Set(data.ByRace.map(getIndex).sort())].filter(
     (d) => d
   );
 
   return (
     <>
-      <h3>By Race</h3>
+      <h3>Race</h3>
       <h6
         style={{
           borderBottom: "1px solid black",
@@ -83,11 +74,6 @@ export default function ByRace(_props) {
                 How does the case, hospitalization, and death percentages
                 deviate from the total population?
               </p>
-              <div style={{ marginLeft: 24, marginBottom: 24, width: "50%" }}>
-                <FlexRow flex="space-between" wrap="wrap">
-                  {pieKeys.map(makeSwitches)}
-                </FlexRow>
-              </div>
               <div className={byRaceRatioComparisonStyle}>
                 <ByRaceRatioComparison
                   data={dataForDay}

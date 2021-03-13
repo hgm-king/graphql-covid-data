@@ -18,7 +18,7 @@ import re
 import requests
 from sqlalchemy import create_engine, Integer
 
-os.environ['LOCAL_ROOT'] = '/app/data'
+os.environ['LOCAL_ROOT'] = './data'
 
 print("Connecting to {}".format(os.environ['DATABASE_URL_ETL']))
 engine = create_engine(os.environ['DATABASE_URL_ETL'])

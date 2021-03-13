@@ -23,6 +23,7 @@ export default function ByRaceRatioComparison(props) {
     populationEliminator,
     totalPopulation,
     radius,
+    skippedIndexes,
   } = props;
 
   const [selectedRace, setSelectedRace] = useState(null);
@@ -45,6 +46,10 @@ export default function ByRaceRatioComparison(props) {
   // each row is one race
   const pieData = data.reduce((acc, d) => {
     const index = indexEliminator(d);
+
+    if (skippedIndexes && skippedIndexes.includes(index)) {
+      return acc;
+    }
     // we want an object of arrays where each key corresponds to a pie chart
     keys.forEach((key) => {
       acc[key].data.push({

@@ -25,7 +25,7 @@ const client = createClient({
 });
 
 export default function App(_props) {
-  const navs = ["Summary", "ByRace", "ByAge", "ByZipcode"];
+  const navs = ["Summary", "Race", "Age", "Zipcode"];
 
   const [selected, setSelected] = useState(navs[0]);
 
@@ -54,11 +54,11 @@ export default function App(_props) {
         </FlexRow>
         {selected === "Summary" ? (
           <Summary />
-        ) : selected === "ByRace" ? (
+        ) : selected === "Race" ? (
           <ByRace />
-        ) : selected === "ByAge" ? (
+        ) : selected === "Age" ? (
           <ByAge />
-        ) : selected === "ByZipcode" ? (
+        ) : selected === "Zipcode" ? (
           <ByZipcode />
         ) : (
           <h1>None</h1>

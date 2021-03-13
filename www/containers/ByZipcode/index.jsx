@@ -46,7 +46,7 @@ export default function ByZipcodeContainer(props) {
 
   return (
     <>
-      <h3>By Zipcode</h3>
+      <h3>Zipcode</h3>
       <ParentSize>
         {({ width, height }) => {
           return (
