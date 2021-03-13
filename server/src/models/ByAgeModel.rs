@@ -4,13 +4,11 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::ByAge;
 use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="ByAge"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "ByAge"]
 pub struct ByAgeT {
     pub id: i32,
     pub AGE_GROUP: Option<String>,

@@ -17,8 +17,8 @@ use juniper::FieldResult;
 use std::env;
 
 use models::{
-    AntibodyByAgeModel, ByAgeModel, ByRaceModel, DataByDayModel, DataByModzctaModel, DeathsByBoroAgeModel, DeathsByRaceAgeModel, SummaryPrimeModel,
-    ZctaToModzctaModel,
+    AntibodyByAgeModel, ByAgeModel, ByRaceModel, DataByDayModel, DataByModzctaModel,
+    DeathsByBoroAgeModel, DeathsByRaceAgeModel, SummaryPrimeModel, ZctaToModzctaModel,
 };
 
 pub struct Context {
@@ -67,13 +67,17 @@ impl QueryRoot {
         Ok(by_modzcta)
     }
 
-    fn DeathsByBoroAge(_context: &Context) -> FieldResult<Vec<DeathsByBoroAgeModel::DeathsByBoroAgeT>> {
+    fn DeathsByBoroAge(
+        _context: &Context,
+    ) -> FieldResult<Vec<DeathsByBoroAgeModel::DeathsByBoroAgeT>> {
         let connection = establish_connection();
         let deaths_by_boro_age = DeathsByBoroAgeModel::read(&connection);
         Ok(deaths_by_boro_age)
     }
 
-    fn DeathsByRaceAge(_context: &Context) -> FieldResult<Vec<DeathsByRaceAgeModel::DeathsByRaceAgeT>> {
+    fn DeathsByRaceAge(
+        _context: &Context,
+    ) -> FieldResult<Vec<DeathsByRaceAgeModel::DeathsByRaceAgeT>> {
         let connection = establish_connection();
         let deaths_by_race_age = DeathsByRaceAgeModel::read(&connection);
         Ok(deaths_by_race_age)

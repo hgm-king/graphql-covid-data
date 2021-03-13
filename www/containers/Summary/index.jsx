@@ -93,8 +93,10 @@ export default function Summary(_props) {
                   {fields.map(makeSwitches)}
                 </FlexRow>
               </div>
-              <p>Daily changes in COVID {selectedField} for NYC; {data.DataByDay.length} days since
-              outbreak.</p>
+              <p>
+                Daily changes in COVID {selectedField} for NYC;{" "}
+                {data.DataByDay.length} days since outbreak.
+              </p>
               <SummaryLineChart
                 title={title}
                 subtitle={subtitle}

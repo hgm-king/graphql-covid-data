@@ -4,13 +4,11 @@
  *
  * Happy Hacking!
 **/
-
 use crate::schema::DeathsByBoroAge;
 use diesel::prelude::*;
 
-
-#[derive(Debug,GraphQLObject,Insertable,Queryable,)]
-#[table_name="DeathsByBoroAge"]
+#[derive(Debug, GraphQLObject, Insertable, Queryable)]
+#[table_name = "DeathsByBoroAge"]
 pub struct DeathsByBoroAgeT {
     pub id: i32,
     pub BOROUGH_GROUP: Option<String>,

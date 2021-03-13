@@ -57,7 +57,9 @@ function Body(props) {
   const { data, keys } = props;
 
   const makeRow = (row, i) => <tr key={i}>{keys.map(makeCell(row))}</tr>;
-  const makeCell = (row) => (key, i) => <td key={i}>{row[key].toLocaleString()}</td>;
+  const makeCell = (row) => (key, i) => (
+    <td key={i}>{row[key].toLocaleString()}</td>
+  );
 
   return <tbody>{data.map(makeRow)}</tbody>;
 }

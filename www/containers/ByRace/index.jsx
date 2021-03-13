@@ -71,7 +71,8 @@ export default function ByRace(_props) {
           paddingBottom: 8,
         }}
       >
-        Showing data for {dateString}</h6>
+        Showing data for {dateString}
+      </h6>
       <ParentSize>
         {({ width, height }) => {
           const barChartWidth = width < 700 ? width : width * 0.8;
