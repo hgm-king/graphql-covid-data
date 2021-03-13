@@ -67,6 +67,15 @@ async fn main() {
 
                             Ok(response)
                         }
+                        (&Method::GET, "/health") => {
+                            let response = Response::builder()
+                                .header("Access-Control-Allow-Origin", "*")
+                                .status(StatusCode::OK)
+                                .body(Body::empty())
+                                .unwrap();
+
+                            Ok(response)
+                        }
                         _ => {
                             let response = Response::builder()
                                 .status(StatusCode::NOT_FOUND)
