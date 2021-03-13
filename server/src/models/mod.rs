@@ -1,7 +1,10 @@
 // pub mod antibody_by_age;
 pub mod AntibodyByAgeModel;
+pub mod ByAgeModel;
 pub mod ByRaceModel;
 pub mod DataByDayModel;
 pub mod DataByModzctaModel;
+pub mod DeathsByBoroAgeModel;
+pub mod DeathsByRaceAgeModel;
 pub mod SummaryPrimeModel;
 pub mod ZctaToModzctaModel;

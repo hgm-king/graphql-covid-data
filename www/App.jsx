@@ -6,6 +6,7 @@ import { createClient, Provider } from "urql";
 // containers
 import Summary from "./containers/Summary/";
 import ByRace from "./containers/ByRace/";
+import ByAge from "./containers/ByAge/";
 import ByZipcode from "./containers/ByZipcode/";
 
 // components
@@ -24,7 +25,7 @@ const client = createClient({
 });
 
 export default function App(_props) {
-  const navs = ["Summary", "ByRace", "ByZipcode"];
+  const navs = ["Summary", "ByRace", "ByAge", "ByZipcode"];
 
   const [selected, setSelected] = useState(navs[0]);
 
@@ -55,6 +56,8 @@ export default function App(_props) {
           <Summary />
         ) : selected === "ByRace" ? (
           <ByRace />
+        ) : selected === "ByAge" ? (
+          <ByAge />
         ) : selected === "ByZipcode" ? (
           <ByZipcode />
         ) : (

@@ -69,8 +69,7 @@ export default function Summary(_props) {
           paddingBottom: 8,
         }}
       >
-        Showing data for {dateString} - {data.DataByDay.length} days since
-        outbreak
+        Showing data for {dateString} - day {data.DataByDay.length}
       </h6>
       <ParentSize>
         {({ width, height }) => {
@@ -82,21 +81,24 @@ export default function Summary(_props) {
 
           // lower granularity
           const numTicksY = isSmall ? 4 : undefined;
-          const trendData = data.DataByDay.filter((row, i) =>
+          const trendDataPruned = data.DataByDay.filter((row, i) =>
             isSmall ? i % 7 == 3 : true
           );
 
           return (
             <>
               <div style={{ marginLeft: 24, marginBottom: 24, width: "100%" }}>
+                <span>Select a metric to view trends:</span>
                 <FlexRow flex="space-between" direction="column" wrap="wrap">
                   {fields.map(makeSwitches)}
                 </FlexRow>
               </div>
+              <p>Daily changes in COVID {selectedField} for NYC; {data.DataByDay.length} days since
+              outbreak.</p>
               <SummaryLineChart
                 title={title}
                 subtitle={subtitle}
-                data={trendData}
+                data={trendDataPruned}
                 field={selectedField}
                 width={width}
                 height={400}

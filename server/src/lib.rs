@@ -17,7 +17,7 @@ use juniper::FieldResult;
 use std::env;
 
 use models::{
-    AntibodyByAgeModel, ByRaceModel, DataByDayModel, DataByModzctaModel, SummaryPrimeModel,
+    AntibodyByAgeModel, ByAgeModel, ByRaceModel, DataByDayModel, DataByModzctaModel, DeathsByBoroAgeModel, DeathsByRaceAgeModel, SummaryPrimeModel,
     ZctaToModzctaModel,
 };
 
@@ -44,6 +44,12 @@ impl QueryRoot {
         Ok(antibody)
     }
 
+    fn ByAge(_context: &Context) -> FieldResult<Vec<ByAgeModel::ByAgeT>> {
+        let connection = establish_connection();
+        let by_age = ByAgeModel::read(&connection);
+        Ok(by_age)
+    }
+
     fn ByRace(_context: &Context) -> FieldResult<Vec<ByRaceModel::ByRaceT>> {
         let connection = establish_connection();
         let by_race = ByRaceModel::read(&connection);
@@ -59,6 +65,18 @@ impl QueryRoot {
             .map(DataByModzctaModel::to_DataByModzctaWithZctaT)
             .collect();
         Ok(by_modzcta)
+    }
+
+    fn DeathsByBoroAge(_context: &Context) -> FieldResult<Vec<DeathsByBoroAgeModel::DeathsByBoroAgeT>> {
+        let connection = establish_connection();
+        let deaths_by_boro_age = DeathsByBoroAgeModel::read(&connection);
+        Ok(deaths_by_boro_age)
+    }
+
+    fn DeathsByRaceAge(_context: &Context) -> FieldResult<Vec<DeathsByRaceAgeModel::DeathsByRaceAgeT>> {
+        let connection = establish_connection();
+        let deaths_by_race_age = DeathsByRaceAgeModel::read(&connection);
+        Ok(deaths_by_race_age)
     }
 
     fn SummaryPrime(_context: &Context) -> FieldResult<Vec<SummaryPrimeModel::SummaryPrimeT>> {
