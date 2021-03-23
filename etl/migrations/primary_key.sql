@@ -9,6 +9,8 @@ ALTER TABLE "DeathsByRaceAge" ADD PRIMARY KEY (id);
 ALTER TABLE "DeathsByUnderlyingConditions" ADD PRIMARY KEY (id);
 ALTER TABLE "Summary" ADD PRIMARY KEY (id);
 
+ALTER TABLE public.coviddatafrontend ALTER COLUMN "index" TYPE int4 USING "index"::int4;
+
 ALTER TABLE "DataByDay" ADD PRIMARY KEY (id);
 ALTER TABLE public."DataByDay" DROP COLUMN "BX_CASE_COUNT";
 ALTER TABLE public."DataByDay" DROP COLUMN "BX_PROBABLE_CASE_COUNT";

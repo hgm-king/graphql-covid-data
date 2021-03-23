@@ -405,6 +405,14 @@ table! {
     }
 }
 
+table! {
+    coviddatafrontend (index) {
+        index -> Int4,
+        version -> Nullable<Text>,
+        date -> Nullable<Text>,
+    }
+}
+
 allow_tables_to_appear_in_same_query!(
     AntibodyByAge,
     AntibodyByBoro,
@@ -437,4 +445,5 @@ allow_tables_to_appear_in_same_query!(
     SummaryPrime,
     TestrateByModzctaPrime,
     ZctaToModzcta,
+    coviddatafrontend,
 );

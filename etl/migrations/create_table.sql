@@ -19,3 +19,8 @@ create table
 	"NYC_CONFIRMED_DEATH_COUNT" int4,
 	date text
 )
+
+CREATE TABLE public.coviddatafrontend (
+	"version" varchar NULL,
+	"date" varchar NULL
+);
