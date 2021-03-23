@@ -2,7 +2,6 @@ use diesel::pg::PgConnection;
 use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 
 pub struct Context {
-    // Use your real database pool here.
     pool: Pool<ConnectionManager<PgConnection>>,
 }
 
