@@ -8,7 +8,7 @@
 # python3 src/covid-data.py
 
 from kedro.extras.datasets.pandas import CSVDataSet
-
+from datetime import date
 import json
 import numpy as np
 import os
@@ -16,6 +16,7 @@ import pandas as pd
 import psycopg2
 import re
 import requests
+import semver
 from sqlalchemy import create_engine, Integer
 
 os.environ['LOCAL_ROOT'] = './data'
@@ -182,11 +183,14 @@ def save_singular_file_to_database(engine, path, filetype, table_name):
     cleaned_df = cleanup_data_frame(data)
     save_dataframe_to_database(engine, cleaned_df, table_name)
 
-def save_version_and_date(engine):
-    data = [['1.0.0', '03/23/21']]
+def save_version_and_date(engine, version):
+    ver = semver.VersionInfo.parse(version)
+    bumped = ver.bump_patch()
+    today = date.today()
+    data = [[str(bumped), str(today)]]
     df = pd.DataFrame(data, columns = ['version', 'date'])
     with engine.connect() as conn:
-        df.to_sql('coviddatafrontend', conn)
+        df.to_sql('coviddatafrontend', conn, if_exists='replace')
 
 def start(engine):
     version_info = get_app_version(engine)
