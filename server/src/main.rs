@@ -2,23 +2,27 @@
 
 use std::sync::Arc;
 
+use dotenv::dotenv;
 use hyper::{
     service::{make_service_fn, service_fn},
     Body, Method, Response, Server, StatusCode,
 };
 use juniper::{EmptyMutation, EmptySubscription, RootNode};
+use std::env;
 
 #[tokio::main]
 async fn main() {
-    pretty_env_logger::init();
+    dotenv().ok();
 
     let addr = ([0, 0, 0, 0], 3000).into();
 
-    let db = Arc::new(server::Context {});
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let db = Arc::new(server::context::Context::new(&database_url));
+
     let root_node = Arc::new(RootNode::new(
         server::QueryRoot,
-        EmptyMutation::<server::Context>::new(),
-        EmptySubscription::<server::Context>::new(),
+        EmptyMutation::<server::context::Context>::new(),
+        EmptySubscription::<server::context::Context>::new(),
     ));
 
     let new_service = make_service_fn(move |_| {
@@ -33,7 +37,7 @@ async fn main() {
                 async {
                     match (req.method(), req.uri().path()) {
                         (&Method::GET, "/") => {
-                            let (parts, body) = juniper_hyper::graphiql("/graphql", None)
+                            let (_parts, body) = juniper_hyper::graphiql("/graphql", None)
                                 .await?
                                 .into_parts();
 
@@ -46,15 +50,14 @@ async fn main() {
                             Ok(response)
                         }
                         (&Method::GET, "/graphql") | (&Method::POST, "/graphql") => {
-                            let mut res = juniper_hyper::graphql(root_node, ctx, req).await;
+                            let res = juniper_hyper::graphql(root_node, ctx, req).await;
                             res.map(|r| {
                                 let (_parts, body) = r.into_parts();
-                                let response = Response::builder()
+                                Response::builder()
                                     .header("Access-Control-Allow-Origin", "*")
                                     .status(StatusCode::OK)
                                     .body(body)
-                                    .unwrap();
-                                response
+                                    .unwrap()
                             })
                         }
                         (&Method::OPTIONS, "/graphql") => {

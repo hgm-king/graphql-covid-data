@@ -8,3 +8,4 @@ pub mod DeathsByBoroAgeModel;
 pub mod DeathsByRaceAgeModel;
 pub mod SummaryPrimeModel;
 pub mod ZctaToModzctaModel;
+pub mod coviddatafrontendModel;

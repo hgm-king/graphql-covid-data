@@ -7,12 +7,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-diesel = { version = "1.4.5", features = ["postgres"] }
+diesel = { version = "1.4.5", features = ["postgres", "r2d2"] }
 dotenv = "0.15.0"
 hyper = "0.13"
 juniper = "0.15"
 juniper_hyper = "0.6.0"
-pretty_env_logger = "0.4"
 tokio = "0.2"
 
 [dev-dependencies]

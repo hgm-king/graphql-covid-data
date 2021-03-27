@@ -8,7 +8,7 @@
 # python3 src/covid-data.py
 
 from kedro.extras.datasets.pandas import CSVDataSet
-
+from datetime import date
 import json
 import numpy as np
 import os
@@ -16,6 +16,7 @@ import pandas as pd
 import psycopg2
 import re
 import requests
+import semver
 from sqlalchemy import create_engine, Integer
 
 os.environ['LOCAL_ROOT'] = './data'
@@ -64,6 +65,13 @@ def cleanup_data_frame(df):
 
     return df
 
+def get_app_version(engine):
+    con = engine.connect()
+    rs = con.execute("SELECT * from coviddatafrontend")
+    version_info = rs.fetchone()
+    con.close()
+    return version_info
+
 def save_dataframe_to_database(engine, df, table_name):
     try:
         with engine.connect() as conn:
@@ -82,7 +90,7 @@ def get_csv(url, date, local_path):
 
     try:
         data = local_data_set.load()
-        print("Loaded from local {}".format(local_path))
+        # print("Loaded from local {}".format(local_path))
         return data
     except Exception as exception:
         # pull it from internet
@@ -175,20 +183,39 @@ def save_singular_file_to_database(engine, path, filetype, table_name):
     cleaned_df = cleanup_data_frame(data)
     save_dataframe_to_database(engine, cleaned_df, table_name)
 
+def save_version_and_date(engine, version):
+    ver = semver.VersionInfo.parse(version)
+    bumped = ver.bump_patch()
+    today = date.today()
+    data = [[str(bumped), str(today)]]
+    df = pd.DataFrame(data, columns = ['version', 'date'])
+    with engine.connect() as conn:
+        df.to_sql('coviddatafrontend', conn, if_exists='replace')
 
-config_path = './src/config.json'
-with open(config_path) as f:
-    data = json.load(f)
-    for file in data['singular']:
-        [path, filetype] = file.split('.')
-        table_name = get_table_name_from_path(path)
-        print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-        data = save_singular_file_to_database(engine, path, filetype, table_name)
+def start(engine):
+    version_info = get_app_version(engine)
+    version = version_info[1]
 
-with open(config_path) as f:
-    data = json.load(f)
-    for file in data['files']:
-        [path, filetype] = file.split('.')
-        table_name = get_table_name_from_path(path)
-        print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-        data = save_file_commits_to_database(engine, path, filetype, table_name)
+    print("-- Loading data for version {}".format(version))
+
+    config_path = './src/config.json'
+    with open(config_path) as f:
+        data = json.load(f)
+        for file in data['files']:
+            [path, filetype] = file.split('.')
+            table_name = get_table_name_from_path(path)
+            print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+            data = save_file_commits_to_database(engine, path, filetype, table_name)
+
+
+    with open(config_path) as f:
+        data = json.load(f)
+        for file in data['singular']:
+            [path, filetype] = file.split('.')
+            table_name = get_table_name_from_path(path)
+            print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+            data = save_singular_file_to_database(engine, path, filetype, table_name)
+
+    save_version_and_date(engine, version)
+
+start(engine)
