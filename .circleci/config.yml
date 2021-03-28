@@ -141,7 +141,7 @@ workflows:
       #     filters:
       #       tags:
       #         only: /.*/
-      - build-server-image:
+      - build-server-image
           # requires:
           #   - build-and-test-server
       - build-client-image
