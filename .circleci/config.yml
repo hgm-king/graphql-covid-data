@@ -142,8 +142,8 @@ workflows:
       #       tags:
       #         only: /.*/
       - build-server-image:
-          requires:
-            - build-and-test-server
+          # requires:
+          #   - build-and-test-server
       - build-client-image
       # - deploy-compose:
       #     requires:
