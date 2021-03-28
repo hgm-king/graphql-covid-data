@@ -137,10 +137,10 @@ workflows:
   build-test:
     jobs:
       - build-etl-image
-      - build-and-test-server:
-          filters:
-            tags:
-              only: /.*/
+      # - build-and-test-server:
+      #     filters:
+      #       tags:
+      #         only: /.*/
       - build-server-image:
           requires:
             - build-and-test-server
