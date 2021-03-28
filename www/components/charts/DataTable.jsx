@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { css } from "@emotion/css";
 
 const tableStyle = css`
   overflow-y: auto;
+  overflow-x: scroll;
+  height: 500px;
 
   thead th {
     position: sticky;
@@ -23,7 +25,25 @@ const tableStyle = css`
 `;
 
 export default function DataTable(props) {
-  const { data, keys, formatValue, formatHeader } = props;
+  const {
+    data,
+    keys,
+    formatValue,
+    formatHeader,
+    sortHeader,
+    sortDirection,
+  } = props;
+
+  useEffect(() => {
+    const sorter = (a, b) => {
+      const fieldA = a[sortHeader];
+      const fieldB = b[sortHeader];
+
+      return sortDirection ? fieldA - fieldB : fieldB - fieldA;
+    };
+
+    data.sort(sorter);
+  }, [data, sortHeader, sortDirection]);
 
   return (
     <div className={tableStyle}>

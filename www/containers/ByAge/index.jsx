@@ -9,9 +9,10 @@ import Switch from "../../components/Switch";
 
 import ByRaceBarChart from "../ByRace/ByRaceBarChart";
 import ByRaceRatioComparison from "../ByRace/ByRaceRatioComparison";
+import ByRaceLineChart from "../ByRace/ByRaceLineChart";
 
 import ByAgeQuery from "../../queries/by-age";
-import { getPopulationFromRate } from "../ByRace/calculations";
+import { getPopulationFromRate } from "./calculations";
 
 import {
   byRaceBarChartStyle,
@@ -27,6 +28,8 @@ export default function ByAge(_props) {
 
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
+
+  console.log(data);
 
   const selectedDay = data.ByAge[data.ByAge.length - 1].date;
   const dateString = new Date(selectedDay).toDateString();
@@ -51,11 +54,9 @@ export default function ByAge(_props) {
     key.match(/COUNT/)
   );
 
-  const raceIndexes = [...new Set(data.ByAge.map(getIndex).sort())].filter(
+  const ageIndexes = [...new Set(data.ByAge.map(getIndex).sort())].filter(
     (d) => d
   );
-
-  console.log({ raceIndexes, data, dataForDay });
 
   return (
     <>
@@ -82,7 +83,7 @@ export default function ByAge(_props) {
               <div className={byRaceRatioComparisonStyle}>
                 <ByRaceRatioComparison
                   data={dataForDay}
-                  keys={pieKeys}
+                  keys={[totalKey, ...pieKeys]}
                   skippedIndexes={["Citywide"]}
                   indexEliminator={getIndex}
                   populationEliminator={getTotal}
@@ -90,6 +91,13 @@ export default function ByAge(_props) {
                   radius={donutRadius}
                 />
               </div>
+              <ByRaceLineChart
+                data={data.ByAge.filter((row) => getIndex(row) != "Citywide")}
+                keys={ageIndexes.filter((index) => index != "Citywide")}
+                width={width}
+                index={"AGEGROUP"}
+                value={"CASECOUNT"}
+              />
               <p>What percent of cases result in death or hospitalization?</p>
               <div className={byRaceBarChartStyle}>
                 <ByRaceBarChart data={dataForDay} width={barChartWidth} />

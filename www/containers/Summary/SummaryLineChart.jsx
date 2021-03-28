@@ -18,7 +18,7 @@ export default function SummaryLineChart(props) {
       yExtractor={(d) => d[field]}
       indexExtractor={(d) => field}
       margin={{ top: 24, right: 64, bottom: 64, left: 64 }}
-      colors={theme.palettes.DataVizPalette}
+      colors={[theme.colors.black]}
       legendFormatter={(d) => d}
       backgroundColor={"transparent"}
       backgroundRadius={14}

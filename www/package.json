@@ -51,6 +51,7 @@
     "react-leaflet": "^3.0.5",
     "react-leaflet-choropleth": "^2.0.1",
     "react-select": "^4.0.2",
-    "urql": "^1.11.4"
+    "urql": "^1.11.4",
+    "wonka": "^4.0.15"
   }
 }

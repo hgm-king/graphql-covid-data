@@ -36,8 +36,10 @@ export default function ByZipcodeContainer(props) {
     bottom: 24,
   };
 
-  const percentTested = (row) =>
-    (100 * row["TOTALCOVIDTESTS"]) / row["POPDENOMINATOR"];
+  const percentTested = (row) => {
+    const rate = (100 * row["TOTALCOVIDTESTS"]) / row["POPDENOMINATOR"];
+    return rate >= 100 ? undefined : rate;
+  };
 
   const mappedData = data.DataByModzcta.map((row) => ({
     ...row,

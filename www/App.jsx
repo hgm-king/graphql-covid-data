@@ -1,7 +1,8 @@
 // packages
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { css } from "@emotion/css";
 import { createClient, Provider } from "urql";
+import { pipe, subscribe } from "wonka";
 
 // containers
 import Summary from "./containers/Summary/";
@@ -16,6 +17,7 @@ import Footer from "./components/Footer";
 
 // utils
 import theme from "./theme/";
+import VersionQuery from "./queries/version";
 
 const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
 const serverPort = process.env.SERVER_PORT ?? "3000";
@@ -25,9 +27,26 @@ const client = createClient({
 });
 
 export default function App(_props) {
+  console.log("rendering App");
   const navs = ["Summary", "Race", "Age", "Zipcode"];
 
   const [selected, setSelected] = useState(navs[0]);
+  const [versionData, setVersionData] = useState();
+
+  console.log(versionData);
+
+  useEffect(() => {
+    const { unsubscribe } = pipe(
+      client.query(VersionQuery, { id: "test" }),
+      subscribe((result) => {
+        if (result.error) {
+          console.log("-- Error!! --");
+        }
+        setVersionData(result.data.coviddatafrontend[0]);
+      })
+    );
+    return unsubscribe;
+  }, []);
 
   const main = css`
     color: ${theme.colors.black};
@@ -63,7 +82,7 @@ export default function App(_props) {
         ) : (
           <h1>None</h1>
         )}
-        <Footer />
+        <Footer versionData={versionData} />
       </div>
     </Provider>
   );

@@ -9,6 +9,7 @@ import Switch from "../../components/Switch";
 
 import ByRaceBarChart from "./ByRaceBarChart";
 import ByRaceRatioComparison from "./ByRaceRatioComparison";
+import ByRaceLineChart from "./ByRaceLineChart";
 
 import ByRaceQuery from "../../queries/by-race";
 import { getPopulationFromRate } from "./calculations";
@@ -84,6 +85,13 @@ export default function ByRace(_props) {
                   radius={donutRadius}
                 />
               </div>
+              <ByRaceLineChart
+                data={data.ByRace}
+                keys={raceIndexes}
+                width={width}
+                index={"RACEGROUP"}
+                value={"CASECOUNT"}
+              />
               <p>What percent of cases result in death or hospitalization?</p>
               <div className={byRaceBarChartStyle}>
                 <ByRaceBarChart data={dataForDay} width={barChartWidth} />
