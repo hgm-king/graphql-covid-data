@@ -33,8 +33,6 @@ export default function App(_props) {
   const [selected, setSelected] = useState(navs[0]);
   const [versionData, setVersionData] = useState();
 
-  console.log(versionData);
-
   useEffect(() => {
     const { unsubscribe } = pipe(
       client.query(VersionQuery, { id: "test" }),

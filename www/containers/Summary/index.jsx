@@ -12,6 +12,7 @@ import DataTable from "../../components/charts/DataTable";
 
 import SummaryQuery from "../../queries/summary";
 import { summedObject } from "../../utils/data-tools";
+import theme from "../../theme";
 
 export default function Summary(_props) {
   const [selectedField, setSelectedField] = useState("CASECOUNT");
@@ -27,9 +28,9 @@ export default function Summary(_props) {
   if (data) {
     const getIndex = (d) => selectedField;
     const getValue = (d) => d[selectedField];
+    const length = data.DataByDay.length;
 
-    const selectedDay =
-      data.DataByDay[data.DataByDay.length - 1].dateOfInterest;
+    const selectedDay = data.DataByDay[length - 1].dateOfInterest;
     const dateString = new Date(selectedDay).toDateString();
 
     const title = `${selectedField}`;
@@ -49,16 +50,38 @@ export default function Summary(_props) {
       "HOSPITALIZEDCOUNT",
     ]);
 
-    const makeSwitches = (key, i) => (
-      <FlexRow key={i} flex="flex-start" align="center" wrap="wrap">
-        <Switch
-          state={key == selectedField}
-          onClick={() => setSelectedField(key)}
-        />
-        <span>{key}&nbsp;</span>
-        <span>- Total: {summedTotals[key].toLocaleString()}</span>
-      </FlexRow>
-    );
+    const getDailyDelta = (key) =>
+      data.DataByDay[length - 1][key] - data.DataByDay[length - 2][key];
+    const getDailyValue = (key) => data.DataByDay[length - 1][key];
+
+    const makeSwitches = (key, i) => {
+      const total = summedTotals[key].toLocaleString();
+      const dailyChange = getDailyValue(key).toLocaleString();
+
+      const delta = getDailyDelta(key);
+      const deltaColor =
+        delta <= 0 ? theme.colors.success : theme.colors.danger;
+
+      const trendArrow = delta < 0 ? "▼" : delta > 0 ? "▲" : "";
+
+      return (
+        <FlexRow key={i} flex="flex-start" align="center" wrap="wrap">
+          <Switch
+            state={key == selectedField}
+            onClick={() => setSelectedField(key)}
+          />
+          <span>{key}&nbsp;</span>
+          <span>
+            - Daily Change: {dailyChange} (
+            <span style={{ color: deltaColor }}>
+              {trendArrow}
+              {Math.abs(delta)}
+            </span>
+            ); Total: {total}
+          </span>
+        </FlexRow>
+      );
+    };
 
     return (
       <>

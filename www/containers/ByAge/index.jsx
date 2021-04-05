@@ -29,8 +29,6 @@ export default function ByAge(_props) {
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
 
-  console.log(data);
-
   const selectedDay = data.ByAge[data.ByAge.length - 1].date;
   const dateString = new Date(selectedDay).toDateString();
 

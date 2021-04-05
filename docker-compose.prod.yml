@@ -8,6 +8,12 @@ services:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     ports:
       - 5432:5432
+  etl:
+    image: hgmaxwellking/covid-data-dashboard-etl:latest
+    env_file:
+      - env
+    depends_on:
+      - "database"
   www:
     image: hgmaxwellking/covid-data-dashboard-frontend:latest
     ports:

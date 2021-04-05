@@ -1,4 +1,6 @@
 const DataVizPalette = [
+  "#cff3f1",
+  "#afebe8",
   "#8ee3df",
   "#6edbd6",
   "#55c2bc",

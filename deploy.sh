@@ -1,4 +1,4 @@
-echo "yes" | ssh root@104.131.165.152
+echo "yes" | ssh root@covid-data.nyc
 
 docker-compose down
 echo "y" | docker container prune
