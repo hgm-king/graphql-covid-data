@@ -194,7 +194,7 @@ def save_version_and_date(engine, version):
 
 def start(engine):
     version_info = get_app_version(engine)
-    version = version_info[0]
+    version = version_info[1]
 
     print("-- Loading data for version {}".format(version))
 
