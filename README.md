@@ -1,10 +1,11 @@
 # NYC Covid Data Dashboard
+This is a study of the full stack & dev ops features of a modern webapp.
 
+### ETL
+The ETL is in charge of getting covid data from the source into our database. We use python to pull csv files and turn them into sql tables.
 
+### Server
+[README](/server/README.md)
 
-##### Things to Do
-- Make summary linechart have tooltip
-- Make donut charts' center total work
-- Clean up ratio blocks
-- Fix zipcode layout
-- Fix zipcode table (use less columns)
+### Frontend
+[README](/www/README.md)
