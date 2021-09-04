@@ -21,6 +21,7 @@ pub struct DataByDayT {
 
 pub fn read(conn: &PgConnection) -> Vec<DataByDayT> {
     DataByDay::table
+        .order(DataByDay::date_of_interest.asc())
         .load::<DataByDayT>(conn)
         .expect("Error loading object")
 }

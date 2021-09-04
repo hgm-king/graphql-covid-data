@@ -61,7 +61,7 @@ def cleanup_data_frame(df):
     new_index = range(len(df))
     df['id'] = new_index
     df = df.set_index('id')
-    df = df.dropna()
+    # df = df.dropna()
 
     return df
 
@@ -83,7 +83,7 @@ def save_dataframe_to_database(engine, df, table_name):
 # given a url to a raw file on github and a date the file was commited on
 # saves the file as a csv and returns a dataframe
 def get_csv(url, date, local_path):
-    # print('Loading and saving data for {} to {}'.format(date, local_path))
+    print('Loading and saving data for {} to {}'.format(date, local_path))
 
     # we want to use the local one if we have it
     local_data_set = CSVDataSet(filepath=local_path)
@@ -193,8 +193,12 @@ def save_version_and_date(engine, version):
         df.to_sql('coviddatafrontend', conn, if_exists='replace')
 
 def start(engine):
-    version_info = get_app_version(engine)
-    version = version_info[1]
+    try:
+        version_info = get_app_version(engine)
+        version = version_info[1]
+    except:
+        version = "0.0.0"
+
 
     print("-- Loading data for version {}".format(version))
 
@@ -219,3 +223,19 @@ def start(engine):
     save_version_and_date(engine, version)
 
 start(engine)
+
+
+# directory = r'./data/totals/deaths-by-boro-age'
+# files_saved = []
+# for filename in os.listdir(directory):
+#     if filename == '.' or filename == '..':
+#         continue
+#     local_path = directory+'/'+filename
+#     print(local_path)
+#     local_data_set = CSVDataSet(filepath=local_path)
+#     data = local_data_set.load()
+#     files_saved.append(data)
+#     print(len(files_saved))
+# all_data_from_history_df = concat_saved_files(files_saved)
+# cleaned_files = cleanup_data_frame(all_data_from_history_df)
+# save_dataframe_to_database(engine, cleaned_files, 'DeathsByBoroAge')

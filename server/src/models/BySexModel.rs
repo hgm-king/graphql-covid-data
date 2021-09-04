@@ -14,9 +14,12 @@ use diesel::prelude::*;
 pub struct BySexT {
     pub id: i32,
     pub SEX_GROUP: Option<String>,
+    pub CONFIRMED_CASE_RATE: Option<f64>,
     pub CASE_RATE: Option<f64>,
     pub HOSPITALIZED_RATE: Option<f64>,
     pub DEATH_RATE: Option<f64>,
+    pub CONFIRMED_CASE_COUNT: Option<f64>,
+    pub PROBABLE_CASE_COUNT: Option<f64>,
     pub CASE_COUNT: Option<f64>,
     pub HOSPITALIZED_COUNT: Option<f64>,
     pub DEATH_COUNT: Option<f64>,

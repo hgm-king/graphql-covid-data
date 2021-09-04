@@ -12,9 +12,12 @@ use diesel::prelude::*;
 pub struct ByRaceT {
     pub id: i32,
     pub RACE_GROUP: Option<String>,
+    pub CONFIRMED_CASE_RATE_ADJ: Option<f64>,
     pub CASE_RATE_ADJ: Option<f64>,
     pub HOSPITALIZED_RATE_ADJ: Option<f64>,
     pub DEATH_RATE_ADJ: Option<f64>,
+    pub CONFIRMED_CASE_COUNT: Option<f64>,
+    pub PROBABLE_CASE_COUNT: Option<f64>,
     pub CASE_COUNT: Option<f64>,
     pub HOSPITALIZED_COUNT: Option<f64>,
     pub DEATH_COUNT: Option<f64>,
@@ -23,7 +26,7 @@ pub struct ByRaceT {
 
 pub fn read(conn: &PgConnection) -> Vec<ByRaceT> {
     ByRace::table
-        .order((ByRace::RACE_GROUP.asc(), ByRace::date.asc()))
+        .order(ByRace::date.asc())
         .load::<ByRaceT>(conn)
         .expect("Error loading object")
 }

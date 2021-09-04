@@ -1,5 +1,5 @@
 // pub mod antibody_by_age;
-pub mod AntibodyByAgeModel;
+// pub mod AntibodyByAgeModel;
 pub mod ByAgeModel;
 pub mod ByRaceModel;
 pub mod DataByDayModel;

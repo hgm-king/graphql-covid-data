@@ -15,7 +15,7 @@ use context::Context;
 use juniper::FieldResult;
 
 use models::{
-    coviddatafrontendModel, AntibodyByAgeModel, ByAgeModel, ByRaceModel, DataByDayModel,
+    coviddatafrontendModel, ByAgeModel, ByRaceModel, DataByDayModel,
     DataByModzctaModel, DeathsByBoroAgeModel, DeathsByRaceAgeModel, SummaryPrimeModel,
     ZctaToModzctaModel,
 };
@@ -24,11 +24,11 @@ pub struct QueryRoot;
 
 #[graphql_object(context = "Context")]
 impl QueryRoot {
-    fn AntibodyByAge(context: &Context) -> FieldResult<Vec<AntibodyByAgeModel::AntibodyByAgeT>> {
-        let connection = context.get_conn();
-        let antibody = AntibodyByAgeModel::read(&connection);
-        Ok(antibody)
-    }
+    // fn AntibodyByAge(context: &Context) -> FieldResult<Vec<AntibodyByAgeModel::AntibodyByAgeT>> {
+    //     let connection = context.get_conn();
+    //     let antibody = AntibodyByAgeModel::read(&connection);
+    //     Ok(antibody)
+    // }
 
     fn ByAge(context: &Context) -> FieldResult<Vec<ByAgeModel::ByAgeT>> {
         let connection = context.get_conn();

@@ -1,4 +1,4 @@
-echo "yes" | ssh root@covid-data.nyc
+ssh -o StrictHostKeyChecking=accept-new root@covid-data.nyc
 
 docker-compose down
 echo "y" | docker container prune
