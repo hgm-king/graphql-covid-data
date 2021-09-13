@@ -19,7 +19,7 @@ import Footer from "./components/Footer";
 import theme from "./theme/";
 import VersionQuery from "./queries/version";
 
-const serverHost = process.env.SERVER_HOST ?? "104.131.165.152";
+const serverHost = process.env.SERVER_HOST ?? "0.0.0.0";
 const serverPort = process.env.SERVER_PORT ?? "3000";
 
 const client = createClient({
@@ -30,7 +30,7 @@ export default function App(_props) {
   console.log("rendering App");
   const navs = ["Summary", "Race", "Age", "Zipcode"];
 
-  const [selected, setSelected] = useState(navs[0]);
+  const [selected, setSelected] = useState(navs[1]);
   const [versionData, setVersionData] = useState();
 
   useEffect(() => {

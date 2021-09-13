@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "urql";
 import ParentSize from "@visx/responsive/lib/components/ParentSize";
 
+import Loader from "../../components/Loader";
+import Error from "../../components/Error";
 import Switch from "../../components/Switch";
 import FlexRow from "../../components/FlexRow";
 
@@ -10,12 +13,21 @@ import DataTable from "../../components/charts/DataTable";
 import SummaryQuery from "../../queries/summary";
 import { summedObject } from "../../utils/data-tools";
 import theme from "../../theme";
-import withQuery from "../../hoc/withQuery";
+// import withQuery from "../../hoc/withQuery";
 
-function Summary(props) {
-  const { data } = props;
-
+export default function Summary(props) {
   const [selectedField, setSelectedField] = useState("CASECOUNT");
+
+  const [result, _reexecuteQuery] = useQuery({
+    query: SummaryQuery,
+  });
+
+  const { data, fetching, error } = result;
+
+  if (fetching) return <Loader />;
+  if (error) return <Error error={error} />;
+
+  data.DataByDay.sort((a,b) => (new Date(a.dateOfInterest)) > (new Date(b.dateOfInterest)))
 
   const getIndex = (d) => selectedField;
   const getValue = (d) => d[selectedField];
@@ -131,5 +143,3 @@ function Summary(props) {
     </>
   );
 }
-
-export default withQuery(Summary, SummaryQuery);
