@@ -19,7 +19,8 @@ import requests
 import semver
 from sqlalchemy import create_engine, Integer
 
-os.environ['LOCAL_ROOT'] = './data'
+LOCAL_ROOT = os.environ.get('LOCAL_ROOT', './data')
+BUMP_VERSION = os.environ.get('BUMP_VERSION', False)
 
 print("Connecting to {}".format(os.environ['DATABASE_URL_ETL']))
 engine = create_engine(os.environ['DATABASE_URL_ETL'])
@@ -56,7 +57,7 @@ def cleanup_data_frame(df):
     try:
         df = df.drop('<<<<<<< HEAD', axis=1)
     except:
-        print("table had no merge conflicts")
+        print("...table had no merge conflicts")
 
     new_index = range(len(df))
     df['id'] = new_index
@@ -77,7 +78,7 @@ def save_dataframe_to_database(engine, df, table_name):
         with engine.connect() as conn:
             df.to_sql(table_name, conn, dtype={"id": Integer()}, if_exists='replace')
     except Exception as exception:
-        print("Could not save table {}".format(table_name))
+        print("Error: Could not save table {}".format(table_name))
         print(exception)
 
 # given a url to a raw file on github and a date the file was commited on
@@ -90,7 +91,7 @@ def get_csv(url, date, local_path):
 
     try:
         data = local_data_set.load()
-        # print("Loaded from local {}".format(local_path))
+        print("...Loaded from LOCAL {}".format(local_path))
         return data
     except Exception as exception:
         # pull it from internet
@@ -111,8 +112,8 @@ def get_csv_file_from_github(url, date, local_path):
 
         return data
     except Exception as exception:
-        print('Error: could not get {}'.format(url))
-        print(exception)
+        print('Error: could not get csv {}'.format(url))
+        #print(exception)
         return []
 
 
@@ -133,7 +134,7 @@ def get_history_data_from_git(url, path):
         json_data = r.json()
         return [break_down_history_json(row, path) for row in json_data]
     except Exception as exception:
-        print('Error: could not get {}'.format(url))
+        print('Error: could not get history {}'.format(url))
         return []
 
 def map_over_commits_for_file(history_data, path):
@@ -152,11 +153,11 @@ def get_each_commit_for_csv(path):
 
     while has_commits:
         history_url = create_history_url(url, commit_page)
-        print("Fetching the history at {}".format(url))
+        print("...Fetching the HISTORY at {}".format(url))
         history_data = get_history_data_from_git(history_url, url)
 
         num_commits = len(history_data)
-        print('Found {} entries'.format(num_commits))
+        print('...{} ENTRIES found'.format(num_commits))
         if num_commits > 0:
             saved_files = map_over_commits_for_file(history_data, path)
             files_saved = files_saved + saved_files
@@ -176,18 +177,21 @@ def save_file_commits_to_database(engine, path, filetype, table_name):
 
 def save_singular_file_to_database(engine, path, filetype, table_name):
     url = create_regular_data_url("{}.{}".format(path, filetype))
-
     #spits out root/path/date.filetype
-    local_path = format_local_path(os.environ['LOCAL_ROOT'], path, filetype)
+    local_path = format_local_path(LOCAL_ROOT, path, filetype)
     data = get_csv_file_from_github(url, "", local_path)
     cleaned_df = cleanup_data_frame(data)
     save_dataframe_to_database(engine, cleaned_df, table_name)
 
 def save_version_and_date(engine, version):
     ver = semver.VersionInfo.parse(version)
-    bumped = ver.bump_patch()
+    if BUMP_VERSION:
+        bumped = ver.bump_patch()
+    else:
+        bumped = ver
     today = date.today()
     data = [[str(bumped), str(today)]]
+    print(f"Saving as {data}")
     df = pd.DataFrame(data, columns = ['version', 'date'])
     with engine.connect() as conn:
         df.to_sql('coviddatafrontend', conn, if_exists='replace')
@@ -199,43 +203,32 @@ def start(engine):
     except:
         version = "0.0.0"
 
-
-    print("-- Loading data for version {}".format(version))
+    print("##### Loading data for version {}".format(version))
 
     config_path = './src/config.json'
+
     with open(config_path) as f:
         data = json.load(f)
         for file in data['files']:
-            [path, filetype] = file.split('.')
-            table_name = get_table_name_from_path(path)
-            print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-            data = save_file_commits_to_database(engine, path, filetype, table_name)
-
+            try:
+                [path, filetype] = file.split('.')
+                table_name = get_table_name_from_path(path)
+                print("LOADING:: {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+                data = save_file_commits_to_database(engine, path, filetype, table_name)
+            except Exception:
+                print(f"ERROR:: Failed on {file}")
 
     with open(config_path) as f:
         data = json.load(f)
         for file in data['singular']:
-            [path, filetype] = file.split('.')
-            table_name = get_table_name_from_path(path)
-            print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-            data = save_singular_file_to_database(engine, path, filetype, table_name)
+            try:
+                [path, filetype] = file.split('.')
+                table_name = get_table_name_from_path(path)
+                print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+                data = save_singular_file_to_database(engine, path, filetype, table_name)
+            except Exception:
+                print(f"ERROR:: Failed on {file}")
 
     save_version_and_date(engine, version)
 
 start(engine)
-
-
-# directory = r'./data/totals/deaths-by-boro-age'
-# files_saved = []
-# for filename in os.listdir(directory):
-#     if filename == '.' or filename == '..':
-#         continue
-#     local_path = directory+'/'+filename
-#     print(local_path)
-#     local_data_set = CSVDataSet(filepath=local_path)
-#     data = local_data_set.load()
-#     files_saved.append(data)
-#     print(len(files_saved))
-# all_data_from_history_df = concat_saved_files(files_saved)
-# cleaned_files = cleanup_data_frame(all_data_from_history_df)
-# save_dataframe_to_database(engine, cleaned_files, 'DeathsByBoroAge')

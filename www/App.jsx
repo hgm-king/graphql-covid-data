@@ -19,8 +19,16 @@ import Footer from "./components/Footer";
 import theme from "./theme/";
 import VersionQuery from "./queries/version";
 
-const serverHost = process.env.SERVER_HOST ?? "0.0.0.0";
-const serverPort = process.env.SERVER_PORT ?? "3000";
+let serverHost;
+let serverPort;
+
+if ( process.env.NODE_ENV === 'production' ) {
+  serverHost = 'covid-data.nyc';
+  serverPort = 4000;
+} else {
+  serverHost = '0.0.0.0';
+  serverPort = 4000;
+}
 
 const client = createClient({
   url: `http://${serverHost}:${serverPort}/graphql`,

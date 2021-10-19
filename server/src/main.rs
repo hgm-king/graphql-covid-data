@@ -14,7 +14,7 @@ use std::env;
 async fn main() {
     dotenv().ok();
 
-    let addr = ([0, 0, 0, 0], 3000).into();
+    let addr = ([0, 0, 0, 0], 4000).into();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let db = Arc::new(server::context::Context::new(&database_url));

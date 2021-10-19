@@ -23,6 +23,6 @@ services:
     env_file:
       - env # my droplet hating the hidden file
     ports:
-      - 3000:3000
+      - 4000:4000
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
