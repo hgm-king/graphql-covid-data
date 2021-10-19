@@ -22,11 +22,11 @@ import VersionQuery from "./queries/version";
 let serverHost;
 let serverPort;
 
-if ( process.env.NODE_ENV === 'production' ) {
-  serverHost = 'covid-data.nyc';
+if (process.env.NODE_ENV === "production") {
+  serverHost = "covid-data.nyc";
   serverPort = 4000;
 } else {
-  serverHost = '0.0.0.0';
+  serverHost = "0.0.0.0";
   serverPort = 4000;
 }
 
