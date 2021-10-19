@@ -4,7 +4,7 @@
   "description": "Client-Side",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack -p",
     "serve": "webpack-dev-server --host 0.0.0.0",
     "format::write": "npx prettier --write .",
     "format": "npx prettier --check .",
