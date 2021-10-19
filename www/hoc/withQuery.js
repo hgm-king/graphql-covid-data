@@ -1,11 +1,12 @@
+import React from "react";
 import { useQuery } from "urql";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 
 export default function withQuery(WrappedComponent, query, variables) {
-  const [result, _reexecuteQuery] = useQuery({
+  const [result] = useQuery({
     query: query,
-    variables: variables
+    variables: variables,
   });
 
   const { data, fetching, error } = result;

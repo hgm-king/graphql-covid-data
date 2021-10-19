@@ -28,7 +28,12 @@ const client = createClient({
 
 export default function App(_props) {
   console.log("rendering App");
-  const navs = ["Summary", "Race", "Age", "Zipcode"];
+  const navs = [
+    "Summary",
+    "Race",
+    //"Age",
+    "Zipcode",
+  ];
 
   const [selected, setSelected] = useState(navs[1]);
   const [versionData, setVersionData] = useState();
@@ -65,7 +70,7 @@ export default function App(_props) {
     <Provider value={client}>
       <div id="main" className={main}>
         <h6>Hello, World!</h6>
-        <p>NYC Covid Data Dashboard by HG King</p>
+        <p>NYC Covid Data Dashboard by HG King - {process.env.NODE_ENV}</p>
         <FlexRow flex="flex-start" wrap="wrap">
           {navs.map(makeNav)}
         </FlexRow>

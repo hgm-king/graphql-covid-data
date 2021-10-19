@@ -27,7 +27,9 @@ export default function Summary(props) {
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
 
-  data.DataByDay.sort((a,b) => (new Date(a.dateOfInterest)) > (new Date(b.dateOfInterest)))
+  data.DataByDay.sort(
+    (a, b) => new Date(a.dateOfInterest) > new Date(b.dateOfInterest)
+  );
 
   const getIndex = (d) => selectedField;
   const getValue = (d) => d[selectedField];
@@ -62,8 +64,7 @@ export default function Summary(props) {
     const dailyChange = getDailyValue(key).toLocaleString();
 
     const delta = getDailyDelta(key);
-    const deltaColor =
-      delta <= 0 ? theme.colors.success : theme.colors.danger;
+    const deltaColor = delta <= 0 ? theme.colors.success : theme.colors.danger;
 
     const trendArrow = delta < 0 ? "▼" : delta > 0 ? "▲" : "";
 
@@ -114,9 +115,7 @@ export default function Summary(props) {
 
           return (
             <>
-              <div
-                style={{ marginLeft: 24, marginBottom: 24, width: "100%" }}
-              >
+              <div style={{ marginLeft: 24, marginBottom: 24, width: "100%" }}>
                 <span>Select a metric to view trends:</span>
                 <FlexRow flex="space-between" direction="column" wrap="wrap">
                   {fields.map(makeSwitches)}
