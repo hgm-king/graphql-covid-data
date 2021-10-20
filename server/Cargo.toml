@@ -9,10 +9,10 @@ edition = "2018"
 [dependencies]
 diesel = { version = "1.4.5", features = ["postgres", "r2d2"] }
 dotenv = "0.15.0"
+env_logger = "0.8.4"
 hyper = "0.13"
-juniper = "0.15"
-juniper_hyper = "0.6.0"
-tokio = "0.2"
-
-[dev-dependencies]
+juniper = "0.15.5"
+juniper_warp = "0.6.3"
+log = "0.4.14"
 tokio = { version = "0.2", features = ["macros"] }
+warp = { version = "0.2", features = ["tls"] }
