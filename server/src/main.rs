@@ -51,7 +51,7 @@ async fn main() {
         .or(homepage)
         .or(graphql)
         .map(|reply| {
-            warp::reply::with_header(reply, "Access-Control-Allow-Origin", "http://0.0.0.0:8080")
+            warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*")
         })
         .with(log);
 
