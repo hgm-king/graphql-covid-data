@@ -34,11 +34,25 @@ async fn main() {
     let state = warp::any().map(move || db_conn.clone());
     let graphql_filter = juniper_warp::make_graphql_filter(schema, state.boxed());
 
+    let graphql_options = warp::options()
+        .and(warp::path("graphql"))
+        .map(|| warp::reply())
+        .map(|reply| {
+            warp::reply::with_header(reply, "Access-Control-Allow-Headers", "Content-Type")
+        });
+
+    let graphql_post = warp::post().and(warp::path("graphql").and(graphql_filter));
+
+    let graphql = graphql_options.or(graphql_post);
+
     let end = warp::get()
         .and(warp::path("graphiql"))
         .and(juniper_warp::graphiql_filter("/graphql", None))
         .or(homepage)
-        .or(warp::path("graphql").and(graphql_filter))
+        .or(graphql)
+        .map(|reply| {
+            warp::reply::with_header(reply, "Access-Control-Allow-Origin", "http://0.0.0.0:8080")
+        })
         .with(log);
 
     // setup our address from the config
