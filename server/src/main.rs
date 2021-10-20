@@ -50,9 +50,7 @@ async fn main() {
         .and(juniper_warp::graphiql_filter("/graphql", None))
         .or(homepage)
         .or(graphql)
-        .map(|reply| {
-            warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*")
-        })
+        .map(|reply| warp::reply::with_header(reply, "Access-Control-Allow-Origin", "*"))
         .with(log);
 
     // setup our address from the config
