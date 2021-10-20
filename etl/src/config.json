@@ -1,14 +1,13 @@
 {
   "files": [
-    "totals/by-age.csv",
-    "totals/by-poverty.csv",
-    "totals/by-race.csv",
-    "totals/by-sex.csv",
     "totals/data-by-modzcta.csv",
     "totals/deaths-by-boro-age.csv",
     "totals/deaths-by-race-age.csv",
     "totals/deaths-by-underlying-conditions.csv",
-    "totals/summary.csv"
+    "totals/by-age.csv",
+    "totals/by-poverty.csv",
+    "totals/by-race.csv",
+    "totals/by-sex.csv",
   ],
   "singular": [
     "trends/data-by-day.csv"

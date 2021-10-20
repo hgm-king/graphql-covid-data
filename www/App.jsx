@@ -43,7 +43,7 @@ export default function App(_props) {
     "Zipcode",
   ];
 
-  const [selected, setSelected] = useState(navs[1]);
+  const [selected, setSelected] = useState(navs[0]);
   const [versionData, setVersionData] = useState();
 
   useEffect(() => {
