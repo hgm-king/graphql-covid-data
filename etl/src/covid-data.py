@@ -7,7 +7,6 @@
 # exec(open('src/covid-data.py').read())
 # python3 src/covid-data.py
 
-from kedro.extras.datasets.pandas import CSVDataSet
 from datetime import date
 import json
 import numpy as np
@@ -18,6 +17,9 @@ import re
 import requests
 import semver
 from sqlalchemy import create_engine, Integer
+
+def load_me():
+    exec(open('src/covid-data.py').read())
 
 LOCAL_ROOT = os.environ.get('LOCAL_ROOT', './data')
 BUMP_VERSION = os.environ.get('BUMP_VERSION', False)
@@ -85,12 +87,9 @@ def save_dataframe_to_database(engine, df, table_name):
 # saves the file as a csv and returns a dataframe
 def get_csv(url, date, local_path):
     print('Loading and saving data for {} to {}'.format(date, local_path))
-
     # we want to use the local one if we have it
-    local_data_set = CSVDataSet(filepath=local_path)
-
     try:
-        data = local_data_set.load()
+        data = pd.read_csv(filepath_or_buffer=local_path)
         print("...Loaded from LOCAL {}".format(local_path))
         return data
     except Exception as exception:
@@ -98,18 +97,12 @@ def get_csv(url, date, local_path):
         return get_csv_file_from_github(url, date, local_path)
 
 def get_csv_file_from_github(url, date, local_path):
-    data_set = CSVDataSet(filepath=url)
     try:
-        data = data_set.load()
-
-        # print('{} columns found'.format(len(data.columns)))
+        data = pd.read_csv(filepath_or_buffer=url)
         if date != "":
             dates = np.repeat(date, len(data))
             data['date'] = dates
-
-        local_data_set = CSVDataSet(filepath=local_path)
-        local_data_set.save(data)
-
+        data.to_csv(path_or_buf=local_path)
         return data
     except Exception as exception:
         print('Error: could not get csv {}'.format(url))
@@ -202,9 +195,7 @@ def start(engine):
         version = version_info[1]
     except:
         version = "0.0.0"
-
     print("##### Loading data for version {}".format(version))
-
     config_path = './src/config.json'
 
     with open(config_path) as f:
@@ -217,18 +208,28 @@ def start(engine):
                 data = save_file_commits_to_database(engine, path, filetype, table_name)
             except Exception:
                 print(f"ERROR:: Failed on {file}")
+    #
+    # with open(config_path) as f:
+    #     data = json.load(f)
+    #     for file in data['singular']:
+    #         try:
+    #             [path, filetype] = file.split('.')
+    #             table_name = get_table_name_from_path(path)
+    #             print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+    #             data = save_singular_file_to_database(engine, path, filetype, table_name)
+    #         except Exception:
+    #             print(f"ERROR:: Failed on {file}")
+    # save_version_and_date(engine, version)
 
-    with open(config_path) as f:
-        data = json.load(f)
-        for file in data['singular']:
-            try:
-                [path, filetype] = file.split('.')
-                table_name = get_table_name_from_path(path)
-                print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
-                data = save_singular_file_to_database(engine, path, filetype, table_name)
-            except Exception:
-                print(f"ERROR:: Failed on {file}")
+def execute():
+    file = "trends/data-by-day.csv"
+    try:
+        [path, filetype] = file.split('.')
+        table_name = get_table_name_from_path(path)
+        print("Getting data from {}.{} and saving it into {} in your db".format(path, filetype, table_name))
+        data = save_singular_file_to_database(engine, path, filetype, table_name)
+    except Exception:
+        print(f"ERROR:: Failed on {file}")
 
-    save_version_and_date(engine, version)
-
-start(engine)
+execute()
+# start(engine)

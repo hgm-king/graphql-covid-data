@@ -24,3 +24,5 @@ CREATE TABLE public.coviddatafrontend (
 	"version" varchar NULL,
 	"date" varchar NULL
 );
+
+insert into public.coviddatafrontend ("version", "date") values ('1.0.0', '12/29/21');
