@@ -1,7 +1,7 @@
 body {
-  background-color: #FFFFFF;
-  color: #2C2E34;
-  font-family: 'Helvetica';
+  background-color: #ffffff;
+  color: #2c2e34;
+  font-family: "Helvetica";
   line-height: 1.4;
 }
 
@@ -36,22 +36,23 @@ h5 {
   font-size: 1.5rem;
 }
 
-h6, input[type=number] {
+h6,
+input[type="number"] {
   letter-spacing: 0.15px;
   font-size: 1.25rem;
 }
 
-p  {
+p {
   font-size: 1rem;
   letter-spacing: 0.5px;
 }
 
-.subtitle1  {
+.subtitle1 {
   font-size: 1rem;
   letter-spacing: 0.15px;
 }
 
-.subtitle2  {
+.subtitle2 {
   font-size: 0.75rem;
   letter-spacing: 0.1px;
 }
@@ -82,15 +83,21 @@ button {
   background-color: #f13a2c;
 }
 
-h1, h2  {
+h1,
+h2 {
   font-weight: 300;
 }
 
-h3, h4, h5, .subtitle1, p {
+h3,
+h4,
+h5,
+.subtitle1,
+p {
   font-weight: 400;
 }
 
-button, h6  {
+button,
+h6 {
   font-weight: 500;
 }
 
@@ -98,7 +105,12 @@ button, h6  {
   font-weight: 600;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 1rem;
   margin-bottom: 1rem;
   font-family: "Futura";
@@ -106,11 +118,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* unvisited link */
 a {
- color: #33A1FD;
+  color: #33a1fd;
 }
 
 pre code {
-  color: #FBFBF8;
+  color: #fbfbf8;
   background-color: #161032;
   border: 1px solid #999;
   display: block;
@@ -122,8 +134,8 @@ pre {
   white-space: pre-wrap;
 }
 
-input[type=number] {
-  font-family: 'Helvetica', sans-serif;
+input[type="number"] {
+  font-family: "Helvetica", sans-serif;
   width: 58px;
   text-align: center;
 }
@@ -136,7 +148,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
