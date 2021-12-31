@@ -33,9 +33,7 @@ const client = createClient({
 
 export default function App(_props) {
   console.log("rendering App");
-  const navs = [
-    "Summary",
-  ];
+  const navs = ["Summary"];
 
   const [selected, setSelected] = useState(navs[0]);
   const [versionData, setVersionData] = useState();

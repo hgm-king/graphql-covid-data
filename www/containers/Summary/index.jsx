@@ -97,7 +97,8 @@ export default function Summary(props) {
           paddingBottom: 8,
         }}
       >
-        Showing data for {dateString} - day {data.DataByDay.length} <a href="https://github.com/nychealth/coronavirus-data">[source]</a>
+        Showing data for {dateString} - day {data.DataByDay.length}{" "}
+        <a href="https://github.com/nychealth/coronavirus-data">[source]</a>
       </h6>
       <ParentSize>
         {({ width, height }) => {
