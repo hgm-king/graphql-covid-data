@@ -78,3 +78,9 @@ ALTER TABLE public."DataByDay" ALTER COLUMN "PROBABLE_DEATH_COUNT" TYPE int4 USI
 
 ALTER TABLE public."ZctaToModzcta" ALTER COLUMN "ZCTA" TYPE float8 USING "ZCTA"::float8;
 ALTER TABLE public."ZctaToModzcta" ALTER COLUMN "MODZCTA" TYPE float8 USING "MODZCTA"::float8;
+
+
+
+
+
+select count(*) from public."Summary" s ;

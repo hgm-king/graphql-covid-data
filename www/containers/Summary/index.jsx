@@ -89,7 +89,7 @@ export default function Summary(props) {
 
   return (
     <>
-      <h3>Summary</h3>
+      <h3>NYC Covid Data</h3>
       <h6
         style={{
           borderBottom: "1px solid black",
@@ -97,7 +97,7 @@ export default function Summary(props) {
           paddingBottom: 8,
         }}
       >
-        Showing data for {dateString} - day {data.DataByDay.length}
+        Showing data for {dateString} - day {data.DataByDay.length} <a href="https://github.com/nychealth/coronavirus-data">[source]</a>
       </h6>
       <ParentSize>
         {({ width, height }) => {

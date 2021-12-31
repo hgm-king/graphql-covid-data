@@ -6,9 +6,6 @@ import { pipe, subscribe } from "wonka";
 
 // containers
 import Summary from "./containers/Summary/";
-import ByRace from "./containers/ByRace/";
-import ByAge from "./containers/ByAge/";
-import ByZipcode from "./containers/ByZipcode/";
 
 // components
 import FlexRow from "./components/FlexRow";
@@ -38,9 +35,6 @@ export default function App(_props) {
   console.log("rendering App");
   const navs = [
     "Summary",
-    "Race",
-    //"Age",
-    "Zipcode",
   ];
 
   const [selected, setSelected] = useState(navs[0]);
@@ -77,11 +71,6 @@ export default function App(_props) {
   return (
     <Provider value={client}>
       <div id="main" className={main}>
-        <h6>Hello, World!</h6>
-        <p>NYC Covid Data Dashboard by HG King - {process.env.NODE_ENV}</p>
-        <FlexRow flex="flex-start" wrap="wrap">
-          {navs.map(makeNav)}
-        </FlexRow>
         {selected === "Summary" ? (
           <Summary />
         ) : selected === "Race" ? (
