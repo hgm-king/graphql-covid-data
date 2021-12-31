@@ -21,7 +21,6 @@ pub struct QueryRoot;
 
 #[graphql_object(context = "DbConn")]
 impl QueryRoot {
-
     fn coviddatafrontend(
         context: &DbConn,
     ) -> FieldResult<Vec<coviddatafrontendModel::coviddatafrontendT>> {
