@@ -6,6 +6,7 @@ import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import Switch from "../../components/Switch";
 import FlexRow from "../../components/FlexRow";
+import Link from "../../components/Link";
 
 import SummaryLineChart from "./SummaryLineChart";
 import DataTable from "../../components/charts/DataTable";
@@ -13,7 +14,6 @@ import DataTable from "../../components/charts/DataTable";
 import SummaryQuery from "../../queries/summary";
 import { summedObject } from "../../utils/data-tools";
 import theme from "../../theme";
-// import withQuery from "../../hoc/withQuery";
 
 export default function Summary(props) {
   const [selectedField, setSelectedField] = useState("CASECOUNT");
@@ -27,21 +27,19 @@ export default function Summary(props) {
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
 
-  data.DataByDay.sort(
-    (a, b) => new Date(a.dateOfInterest) > new Date(b.dateOfInterest)
-  );
+  const sortedData = data.DataByDay;
 
   const getIndex = (d) => selectedField;
   const getValue = (d) => d[selectedField];
-  const length = data.DataByDay.length;
+  const length = sortedData.length;
 
-  const selectedDay = data.DataByDay[length - 1].dateOfInterest;
+  const selectedDay = sortedData[length - 1].dateOfInterest;
   const dateString = new Date(selectedDay).toDateString();
 
   const title = `${selectedField}`;
   const subtitle = `as of ${dateString}`;
 
-  const fields = Object.keys(data.DataByDay[0])
+  const fields = Object.keys(sortedData[0])
     .filter((k) => k.match(/COUNT/))
     .sort();
 
@@ -49,15 +47,15 @@ export default function Summary(props) {
     setSelectedField(option.value);
   };
 
-  const summedTotals = summedObject(data.DataByDay, [
+  const summedTotals = summedObject(sortedData, [
     "CASECOUNT",
     "DEATHCOUNT",
     "HOSPITALIZEDCOUNT",
   ]);
 
   const getDailyDelta = (key) =>
-    data.DataByDay[length - 1][key] - data.DataByDay[length - 2][key];
-  const getDailyValue = (key) => data.DataByDay[length - 1][key];
+    sortedData[length - 1][key] - sortedData[length - 2][key];
+  const getDailyValue = (key) => sortedData[length - 1][key];
 
   const makeSwitches = (key, i) => {
     const total = summedTotals[key].toLocaleString();
@@ -79,7 +77,7 @@ export default function Summary(props) {
           - Daily Change: {dailyChange} (
           <span style={{ color: deltaColor }}>
             {trendArrow}
-            {Math.abs(delta)}
+            {Math.abs(delta).toLocaleString()}
           </span>
           ); Total: {total}
         </span>
@@ -89,7 +87,7 @@ export default function Summary(props) {
 
   return (
     <>
-      <h3>NYC Covid Data</h3>
+      <h3 className="thick">NYC Covid Data</h3>
       <h6
         style={{
           borderBottom: "1px solid black",
@@ -97,8 +95,8 @@ export default function Summary(props) {
           paddingBottom: 8,
         }}
       >
-        Showing data for {dateString} - day {data.DataByDay.length}{" "}
-        <a href="https://github.com/nychealth/coronavirus-data">[source]</a>
+        Showing data for {dateString} - day {sortedData.length}{" - "}
+        <Link href="https://github.com/nychealth/coronavirus-data">source</Link>
       </h6>
       <ParentSize>
         {({ width, height }) => {
@@ -110,7 +108,7 @@ export default function Summary(props) {
 
           // lower granularity
           const numTicksY = isSmall ? 4 : undefined;
-          const trendDataPruned = data.DataByDay.filter((row, i) =>
+          const trendDataPruned = sortedData.filter((row, i) =>
             isSmall ? i % 7 == 3 : true
           );
 
@@ -124,7 +122,7 @@ export default function Summary(props) {
               </div>
               <p>
                 Daily changes in COVID {selectedField} for NYC;{" "}
-                {data.DataByDay.length} days since outbreak.
+                {sortedData.length.toLocaleString()} days since outbreak.
               </p>
               <SummaryLineChart
                 title={title}

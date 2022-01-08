@@ -16,13 +16,13 @@ import psycopg2
 import re
 import requests
 import semver
-from sqlalchemy import create_engine, Integer
+from sqlalchemy import create_engine, Integer, text
 
 def load_me():
     exec(open('src/covid-data.py').read())
 
 LOCAL_ROOT = os.environ.get('LOCAL_ROOT', './data')
-BUMP_VERSION = os.environ.get('BUMP_VERSION', False)
+BUMP_VERSION = os.environ.get('BUMP_VERSION', True)
 
 print("Connecting to {}".format(os.environ['DATABASE_URL_ETL']))
 engine = create_engine(os.environ['DATABASE_URL_ETL'])
@@ -219,9 +219,16 @@ def start(engine):
     #             data = save_singular_file_to_database(engine, path, filetype, table_name)
     #         except Exception:
     #             print(f"ERROR:: Failed on {file}")
-    # save_version_and_date(engine, version)
+    #
 
 def execute():
+    try:
+        version_info = get_app_version(engine)
+        version = version_info[1]
+    except:
+        version = "0.0.0"
+    print("##### Loading data for version {}".format(version))
+
     file = "trends/data-by-day.csv"
     try:
         [path, filetype] = file.split('.')
@@ -230,6 +237,14 @@ def execute():
         data = save_singular_file_to_database(engine, path, filetype, table_name)
     except Exception:
         print(f"ERROR:: Failed on {file}")
+
+    migrations_file = "./migrations/data-by-day.sql"
+    with open(migrations_file) as f:
+        with engine.connect() as conn:
+            print(f)
+            conn.execute(text(f.read()))
+
+    save_version_and_date(engine, version)
 
 execute()
 # start(engine)

@@ -21,6 +21,7 @@ create table
 );
 
 CREATE TABLE public.coviddatafrontend (
+	index SERIAL PRIMARY KEY,
 	"version" varchar NULL,
 	"date" varchar NULL
 );
