@@ -27,7 +27,7 @@ export default function Summary(props) {
   if (fetching) return <Loader />;
   if (error) return <Error error={error} />;
 
-  const sortedData = data.DataByDay;
+  const sortedData = data.DataByDay.sort((a, b) => new Date(a.dateOfInterest) - new Date(b.dateOfInterest));
 
   const getIndex = (d) => selectedField;
   const getValue = (d) => d[selectedField];

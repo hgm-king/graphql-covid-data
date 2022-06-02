@@ -11,7 +11,6 @@ services:
       - 5432:5432
   etl:
     build: ./etl/
-    command: ["tail", "-f", "/dev/null"]
     env_file:
       - ./.env
     depends_on:
